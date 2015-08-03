@@ -18,8 +18,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     NSLog(@"TabBarViewController");
-    [[UITabBar appearance] setTintColor:[UIColor redColor]];
-    [[UITabBar appearance] setBarTintColor:[UIColor yellowColor]];
+  //  [[UITabBar appearance] setTintColor:[UIColor redColor]];
+    [[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:35/255.0f green:40/255.0f blue:45/255.0f alpha:1.0f]];
     
   //  self.view.backgroundColor = [UIColor colorWithRed:35/255.0f green:40/255.0f blue:45/255.0f alpha:1.0f];
 }
@@ -29,14 +29,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

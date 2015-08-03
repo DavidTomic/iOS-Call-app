@@ -8,14 +8,25 @@
 
 #import "FavoritesTableViewController.h"
 
+
+@interface FavoritesTableViewController()
+
+
+@end
+
+
 @implementation FavoritesTableViewController
 
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    
   //  self.navigationController.navigationBar.barTintColor = [UIColor redColor];
-    self.navigationController.navigationBar.hidden = YES;
+  //  self.navigationController.navigationBar.hidden = YES;
+    
+    NSString * s = NSLocalizedString(@"TEST_STRING", @"");
+    NSLog(@"string: %@", s);
+    
 }
+
 
 @end

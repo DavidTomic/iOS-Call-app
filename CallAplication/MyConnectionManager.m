@@ -56,6 +56,7 @@ static MyConnectionManager *mySharedManager;
     <Name>%@</Name> \
     <Email>%@</Email> \
     <Language>%d</Language> \
+    <Allowmode>0</Allowmode> \
     </CreateAccount> \
     </soap:Body> \
     </soap:Envelope>", phone, password, name, email, language];
@@ -71,16 +72,14 @@ static MyConnectionManager *mySharedManager;
     NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
                              <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
                              <soap:Body> \
-                             <Login xmlns=\"http://tempuri.org/\"> \
+                             <GetAccountSetup xmlns=\"http://tempuri.org/\"> \
                              <Phonenumber>%@</Phonenumber> \
                              <Password>%@</Password> \
-                             <VersionNumber>%@</VersionNumber> \
-                             <AppType>%d</AppType> \
-                             </Login> \
+                             </GetAccountSetup> \
                              </soap:Body> \
-                             </soap:Envelope>", @"0930001111", @"test", @"1", 1];
+                             </soap:Envelope>", @"385930001126", @"CallApp12345"];
     
-    [conn sendMessageWithMethodName:@"Login" soapMessage:soapMessage];
+    [conn sendMessageWithMethodName:@"GetAccountSetup" soapMessage:soapMessage];
 }
 
 -(void)requestStatusInfoWithDelegate:(id)delegate selector:(SEL)selector{

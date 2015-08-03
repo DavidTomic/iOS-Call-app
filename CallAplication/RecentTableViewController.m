@@ -7,7 +7,19 @@
 //
 
 #import "RecentTableViewController.h"
+#import "TabBarViewController.h"
+
+
+@interface RecentTableViewController()
+
+@end
 
 @implementation RecentTableViewController
+
+-(void)viewDidLoad{
+    [super viewDidLoad];
+}
+
+
 
 @end

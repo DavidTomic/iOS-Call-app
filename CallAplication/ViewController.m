@@ -8,8 +8,9 @@
 
 #import "ViewController.h"
 #import "MyConnectionManager.h"
-#import "Myuser.h";
+#import "Myuser.h"
 #import "SharedPreferences.h"
+
 
 @interface ViewController ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *phoneNumberUITextField;
@@ -44,10 +45,16 @@
     [self observeKeyboard];
     [self addSpaceToTextFields];
     
-    NSString * s = NSLocalizedString(@"TEST_STRING", @"");
-    NSLog(@"string: %@", s);
+    [[MyConnectionManager sharedManager]logInAcountWithDelegate:self selector:@selector(tester:)];
     
 }
+
+-(void)tester:(NSDictionary *)dict{
+    NSLog(@"responseToCreateUser %@", dict);
+    
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -157,12 +164,8 @@
     }else{
        // [[MyConnectionManager sharedManager] logInAcountWithDelegate:self selector:@selector(responseToLogIn:)];
     }
-    
-    //
+
 }
-
-
-
 
 
 //observe methods
@@ -201,6 +204,10 @@
             
             [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
             
+            return;
+        }else if ([[pom1 objectForKey:@"Result"] integerValue] == 0){
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Phone number already exists" message:@"Please change number or Log in with existng phone number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
             return;
         }
     }

@@ -251,6 +251,7 @@
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="RkM-A2-tf9"/>
                     <connections>
                         <outlet property="confirmButton" destination="WYM-T2-6S6" id="CC4-49-QWw"/>
                         <outlet property="emailUITextField" destination="NeF-ql-eOJ" id="Ma8-bp-hcf"/>
@@ -264,7 +265,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-153" y="319.5"/>
+            <point key="canvasLocation" x="1683" y="319.5"/>
         </scene>
         <!--Recents-->
         <scene sceneID="jSs-rD-K17">
@@ -291,7 +292,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OcL-fN-rnU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2217" y="361"/>
+            <point key="canvasLocation" x="4269" y="360.75"/>
         </scene>
         <!--Contacts-->
         <scene sceneID="O3Y-xB-1ML">
@@ -305,7 +306,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="oA4-QO-R5t">
+                            <searchBar contentMode="redraw" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="oA4-QO-R5t">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -314,7 +315,10 @@
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="nGf-cn-TSh">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.13725490200000001" green="0.15686274510000001" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="5S9-x9-WTW" style="IBUITableViewCellStyleDefault" id="2Qk-D4-ngU">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -325,7 +329,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5S9-x9-WTW">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="widthClass=compact">
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -333,6 +337,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -343,13 +348,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="nGf-cn-TSh" firstAttribute="leading" secondItem="noq-rp-M8l" secondAttribute="leading" id="4Kx-t9-sUC"/>
+                            <constraint firstAttribute="trailing" secondItem="oA4-QO-R5t" secondAttribute="trailing" id="6fc-5W-TGV"/>
+                            <constraint firstItem="mj5-gE-psL" firstAttribute="top" secondItem="nGf-cn-TSh" secondAttribute="bottom" id="AQ2-rd-yHQ"/>
+                            <constraint firstItem="oA4-QO-R5t" firstAttribute="leading" secondItem="noq-rp-M8l" secondAttribute="leading" id="HIp-Mv-DqI"/>
                             <constraint firstItem="oA4-QO-R5t" firstAttribute="top" secondItem="ayr-7N-72v" secondAttribute="bottom" id="IeG-PU-YA5"/>
                             <constraint firstItem="nGf-cn-TSh" firstAttribute="leading" secondItem="noq-rp-M8l" secondAttribute="leadingMargin" constant="-16" id="KOb-da-XI1"/>
                             <constraint firstItem="oA4-QO-R5t" firstAttribute="leading" secondItem="noq-rp-M8l" secondAttribute="leadingMargin" constant="-16" id="KOy-i1-8wN"/>
+                            <constraint firstItem="nGf-cn-TSh" firstAttribute="top" secondItem="oA4-QO-R5t" secondAttribute="bottom" id="L58-15-bxb"/>
                             <constraint firstAttribute="trailingMargin" secondItem="nGf-cn-TSh" secondAttribute="trailing" constant="-16" id="Lk0-li-V9M"/>
                             <constraint firstItem="nGf-cn-TSh" firstAttribute="top" secondItem="oA4-QO-R5t" secondAttribute="bottom" id="WAm-Jx-xhy"/>
                             <constraint firstAttribute="trailingMargin" secondItem="oA4-QO-R5t" secondAttribute="trailing" constant="-16" id="hrS-ZT-Emi"/>
+                            <constraint firstItem="oA4-QO-R5t" firstAttribute="top" secondItem="ayr-7N-72v" secondAttribute="bottom" id="iqX-qd-uq5"/>
                             <constraint firstItem="mj5-gE-psL" firstAttribute="top" secondItem="nGf-cn-TSh" secondAttribute="bottom" id="php-KP-Vj5"/>
+                            <constraint firstAttribute="trailing" secondItem="nGf-cn-TSh" secondAttribute="trailing" id="vgf-MC-W9X"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
@@ -357,13 +369,20 @@
                                 <exclude reference="nGf-cn-TSh"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="php-KP-Vj5"/>
+                                <exclude reference="6fc-5W-TGV"/>
+                                <exclude reference="HIp-Mv-DqI"/>
                                 <exclude reference="IeG-PU-YA5"/>
                                 <exclude reference="KOy-i1-8wN"/>
                                 <exclude reference="hrS-ZT-Emi"/>
+                                <exclude reference="iqX-qd-uq5"/>
+                                <exclude reference="4Kx-t9-sUC"/>
                                 <exclude reference="KOb-da-XI1"/>
+                                <exclude reference="L58-15-bxb"/>
                                 <exclude reference="Lk0-li-V9M"/>
                                 <exclude reference="WAm-Jx-xhy"/>
+                                <exclude reference="vgf-MC-W9X"/>
+                                <exclude reference="AQ2-rd-yHQ"/>
+                                <exclude reference="php-KP-Vj5"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -372,17 +391,41 @@
                                 <include reference="nGf-cn-TSh"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="php-KP-Vj5"/>
                                 <include reference="IeG-PU-YA5"/>
                                 <include reference="KOy-i1-8wN"/>
                                 <include reference="hrS-ZT-Emi"/>
                                 <include reference="KOb-da-XI1"/>
                                 <include reference="Lk0-li-V9M"/>
                                 <include reference="WAm-Jx-xhy"/>
+                                <include reference="php-KP-Vj5"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="6fc-5W-TGV"/>
+                                <include reference="HIp-Mv-DqI"/>
+                                <exclude reference="IeG-PU-YA5"/>
+                                <exclude reference="KOy-i1-8wN"/>
+                                <exclude reference="hrS-ZT-Emi"/>
+                                <include reference="iqX-qd-uq5"/>
+                                <include reference="4Kx-t9-sUC"/>
+                                <exclude reference="KOb-da-XI1"/>
+                                <include reference="L58-15-bxb"/>
+                                <exclude reference="Lk0-li-V9M"/>
+                                <exclude reference="WAm-Jx-xhy"/>
+                                <include reference="vgf-MC-W9X"/>
+                                <include reference="AQ2-rd-yHQ"/>
+                                <exclude reference="php-KP-Vj5"/>
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="Contacts" id="AWW-qg-FlN"/>
+                    <navigationItem key="navigationItem" title="Contacts" id="AWW-qg-FlN">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="2Hb-M7-C1c">
+                            <connections>
+                                <action selector="addContactPressed:" destination="hOe-0Q-Apx" id="rb2-O7-lb2"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="tu8-E3-Tze" id="XcH-ba-vj2"/>
                         <outlet property="tableView" destination="nGf-cn-TSh" id="RCf-Hc-kf9"/>
@@ -437,7 +480,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YOj-gg-1T0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3373.5" y="334"/>
+            <point key="canvasLocation" x="5209.5" y="333.75"/>
         </scene>
         <!--Favorites-->
         <scene sceneID="JCP-vl-5gE">
@@ -497,7 +540,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ezU-Uw-MIb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="715.5" y="320"/>
+            <point key="canvasLocation" x="2551.5" y="319.5"/>
         </scene>
         <!--Favorites-->
         <scene sceneID="8Qc-wb-IZM">
@@ -538,7 +581,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xzi-ig-Jda" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1483.5" y="361"/>
+            <point key="canvasLocation" x="3457.5" y="360.75"/>
         </scene>
         <!--Contacts-->
         <scene sceneID="HdN-4f-P6a">

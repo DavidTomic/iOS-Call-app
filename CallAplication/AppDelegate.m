@@ -19,6 +19,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:35/255.0f green:40/255.0f blue:45/255.0f alpha:1.0f]];
+    
     self.callCenter = [[CTCallCenter alloc] init];
     [self registerForCalls];
     
@@ -26,7 +28,6 @@
 }
 
 - (void) registerForCalls {
-    
     
     NSLog(@"registering for call center events");
     [self.callCenter setCallEventHandler: ^(CTCall* call) {
@@ -55,11 +56,25 @@
         [self.window makeKeyAndVisible];
     }
     
+    if (![(NSString *)[[NSLocale preferredLanguages] objectAtIndex:0] isEqualToString:@"en"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSArray arrayWithObjects:@"en", nil] forKey:@"AppleLanguages"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+
+    
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     NSLog(@"applicationWillResignActive");
+    if(self.callCenter.currentCalls !=nil){
+        NSLog(@"currentCalls postoji");
+        for (CTCall *call in self.callCenter.currentCalls) {
+            NSLog(@"state %@", call.callState);
+            NSLog(@"id %@", call.callID);
+        }
+    }
+
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
@@ -72,6 +87,13 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     NSLog(@"applicationWillEnterForeground");
+    if(self.callCenter.currentCalls !=nil){
+        NSLog(@"currentCalls postoji");
+        for (CTCall *call in self.callCenter.currentCalls) {
+            NSLog(@"state %@", call.callState);
+            NSLog(@"id %@", call.callID);
+        }
+    }
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
