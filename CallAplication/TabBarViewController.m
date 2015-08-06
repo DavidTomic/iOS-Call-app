@@ -17,9 +17,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    NSLog(@"TabBarViewController");
+  //  NSLog(@"TabBarViewController");
   //  [[UITabBar appearance] setTintColor:[UIColor redColor]];
-    [[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:35/255.0f green:40/255.0f blue:45/255.0f alpha:1.0f]];
+    [[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:55/255.0f green:60/255.0f blue:65/255.0f alpha:1.0f]];
     
   //  self.view.backgroundColor = [UIColor colorWithRed:35/255.0f green:40/255.0f blue:45/255.0f alpha:1.0f];
 }

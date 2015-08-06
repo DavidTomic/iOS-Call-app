@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface UserRegistrationViewController : UIViewController
 
+@property (nonatomic) BOOL logIn;
 
 @end
 

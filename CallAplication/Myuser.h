@@ -20,4 +20,7 @@
 @property (nonatomic, strong) NSString *defaultText;
 @property (nonatomic) BOOL logedIn;
 
+@property (nonatomic, strong) NSMutableDictionary *contactList;
+
+-(void)refreshContactList;
 @end

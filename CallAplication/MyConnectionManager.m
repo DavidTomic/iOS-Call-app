@@ -24,8 +24,6 @@ static MyConnectionManager *mySharedManager;
 +(void)Empty{
     mySharedManager = nil;
 }
-
-
 -(void)testHelloWorldWithDelegate:(id)delegate selector:(SEL)selector{
     
     MyConnection *conn = [[MyConnection alloc]init];
@@ -41,6 +39,7 @@ static MyConnectionManager *mySharedManager;
     
     [conn sendMessageWithMethodName:@"HelloWorld" soapMessage:soapMessage];
 }
+
 
 -(void)createAcountWithDelegate:(id)delegate selector:(SEL)selector phone:(NSString*)phone password:(NSString*)password name:(NSString*)name email:(NSString *)email language:(int)language {
     MyConnection *conn = [[MyConnection alloc]init];
@@ -64,7 +63,7 @@ static MyConnectionManager *mySharedManager;
     [conn sendMessageWithMethodName:@"CreateAccount" soapMessage:soapMessage];
 }
 
--(void)logInAcountWithDelegate:(id)delegate selector:(SEL)selector{
+-(void)logInAcountWithDelegate:(id)delegate selector:(SEL)selector phone:(NSString*)phone password:(NSString*)password{
     MyConnection *conn = [[MyConnection alloc]init];
     conn.delegate = delegate;
     conn.selector = selector;
@@ -77,7 +76,7 @@ static MyConnectionManager *mySharedManager;
                              <Password>%@</Password> \
                              </GetAccountSetup> \
                              </soap:Body> \
-                             </soap:Envelope>", @"385930001126", @"CallApp12345"];
+                             </soap:Envelope>", phone, password];
     
     [conn sendMessageWithMethodName:@"GetAccountSetup" soapMessage:soapMessage];
 }
@@ -99,5 +98,23 @@ static MyConnectionManager *mySharedManager;
     
     [conn sendMessageWithMethodName:@"RequestStatusInfo" soapMessage:soapMessage];
 }
+
+//-(void)logInAcountWithDelegate:(id)delegate selector:(SEL)selector phone:(NSString*)phone password:(NSString*)password{
+//    MyConnection *conn = [[MyConnection alloc]init];
+//    conn.delegate = delegate;
+//    conn.selector = selector;
+//    
+//    NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
+//                             <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
+//                             <soap:Body> \
+//                             <GetAccountSetup xmlns=\"http://tempuri.org/\"> \
+//                             <Phonenumber>%@</Phonenumber> \
+//                             <Password>%@</Password> \
+//                             </GetAccountSetup> \
+//                             </soap:Body> \
+//                             </soap:Envelope>", @"385930001126", @"CallApp12345"];
+//    
+//    [conn sendMessageWithMethodName:@"GetAccountSetup" soapMessage:soapMessage];
+//}
 
 @end

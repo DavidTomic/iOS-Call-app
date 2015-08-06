@@ -6,27 +6,34 @@
 //  Copyright (c) 2015 David Tomic. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "UserRegistrationViewController.h"
 #import "MyConnectionManager.h"
 #import "Myuser.h"
 #import "SharedPreferences.h"
 
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
+#define SCREEN_MAX_LENGTH (MAX(SCREEN_WIDTH, SCREEN_HEIGHT))
+#define SCREEN_MIN_LENGTH (MIN(SCREEN_WIDTH, SCREEN_HEIGHT))
 
-@interface ViewController ()<UITextFieldDelegate>
+#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define IS_IPHONE_4_OR_LESS (IS_IPHONE && SCREEN_MAX_LENGTH < 568.0)
+
+
+@interface UserRegistrationViewController ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *phoneNumberUITextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordUITextField;
 @property (weak, nonatomic) IBOutlet UITextField *nameUITextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailUITextField;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *yCoordinateOfTFHolder;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *yTitleCoordinate;
 @property (weak, nonatomic) IBOutlet UIButton *titleButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 
-@property (nonatomic) BOOL logIn;
-
 @end
 
-@implementation ViewController
+@implementation UserRegistrationViewController
 
 //viewController methods
 - (void)viewDidLoad {
@@ -45,7 +52,9 @@
     [self observeKeyboard];
     [self addSpaceToTextFields];
     
-    [[MyConnectionManager sharedManager]logInAcountWithDelegate:self selector:@selector(tester:)];
+    if (self.logIn) {
+        [self showLogInViews];
+    }
     
 }
 
@@ -102,6 +111,42 @@
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Warning" message:@"Please check your informations are correct" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
 }
+-(void)showLogInViews{
+    [self.confirmButton setTitle:@"LOG IN" forState:UIControlStateNormal];
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.titleButton.titleLabel.text];
+    [attributedString addAttribute:NSForegroundColorAttributeName
+                             value:[UIColor grayColor]
+                             range:NSMakeRange(0, [self.titleButton.titleLabel.text rangeOfString:@"/"].location)];
+    [self.titleButton setAttributedTitle:attributedString forState:UIControlStateNormal];
+    
+    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionTransitionNone animations:^{
+        self.nameUITextField.alpha = 0.0f;
+        self.emailUITextField.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        self.nameUITextField.hidden=YES;
+        self.emailUITextField.hidden=YES;
+    }];
+}
+-(void)showSignUpViews{
+    [self.confirmButton setTitle:@"SIGN UP" forState:UIControlStateNormal];
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.titleButton.titleLabel.text];
+    [attributedString addAttribute:NSForegroundColorAttributeName
+                             value:[UIColor grayColor]
+                             range:NSMakeRange([self.titleButton.titleLabel.text rangeOfString:@"/"].location, self.titleButton.titleLabel.text.length-[self.titleButton.titleLabel.text rangeOfString:@"/"].location)];
+    [self.titleButton setAttributedTitle:attributedString forState:UIControlStateNormal];
+    
+    self.nameUITextField.hidden=NO;
+    self.emailUITextField.hidden=NO;
+    
+    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionTransitionNone animations:^{
+        self.nameUITextField.alpha = 1.0f;
+        self.emailUITextField.alpha = 1.0f;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
 
 //IBAction methods
 - (IBAction)titlePressed:(UIButton *)sender {
@@ -113,43 +158,11 @@
     
     if (!self.logIn) {
         self.logIn = YES;
-        
-        [self.confirmButton setTitle:@"LOG IN" forState:UIControlStateNormal];
-        
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.titleButton.titleLabel.text];
-        [attributedString addAttribute:NSForegroundColorAttributeName
-                                 value:[UIColor grayColor]
-                                 range:NSMakeRange(0, [self.titleButton.titleLabel.text rangeOfString:@"/"].location)];
-        [self.titleButton setAttributedTitle:attributedString forState:UIControlStateNormal];
-        
-        [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionTransitionNone animations:^{
-            self.nameUITextField.alpha = 0.0f;
-            self.emailUITextField.alpha = 0.0f;
-        } completion:^(BOOL finished) {
-            self.nameUITextField.hidden=YES;
-            self.emailUITextField.hidden=YES;
-        }];
-        
+        [self showLogInViews];
         
     }else{
         self.logIn = NO;
-        [self.confirmButton setTitle:@"SIGN UP" forState:UIControlStateNormal];
-        
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.titleButton.titleLabel.text];
-        [attributedString addAttribute:NSForegroundColorAttributeName
-                                 value:[UIColor grayColor]
-                                 range:NSMakeRange([self.titleButton.titleLabel.text rangeOfString:@"/"].location, self.titleButton.titleLabel.text.length-[self.titleButton.titleLabel.text rangeOfString:@"/"].location)];
-        [self.titleButton setAttributedTitle:attributedString forState:UIControlStateNormal];
-        
-        self.nameUITextField.hidden=NO;
-        self.emailUITextField.hidden=NO;
-        
-        [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionTransitionNone animations:^{
-            self.nameUITextField.alpha = 1.0f;
-            self.emailUITextField.alpha = 1.0f;
-        } completion:^(BOOL finished) {
-
-        }];
+        [self showSignUpViews];
     }
 }
 - (IBAction)confirmPressed:(UIButton *)sender {
@@ -162,19 +175,26 @@
         }
 
     }else{
-       // [[MyConnectionManager sharedManager] logInAcountWithDelegate:self selector:@selector(responseToLogIn:)];
+        if (self.phoneNumberUITextField.text.length >5 && self.passwordUITextField.text.length > 3) {
+                    [[MyConnectionManager sharedManager] logInAcountWithDelegate:self selector:@selector(responseToLogIn:) phone:self.phoneNumberUITextField.text password:self.passwordUITextField.text];
+        }else{
+            [self showErrorAlert];
+        }
     }
 
 }
 
-
 //observe methods
 - (void)keyboardWillHide:(NSNotification *)notification {
     self.yCoordinateOfTFHolder.constant = 19.5;
+    self.yTitleCoordinate.constant = 9;
 }
 - (void)keyboardWillShow:(NSNotification *)notification {
     if (!self.logIn)
     self.yCoordinateOfTFHolder.constant = 90;
+    
+    if(IS_IPHONE_4_OR_LESS && !self.logIn)
+    self.yTitleCoordinate.constant = -20;
 }
 
 //delegate methods
@@ -184,7 +204,6 @@
     [textField resignFirstResponder];
     return YES;
 }
-
 
 //response methods
 -(void)responseToCreateUser:(NSDictionary *)dict{
@@ -217,6 +236,29 @@
 
 -(void)responseToLogIn:(NSDictionary *)dict{
     NSLog(@"responseToLogIn %@", dict);
+    
+    if (dict) {
+        NSDictionary *pom1 = [[dict objectForKey:@"GetAccountSetupResponse"] objectForKey:@"GetAccountSetupResult"];
+        
+        if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
+            
+            NSDictionary *pom2 = [pom1 objectForKey:@"AccountSetup"];
+            
+            Myuser *user = [Myuser sharedUser];
+            user.phoneNumber = [pom2 objectForKey:@"Phonenumber"];;
+            user.password = self.passwordUITextField.text;
+            user.name = [pom2 objectForKey:@"Name"];
+            user.email = [pom2 objectForKey:@"Email"];
+            user.logedIn = YES;
+            [[SharedPreferences shared]saveUserData:user];
+            
+            [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
+            
+            return;
+        }
+    }
+    
+    [self showErrorAlert];
 }
 
 @end

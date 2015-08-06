@@ -24,7 +24,7 @@
   //  self.navigationController.navigationBar.hidden = YES;
     
     NSString * s = NSLocalizedString(@"TEST_STRING", @"");
-    NSLog(@"string: %@", s);
+ //   NSLog(@"string: %@", s);
     
 }
 

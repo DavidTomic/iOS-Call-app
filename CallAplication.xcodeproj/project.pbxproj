@@ -10,7 +10,7 @@
 		3C06BA4DD9C526D38C309478 /* libPods-CallAplication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 703D6876163156DA9B989C36 /* libPods-CallAplication.a */; };
 		DB291B9C1B6625D50028C022 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291B9B1B6625D50028C022 /* main.m */; };
 		DB291B9F1B6625D50028C022 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291B9E1B6625D50028C022 /* AppDelegate.m */; };
-		DB291BA21B6625D50028C022 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BA11B6625D50028C022 /* ViewController.m */; };
+		DB291BA21B6625D50028C022 /* UserRegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BA11B6625D50028C022 /* UserRegistrationViewController.m */; };
 		DB291BA51B6625D50028C022 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB291BA31B6625D50028C022 /* Main.storyboard */; };
 		DB291BA71B6625D50028C022 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB291BA61B6625D50028C022 /* Images.xcassets */; };
 		DB291BAA1B6625D50028C022 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB291BA81B6625D50028C022 /* LaunchScreen.xib */; };
@@ -20,7 +20,11 @@
 		DB291BC71B662D810028C022 /* FavoritesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BC61B662D810028C022 /* FavoritesTableViewController.m */; };
 		DB291BCA1B66335F0028C022 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BC91B66335F0028C022 /* KeyboardViewController.m */; };
 		DB291BCD1B665F2C0028C022 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BCC1B665F2C0028C022 /* SettingsViewController.m */; };
-		DBC17C6F1B6F5AFF00BF1DE4 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC17C6E1B6F5AFF00BF1DE4 /* Person.m */; };
+		DB4B88681B734B72005D15F6 /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4B88671B734B72005D15F6 /* StartViewController.m */; };
+		DB4B886B1B735C50005D15F6 /* ContactDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4B886A1B735C50005D15F6 /* ContactDetailViewController.m */; };
+		DB4B886D1B736609005D15F6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB4B886C1B736609005D15F6 /* QuartzCore.framework */; };
+		DB4B88701B73A8B4005D15F6 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4B886F1B73A8B4005D15F6 /* DBManager.m */; };
+		DBC17C6F1B6F5AFF00BF1DE4 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC17C6E1B6F5AFF00BF1DE4 /* Contact.m */; };
 		DBD695301B6A328E00337DFF /* MyConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD6952F1B6A328E00337DFF /* MyConnectionManager.m */; };
 		DBD695331B6A331000337DFF /* MyConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD695321B6A331000337DFF /* MyConnection.m */; };
 		DBD6953B1B6A69BB00337DFF /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD6953A1B6A69BB00337DFF /* libxml2.dylib */; };
@@ -50,8 +54,8 @@
 		DB291B9B1B6625D50028C022 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DB291B9D1B6625D50028C022 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DB291B9E1B6625D50028C022 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		DB291BA01B6625D50028C022 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		DB291BA11B6625D50028C022 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		DB291BA01B6625D50028C022 /* UserRegistrationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserRegistrationViewController.h; sourceTree = "<group>"; };
+		DB291BA11B6625D50028C022 /* UserRegistrationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserRegistrationViewController.m; sourceTree = "<group>"; };
 		DB291BA41B6625D50028C022 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DB291BA61B6625D50028C022 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		DB291BA91B6625D50028C022 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -68,8 +72,15 @@
 		DB291BC91B66335F0028C022 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
 		DB291BCB1B665F2C0028C022 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		DB291BCC1B665F2C0028C022 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
-		DBC17C6D1B6F5AFF00BF1DE4 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
-		DBC17C6E1B6F5AFF00BF1DE4 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
+		DB4B88661B734B72005D15F6 /* StartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartViewController.h; sourceTree = "<group>"; };
+		DB4B88671B734B72005D15F6 /* StartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartViewController.m; sourceTree = "<group>"; };
+		DB4B88691B735C50005D15F6 /* ContactDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailViewController.h; sourceTree = "<group>"; };
+		DB4B886A1B735C50005D15F6 /* ContactDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailViewController.m; sourceTree = "<group>"; };
+		DB4B886C1B736609005D15F6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		DB4B886E1B73A8B4005D15F6 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
+		DB4B886F1B73A8B4005D15F6 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
+		DBC17C6D1B6F5AFF00BF1DE4 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
+		DBC17C6E1B6F5AFF00BF1DE4 /* Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
 		DBD6952E1B6A328E00337DFF /* MyConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyConnectionManager.h; sourceTree = "<group>"; };
 		DBD6952F1B6A328E00337DFF /* MyConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyConnectionManager.m; sourceTree = "<group>"; };
 		DBD695311B6A331000337DFF /* MyConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyConnection.h; sourceTree = "<group>"; };
@@ -94,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB4B886D1B736609005D15F6 /* QuartzCore.framework in Frameworks */,
 				DBD6953B1B6A69BB00337DFF /* libxml2.dylib in Frameworks */,
 				3C06BA4DD9C526D38C309478 /* libPods-CallAplication.a in Frameworks */,
 			);
@@ -112,6 +124,7 @@
 		5B7D43C1FB2D6034F12AA464 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB4B886C1B736609005D15F6 /* QuartzCore.framework */,
 				DBD6953A1B6A69BB00337DFF /* libxml2.dylib */,
 				703D6876163156DA9B989C36 /* libPods-CallAplication.a */,
 			);
@@ -141,21 +154,25 @@
 		DB291B981B6625D50028C022 /* CallAplication */ = {
 			isa = PBXGroup;
 			children = (
+				DB4B88661B734B72005D15F6 /* StartViewController.h */,
+				DB4B88671B734B72005D15F6 /* StartViewController.m */,
+				DB291BA01B6625D50028C022 /* UserRegistrationViewController.h */,
+				DB291BA11B6625D50028C022 /* UserRegistrationViewController.m */,
 				DBFD97A41B6BB376000958B7 /* TabBarViewController.h */,
 				DBFD97A51B6BB376000958B7 /* TabBarViewController.m */,
-				DB291BA01B6625D50028C022 /* ViewController.h */,
-				DB291BA11B6625D50028C022 /* ViewController.m */,
-				DB291BA31B6625D50028C022 /* Main.storyboard */,
+				DB291BC51B662D810028C022 /* FavoritesTableViewController.h */,
+				DB291BC61B662D810028C022 /* FavoritesTableViewController.m */,
 				DB291BBF1B662BAB0028C022 /* RecentTableViewController.h */,
 				DB291BC01B662BAB0028C022 /* RecentTableViewController.m */,
 				DB291BC21B662BE30028C022 /* ContactsViewController.h */,
 				DB291BC31B662BE30028C022 /* ContactsViewController.m */,
-				DB291BC51B662D810028C022 /* FavoritesTableViewController.h */,
-				DB291BC61B662D810028C022 /* FavoritesTableViewController.m */,
+				DB4B88691B735C50005D15F6 /* ContactDetailViewController.h */,
+				DB4B886A1B735C50005D15F6 /* ContactDetailViewController.m */,
 				DB291BC81B66335F0028C022 /* KeyboardViewController.h */,
 				DB291BC91B66335F0028C022 /* KeyboardViewController.m */,
 				DB291BCB1B665F2C0028C022 /* SettingsViewController.h */,
 				DB291BCC1B665F2C0028C022 /* SettingsViewController.m */,
+				DB291BA31B6625D50028C022 /* Main.storyboard */,
 				DBAB15241B67C37E00EADB9C /* Model */,
 				DBFD978D1B6B73D5000958B7 /* External classes */,
 				DB291B991B6625D50028C022 /* Supporting Files */,
@@ -205,8 +222,10 @@
 				DBD695321B6A331000337DFF /* MyConnection.m */,
 				DBFD97971B6BA92A000958B7 /* SharedPreferences.h */,
 				DBFD97981B6BA92A000958B7 /* SharedPreferences.m */,
-				DBC17C6D1B6F5AFF00BF1DE4 /* Person.h */,
-				DBC17C6E1B6F5AFF00BF1DE4 /* Person.m */,
+				DBC17C6D1B6F5AFF00BF1DE4 /* Contact.h */,
+				DBC17C6E1B6F5AFF00BF1DE4 /* Contact.m */,
+				DB4B886E1B73A8B4005D15F6 /* DBManager.h */,
+				DB4B886F1B73A8B4005D15F6 /* DBManager.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -368,9 +387,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBFD97961B6BA8BA000958B7 /* Myuser.m in Sources */,
-				DB291BA21B6625D50028C022 /* ViewController.m in Sources */,
+				DB291BA21B6625D50028C022 /* UserRegistrationViewController.m in Sources */,
 				DBFD97A61B6BB376000958B7 /* TabBarViewController.m in Sources */,
+				DB4B88701B73A8B4005D15F6 /* DBManager.m in Sources */,
 				DBFD97991B6BA92A000958B7 /* SharedPreferences.m in Sources */,
+				DB4B886B1B735C50005D15F6 /* ContactDetailViewController.m in Sources */,
 				DB291B9F1B6625D50028C022 /* AppDelegate.m in Sources */,
 				DB291BCA1B66335F0028C022 /* KeyboardViewController.m in Sources */,
 				DBD695331B6A331000337DFF /* MyConnection.m in Sources */,
@@ -379,7 +400,8 @@
 				DB291BCD1B665F2C0028C022 /* SettingsViewController.m in Sources */,
 				DB291BC41B662BE30028C022 /* ContactsViewController.m in Sources */,
 				DB291BC71B662D810028C022 /* FavoritesTableViewController.m in Sources */,
-				DBC17C6F1B6F5AFF00BF1DE4 /* Person.m in Sources */,
+				DBC17C6F1B6F5AFF00BF1DE4 /* Contact.m in Sources */,
+				DB4B88681B734B72005D15F6 /* StartViewController.m in Sources */,
 				DB291B9C1B6625D50028C022 /* main.m in Sources */,
 				DB291BC11B662BAB0028C022 /* RecentTableViewController.m in Sources */,
 			);

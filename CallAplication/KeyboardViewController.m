@@ -10,7 +10,6 @@
 #import "JCDialPad.h"
 #import "JCPadButton.h"
 #import "FontasticIcons.h"
-#import "AppDelegate.h"
 
 @interface KeyboardViewController()<JCDialPadDelegate>
 
@@ -40,28 +39,12 @@
     
     //[self.timer invalidate];
     
-    CTCallCenter *ct = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).callCenter;
-    
-    if(ct.currentCalls !=nil){
-        NSLog(@"currentCalls postoji");
-        for (CTCall *call in ct.currentCalls) {
-            NSLog(@"%@", call.callID);
-        }
-    }
     
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    CTCallCenter *ct = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).callCenter;
-    
-    if(ct.currentCalls !=nil){
-        NSLog(@"currentCalls postoji");
-        for (CTCall *call in ct.currentCalls) {
-            NSLog(@"%@", call.callID);
-        }
-    }
 }
 
 -(void) callAfterSixtySecond:(NSTimer*)t

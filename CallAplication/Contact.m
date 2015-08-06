@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 David Tomic. All rights reserved.
 //
 
-#import "Person.h"
+#import "Contact.h"
 
-@implementation Person
+@implementation Contact
 
 @end
