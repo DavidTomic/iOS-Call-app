@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface Contact : NSObject
 
@@ -14,6 +15,8 @@
 @property (nonatomic, strong) NSString *lastName;
 @property (nonatomic, strong) NSString *phoneNumber;
 @property (nonatomic) int recordId;
+@property (nonatomic) BOOL favorit;
+@property (nonatomic, strong) UIImage *image;
 
 @property (nonatomic) int status;
 @property (nonatomic, strong) NSString *statusText;

@@ -20,6 +20,10 @@
 		DB291BC71B662D810028C022 /* FavoritesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BC61B662D810028C022 /* FavoritesTableViewController.m */; };
 		DB291BCA1B66335F0028C022 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BC91B66335F0028C022 /* KeyboardViewController.m */; };
 		DB291BCD1B665F2C0028C022 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BCC1B665F2C0028C022 /* SettingsViewController.m */; };
+		DB490EBD1B7499B60063CBE9 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB490EBC1B7499B60063CBE9 /* libsqlite3.dylib */; };
+		DB490EBF1B74A0BC0063CBE9 /* UpgradeDatabaseExample.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB490EBE1B74A0BC0063CBE9 /* UpgradeDatabaseExample.plist */; };
+		DB490EC11B74A8320063CBE9 /* UpgradeDatabase.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB490EC01B74A8320063CBE9 /* UpgradeDatabase.plist */; };
+		DB490EC41B74E7B20063CBE9 /* FavoritTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB490EC31B74E7B20063CBE9 /* FavoritTableViewCell.m */; };
 		DB4B88681B734B72005D15F6 /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4B88671B734B72005D15F6 /* StartViewController.m */; };
 		DB4B886B1B735C50005D15F6 /* ContactDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4B886A1B735C50005D15F6 /* ContactDetailViewController.m */; };
 		DB4B886D1B736609005D15F6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB4B886C1B736609005D15F6 /* QuartzCore.framework */; };
@@ -72,6 +76,11 @@
 		DB291BC91B66335F0028C022 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
 		DB291BCB1B665F2C0028C022 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		DB291BCC1B665F2C0028C022 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		DB490EBC1B7499B60063CBE9 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		DB490EBE1B74A0BC0063CBE9 /* UpgradeDatabaseExample.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UpgradeDatabaseExample.plist; sourceTree = "<group>"; };
+		DB490EC01B74A8320063CBE9 /* UpgradeDatabase.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UpgradeDatabase.plist; sourceTree = "<group>"; };
+		DB490EC21B74E7B20063CBE9 /* FavoritTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritTableViewCell.h; sourceTree = "<group>"; };
+		DB490EC31B74E7B20063CBE9 /* FavoritTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritTableViewCell.m; sourceTree = "<group>"; };
 		DB4B88661B734B72005D15F6 /* StartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartViewController.h; sourceTree = "<group>"; };
 		DB4B88671B734B72005D15F6 /* StartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartViewController.m; sourceTree = "<group>"; };
 		DB4B88691B735C50005D15F6 /* ContactDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailViewController.h; sourceTree = "<group>"; };
@@ -105,6 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB490EBD1B7499B60063CBE9 /* libsqlite3.dylib in Frameworks */,
 				DB4B886D1B736609005D15F6 /* QuartzCore.framework in Frameworks */,
 				DBD6953B1B6A69BB00337DFF /* libxml2.dylib in Frameworks */,
 				3C06BA4DD9C526D38C309478 /* libPods-CallAplication.a in Frameworks */,
@@ -124,6 +134,7 @@
 		5B7D43C1FB2D6034F12AA464 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB490EBC1B7499B60063CBE9 /* libsqlite3.dylib */,
 				DB4B886C1B736609005D15F6 /* QuartzCore.framework */,
 				DBD6953A1B6A69BB00337DFF /* libxml2.dylib */,
 				703D6876163156DA9B989C36 /* libPods-CallAplication.a */,
@@ -190,6 +201,8 @@
 				DB291B9A1B6625D50028C022 /* Info.plist */,
 				DB291B9B1B6625D50028C022 /* main.m */,
 				DBFD97A01B6BADEE000958B7 /* Localizable.strings */,
+				DB490EBE1B74A0BC0063CBE9 /* UpgradeDatabaseExample.plist */,
+				DB490EC01B74A8320063CBE9 /* UpgradeDatabase.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -226,6 +239,8 @@
 				DBC17C6E1B6F5AFF00BF1DE4 /* Contact.m */,
 				DB4B886E1B73A8B4005D15F6 /* DBManager.h */,
 				DB4B886F1B73A8B4005D15F6 /* DBManager.m */,
+				DB490EC21B74E7B20063CBE9 /* FavoritTableViewCell.h */,
+				DB490EC31B74E7B20063CBE9 /* FavoritTableViewCell.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -332,7 +347,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB490EC11B74A8320063CBE9 /* UpgradeDatabase.plist in Resources */,
 				DB291BA51B6625D50028C022 /* Main.storyboard in Resources */,
+				DB490EBF1B74A0BC0063CBE9 /* UpgradeDatabaseExample.plist in Resources */,
 				DB291BAA1B6625D50028C022 /* LaunchScreen.xib in Resources */,
 				DBFD979E1B6BADEE000958B7 /* Localizable.strings in Resources */,
 				DB291BA71B6625D50028C022 /* Images.xcassets in Resources */,
@@ -395,6 +412,7 @@
 				DB291B9F1B6625D50028C022 /* AppDelegate.m in Sources */,
 				DB291BCA1B66335F0028C022 /* KeyboardViewController.m in Sources */,
 				DBD695331B6A331000337DFF /* MyConnection.m in Sources */,
+				DB490EC41B74E7B20063CBE9 /* FavoritTableViewCell.m in Sources */,
 				DBD695301B6A328E00337DFF /* MyConnectionManager.m in Sources */,
 				DBFD97901B6B7409000958B7 /* NSDictionary+XMLDictionary.m in Sources */,
 				DB291BCD1B665F2C0028C022 /* SettingsViewController.m in Sources */,

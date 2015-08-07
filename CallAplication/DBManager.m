@@ -10,6 +10,8 @@
 #import "sqlite3.h"
 #import "Contact.h"
 
+NSString * const VERSION_KEY = @"version";
+
 static DBManager *sharedInstance = nil;
 static sqlite3 *database = nil;
 
@@ -26,6 +28,7 @@ static sqlite3 *database = nil;
     if (!sharedInstance) {
         sharedInstance = [[super allocWithZone:NULL]init];
         [sharedInstance createDB];
+        [sharedInstance upgradeDatabaseIfRequired];
     }
     return sharedInstance;
 }
@@ -60,7 +63,7 @@ static sqlite3 *database = nil;
             }
             
             const char *sql_stmt_drive_temp =
-            "create table if not exists FavoritTable (phoneNumber text, favorit integer)";
+            "create table if not exists FavoritTable (phoneNumber text)";
             if (sqlite3_exec(database, sql_stmt_drive_temp, NULL, NULL, &errMsg)
                 != SQLITE_OK)
             {
@@ -211,6 +214,60 @@ static sqlite3 *database = nil;
     // Run the query and indicate that is executable.
     [self runQuery:[query UTF8String] isQueryExecutable:YES];
 }
+- (NSString *)versionNumberString {
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *majorVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    return majorVersion;
+}
+-(void)upgradeDatabaseIfRequired{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *previousVersion=[defaults objectForKey:VERSION_KEY];
+    NSString *currentVersion=[self versionNumberString];
+    
+    NSLog(@"previousVersion %@, currentVersion %@", previousVersion, currentVersion);
+    
+    if (previousVersion==nil || [previousVersion compare: currentVersion options: NSNumericSearch] == NSOrderedAscending) {
+        // previous < current
+        //read upgrade sqls from file
+        NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"UpgradeDatabase" ofType:@"plist"];
+        NSArray *plist = [NSArray arrayWithContentsOfFile:plistPath];
+        
+       // NSLog(@"plist %@", plist);
+        
+        if (previousVersion==nil) {//perform all upgrades
+            for (NSDictionary *dictionary in plist) {
+                NSString *version=[dictionary objectForKey:@"version"];
+                NSLog(@"Upgrading to v. %@", version);
+                NSArray *sqlQueries=[dictionary objectForKey:@"sql"];
+                NSLog(@"sqlQueries %@", sqlQueries);
+                for (int i=0; i<sqlQueries.count; i++) {
+                    [self executeQuery:sqlQueries[i]];
+                }
+            }
+        }else{
+            for (NSDictionary *dictionary in plist) {
+                NSString *version=[dictionary objectForKey:@"version"];
+                if ([previousVersion compare: version options: NSNumericSearch] == NSOrderedAscending) {
+                    //previous < version
+                    NSLog(@"Upgrading to v. %@", version);
+                    NSArray *sqlQueries=[dictionary objectForKey:@"sql"];
+                    NSLog(@"sqlQueries %@", sqlQueries);
+                    for (int i=0; i<sqlQueries.count; i++) {
+                        [self executeQuery:sqlQueries[i]];
+                    }
+//                    while (![DB executeMultipleSql:sqlQueries]) {
+//                        NSLog(@"Failed to upgrade database to v. %@, Retrying...", version);
+//                    };
+                }
+                
+            }
+        }
+        
+        [defaults setObject:currentVersion forKey:VERSION_KEY];
+        [defaults synchronize];
+    }
+    
+}
 
 //my methods
 -(NSArray *)getContactsFromDb{
@@ -219,8 +276,6 @@ static sqlite3 *database = nil;
 
     return contacts;
 }
-
-
 -(void)saveContactsToDb:(NSArray *)contactList{
     NSString *deleteQuery = @"delete from ContactTable";
     [self executeQuery:deleteQuery];
@@ -230,6 +285,38 @@ static sqlite3 *database = nil;
         NSString *query = [NSString stringWithFormat:@"insert into ContactTable values('%@',%d,'%@','%@')", contact.phoneNumber, contact.status, contact.statusText,contact.endTime];
         [self executeQuery:query];
     }
+}
+
+
+-(void)addOrRemoveContactInFavoritWithPhoneNumber:(NSString *)phoneNumber{
+    NSString *query = [NSString stringWithFormat:@"select * from FavoritTable where phoneNumber='%@'", phoneNumber];
+    
+    if([[self loadDataFromDB:query] count]>0){
+        query = [NSString stringWithFormat:@"delete from FavoritTable where phoneNumber='%@'", phoneNumber];
+    }else{
+        query = [NSString stringWithFormat:@"insert into FavoritTable values('%@')", phoneNumber];
+    }
+    [self executeQuery:query];
+}
+-(NSArray *)getAllContactPhoneNumbersFromFavoritTable{
+    NSString *query = [NSString stringWithFormat:@"select phoneNumber from FavoritTable"];
+    NSArray *results = [self loadDataFromDB:query];
+    
+    NSMutableArray *contacts = [NSMutableArray array];
+    
+    for(NSMutableArray *array in results){
+        NSString *phoneNumber = array[0];
+        [contacts addObject:phoneNumber];
+    }
+    
+    return contacts;
+}
+
+-(NSArray *)getTableList{
+    NSString *query = [NSString stringWithFormat:@"select * from sqlite_master where type='table'"];
+    NSArray *tables = [self loadDataFromDB:query];
+    
+    return tables;
 }
 
 

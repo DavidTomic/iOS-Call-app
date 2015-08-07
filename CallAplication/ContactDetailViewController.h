@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AddressBook/AddressBook.h>
-#import <AddressBookUI/AddressBookUI.h>
 #import "ContactsViewController.h"
+#import "Contact.h"
 
 @interface ContactDetailViewController : UIViewController
 
-@property (nonatomic) ABRecordRef people;
+@property (nonatomic) Contact *contact;
 
 @end

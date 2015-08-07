@@ -62,10 +62,15 @@ void (^block)(CTCall*) = ^(CTCall* call) {
         [self.window makeKeyAndVisible];
     }
     
-    if (![(NSString *)[[NSLocale preferredLanguages] objectAtIndex:0] isEqualToString:@"en"]) {
-        [[NSUserDefaults standardUserDefaults] setObject:[NSArray arrayWithObjects:@"en", nil] forKey:@"AppleLanguages"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
+//    NSLocale *locale = [NSLocale currentLocale];
+//    NSString *language = [locale displayNameForKey:NSLocaleIdentifier
+//                                             value:[locale localeIdentifier]];
+//    NSLog(@"language %@", language);
+//    NSLog(@"language code %@", [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]);
+//    NSLog(@"preferredlanguage code %@", [[[NSBundle mainBundle] preferredLocalizations]objectAtIndex:0]);
+    
+    
+
 
     
     return YES;

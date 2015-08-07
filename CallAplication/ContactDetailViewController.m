@@ -9,14 +9,18 @@
 #import "ContactDetailViewController.h"
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMessageComposeViewController.h>
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
 #import "Contact.h"
 #import "Myuser.h"
+#import "DBManager.h"
 
 @interface ContactDetailViewController ()<ABPersonViewControllerDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *profileImage;
 @property (weak, nonatomic) IBOutlet UILabel *username;
 @property (weak, nonatomic) IBOutlet UILabel *userPhone;
+@property (weak, nonatomic) IBOutlet UIButton *favoritButton;
 
 @end
 
@@ -28,6 +32,12 @@
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonPressed:)];
     self.navigationItem.rightBarButtonItem = anotherButton;
     
+    if (self.contact.favorit) {
+        [self.favoritButton setImage:[UIImage imageNamed:@"star_full"] forState:UIControlStateNormal];
+    }else{
+        [self.favoritButton setImage:[UIImage imageNamed:@"star_empty"] forState:UIControlStateNormal];
+    }
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -36,38 +46,24 @@
 }
 
 -(void)setValues{
-    NSString *firstName = (__bridge NSString *)(ABRecordCopyValue(self.people, kABPersonFirstNameProperty));
-    NSString *lastName = (__bridge NSString *)(ABRecordCopyValue(self.people, kABPersonLastNameProperty));
-    ABMultiValueRef phoneNumbers = ABRecordCopyValue(self.people, kABPersonPhoneProperty);
-    NSString *phoneNumber = nil;
-    if (ABMultiValueGetCount(phoneNumbers) > 0) {
-        phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
-    }
     
-    NSString *text = firstName;
-    if (lastName) {
-        text = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
+    NSString *text = self.contact.firstName;
+    if (self.contact.lastName) {
+        text = [NSString stringWithFormat:@"%@ %@", self.contact.firstName, self.contact.lastName];
     }
     
     self.username.text = text;
-    self.userPhone.text = phoneNumber;
-    
-    
-    NSData *imgData2 = (__bridge NSData*)ABPersonCopyImageDataWithFormat(self.people, kABPersonImageFormatThumbnail);
-    UIImage *img2 = [UIImage imageWithData:imgData2];
-    
-    NSLog(@"img2 %f", img2.size.width);
-    
-    NSLog(@"W %f", self.profileImage.frame.size.width);
-    NSLog(@"H %f", self.profileImage.frame.size.height);
+    self.userPhone.text = self.contact.phoneNumber;
+
+    UIImage *img2 = self.contact.image;
     
     if (img2.size.width > 0 && img2.size.height > 0) {
         [self.profileImage setImage:img2 forState:UIControlStateNormal];
         [self.profileImage setBackgroundColor:[UIColor clearColor]];
     }else {
-        NSString *text = [[firstName substringToIndex:1] uppercaseString];
-        if (lastName) {
-            text = [NSString stringWithFormat:@"%@%@", text, [[lastName substringToIndex:1] uppercaseString]];
+        NSString *text = [[self.contact.firstName substringToIndex:1] uppercaseString];
+        if (self.contact.lastName) {
+            text = [NSString stringWithFormat:@"%@%@", text, [[self.contact.lastName substringToIndex:1] uppercaseString]];
         }
         [self.profileImage setTitle:text forState:UIControlStateNormal];
     }
@@ -83,15 +79,15 @@
 }
 
 - (IBAction)makeCall:(UIButton *)sender {
-    ABMultiValueRef phoneNumbers = ABRecordCopyValue(self.people, kABPersonPhoneProperty);
-    NSString *phoneNumber = nil;
-    if (ABMultiValueGetCount(phoneNumbers) > 0) {
-        phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
-    }
+
+    NSString *phoneNumber = self.contact.phoneNumber;
+
     
     NSLog(@"makeCall");
     if (phoneNumber) {
-        phoneNumber = [phoneNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
+        phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
+       // NSLog(@"phoneNumberA %@", phoneNumber);
+        
         NSString *pNumber = [@"telprompt://" stringByAppendingString:phoneNumber];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
     }
@@ -100,14 +96,10 @@
 
 - (IBAction)sendMessage:(id)sender {
     
-    ABMultiValueRef phoneNumbers = ABRecordCopyValue(self.people, kABPersonPhoneProperty);
-    NSString *phoneNumber = nil;
-    if (ABMultiValueGetCount(phoneNumbers) > 0) {
-        phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
-    }
+    NSString *phoneNumber = self.contact.phoneNumber;
 
     if(phoneNumber && [MFMessageComposeViewController canSendText]) {
-        phoneNumber = [phoneNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
+        phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
         
         MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
         controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
@@ -119,9 +111,22 @@
 }
 
 - (IBAction)favoritButtonPressed:(UIButton *)sender {
+    
+    if (self.contact.favorit) {
+        self.contact.favorit = NO;
+        [sender setImage:[UIImage imageNamed:@"star_empty"] forState:UIControlStateNormal];
+    }else{
+        self.contact.favorit = YES;
+        [sender setImage:[UIImage imageNamed:@"star_full"] forState:UIControlStateNormal];
+    }
+    
+    NSString *phoneNumber = self.contact.phoneNumber;
+    
+    if (phoneNumber) {
+        [[DBManager sharedInstance]addOrRemoveContactInFavoritWithPhoneNumber:phoneNumber];
+    }
+
 }
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -130,15 +135,19 @@
 
 -(void)editButtonPressed:(UIBarButtonItem *)button{
     
-    if (self.people)
+     CFErrorRef * error = NULL;
+     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, error);
+     ABRecordRef people = ABAddressBookGetPersonWithRecordID(addressBook, self.contact.recordId);
+    
+    if (people)
     {
         [[Myuser sharedUser] refreshContactList];
         ABPersonViewController *personViewController = [[ABPersonViewController alloc] init];
         personViewController.personViewDelegate = self;
-        personViewController.displayedPerson = self.people;
+        personViewController.displayedPerson = people;
         personViewController.allowsEditing = YES;
         [self.navigationController pushViewController:personViewController animated:YES];
-                personViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"return" style:UIBarButtonItemStyleBordered target:self action:@selector(ReturnFromPersonView:)];
+
     }
     else
     {
@@ -152,9 +161,6 @@
     }
 }
 
--(void)ReturnFromPersonView:(UIBarButtonItem *)button{
-    NSLog(@"ReturnFromPersonView");
-}
 
 #pragma mark ABPersonViewControllerDelegate methods
 // Does not allow users to perform default actions such as dialing a phone number, when they select a contact property.

@@ -19,4 +19,13 @@
 -(NSArray *)getContactsFromDb;
 -(void)saveContactsToDb:(NSArray *)contactList;
 
+-(void)addOrRemoveContactInFavoritWithPhoneNumber:(NSString *)phoneNumber;
+-(NSArray *)getAllContactPhoneNumbersFromFavoritTable;
+
+
+
+
+//temp
+-(NSArray *)getTableList;
+
 @end

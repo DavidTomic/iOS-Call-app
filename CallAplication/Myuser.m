@@ -34,16 +34,17 @@ static Myuser *myUser;
     return myUser;
 }
 
--(NSMutableDictionary *)contactList{
+-(NSMutableDictionary *)contactDictionary{
     
-    if(!_contactList) _contactList= [[NSMutableDictionary alloc]init];
-    return _contactList;
+    if(!_contactDictionary) _contactDictionary= [[NSMutableDictionary alloc]init];
+    return _contactDictionary;
 }
 
 -(void)refreshContactList{
-    self.contactList = nil;
+    self.contactDictionary = nil;
     
     NSArray *contacts = [[DBManager sharedInstance] getContactsFromDb];
+    NSArray *favoritPhoneNumbers = [[DBManager sharedInstance]getAllContactPhoneNumbersFromFavoritTable];
     
     ABAddressBookRequestAccessWithCompletion(self.addressBook, ^(bool granted, CFErrorRef error)
                                              {
@@ -67,6 +68,10 @@ static Myuser *myUser;
                                                              NSString *lastName = (__bridge NSString *)(ABRecordCopyValue(abPerson, kABPersonLastNameProperty));
                                                              ABMultiValueRef phoneNumbers = ABRecordCopyValue(abPerson, kABPersonPhoneProperty);
                                                              
+                                                             NSData *imgData2 = (__bridge NSData*)ABPersonCopyImageDataWithFormat(abPerson, kABPersonImageFormatThumbnail);
+                                                             UIImage *image = [UIImage imageWithData:imgData2];
+                                                            
+                                                             
                                                              int recordId = ABRecordGetRecordID(abPerson);
                                                              
                                                              if (!firstName) {
@@ -82,20 +87,29 @@ static Myuser *myUser;
                                                              person.lastName = lastName;
                                                              person.phoneNumber = phoneNumber;
                                                              person.recordId = recordId;
+                                                             person.image = image;
                                                              
-                                                             
-                                                             for (NSArray *array in contacts){
-                                                                 
-                                                                 if ([array[0] isEqualToString:person.firstName]) {
-                                                                     
-                                                                     person.status = [array[1] intValue];
-                                                                     person.statusText = array[2];
-                                                                     person.endTime = array[3];
-                                                                     
+                                                             for (int i=0; i<favoritPhoneNumbers.count; i++) {
+                                                                 if ([person.phoneNumber isEqualToString:favoritPhoneNumbers[i]]) {
+                                                                     person.favorit = YES;
+                                                                     NSLog(@"favorit %@", person.phoneNumber);
                                                                      break;
                                                                  }
-                                                                 
                                                              }
+                                                             
+                                                             
+//                                                             for (NSArray *array in contacts){
+//                                                                 
+//                                                                 if ([array[0] isEqualToString:person.firstName]) {
+//                                                                     
+//                                                                     person.status = [array[1] intValue];
+//                                                                     person.statusText = array[2];
+//                                                                     person.endTime = array[3];
+//                                                                     
+//                                                                     break;
+//                                                                 }
+//                                                                 
+//                                                             }
                                                              
                                                              
                                                              
@@ -116,14 +130,15 @@ static Myuser *myUser;
                                                              //                                                             }
                                                              
                                                          }
-                                                         
-                                                         NSSortDescriptor *sorter = [[NSSortDescriptor alloc] initWithKey:@"firstName" ascending:YES];
+                                                     
+                                                     
+                                                         NSSortDescriptor *sorter = [[NSSortDescriptor alloc] initWithKey:@"firstName" ascending:YES selector:@selector(caseInsensitiveCompare:)];
                                                          personArray = [NSMutableArray arrayWithArray:[personArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:sorter]]];
                                                          
                                                          lettersArray = [NSArray arrayWithArray:[[lettersSet allObjects] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
+                                                     
                                                          
-                                                         
-                                                          //  NSLog(@"lettersArray %@", lettersArray);
+                                                      //   NSLog(@"lettersArray %@", lettersArray);
                                                          
                                                          for (int i=0; i<lettersArray.count; i++) {
                                                              NSMutableArray *pom = [[NSMutableArray alloc]init];
@@ -135,10 +150,10 @@ static Myuser *myUser;
                                                              }
                                                              
                                                                //    NSLog(@"setObject lettersArray %@", lettersArray[i]);
-                                                             [self.contactList setObject:pom forKey:lettersArray[i]];
+                                                             [self.contactDictionary setObject:pom forKey:lettersArray[i]];
                                                          }
                                                          
-                                                          NSLog(@"contactList.count %d", self.contactList.count);
+                                                          NSLog(@"contactList.count %d", self.contactDictionary.count);
                                                          
                                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"ContactListReloaded"
                                                                                                              object:self];

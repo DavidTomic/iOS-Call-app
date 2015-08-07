@@ -27,29 +27,13 @@
     NSLog(@"H %f", self.view.bounds.size.height);
   //  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"wallpaper"]];
     
+    self.view.backgroundColor = [UIColor colorWithRed:55/255.0f green:60/255.0f blue:65/255.0f alpha:1.0f];
+    
     JCDialPad *pad = [[JCDialPad alloc] initWithFrame:self.view.bounds];
     pad.buttons = [[JCDialPad defaultButtons] arrayByAddingObjectsFromArray:@[self.callButton]];
     pad.delegate = self;
     [pad setTintColor:[UIColor greenColor]];
     [self.view addSubview:pad];
-    
-    
-    //self.timer = [NSTimer scheduledTimerWithTimeInterval: 3.0 target: self
-             //                                         selector: @selector(callAfterSixtySecond:) userInfo: nil repeats: YES];
-    
-    //[self.timer invalidate];
-    
-    
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-}
-
--(void) callAfterSixtySecond:(NSTimer*)t
-{
-    NSLog(@"timer");
 
 }
 

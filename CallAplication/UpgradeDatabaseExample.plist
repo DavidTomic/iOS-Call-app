@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>version</key>
+		<string>1.1</string>
+		<key>sql</key>
+		<array>
+			<string>ALTER TABLE FavoritTable ADD COLUMN testColumn TEXT</string>
+			<string>ALTER TABLE FavoritTable ADD COLUMN testC TEXT</string>
+		</array>
+	</dict>
+	<dict>
+		<key>version</key>
+		<string>1.3</string>
+		<key>sql</key>
+		<array>
+			<string>ALTER TABLE FavoritTable ADD COLUMN testCa TEXT</string>
+			<string>ALTER TABLE FavoritTable ADD COLUMN testCb TEXT</string>
+		</array>
+	</dict>
+</array>
+</plist>

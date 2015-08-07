@@ -56,21 +56,20 @@
         if(indexPath){
             if([[segue identifier]isEqualToString:@"Contact Detail Segue"]){
                 if([segue.destinationViewController isKindOfClass:[ContactDetailViewController class]]){
-                    
-                    
-                    NSArray *keys = [self.myUser.contactList allKeys];
+   
+                    NSArray *keys = [self.myUser.contactDictionary allKeys];
                     keys = [keys sortedArrayUsingComparator:^(id a, id b) {
                         return [a compare:b options:NSNumericSearch];
                     }];
                     
                     NSString *key = keys[indexPath.section];
-                    Contact *person = [self.myUser.contactList objectForKey:key][indexPath.row];
+                    Contact *person = [self.myUser.contactDictionary objectForKey:key][indexPath.row];
                     
-                   NSLog(@"firstName %@", person.firstName);
+                    NSLog(@"firstName %@", person.firstName);
                     NSLog(@"recordId %d", person.recordId);
                     
                     ContactDetailViewController *vc = (ContactDetailViewController *)segue.destinationViewController;
-                    vc.people = ABAddressBookGetPersonWithRecordID(self.addressBook, person.recordId);
+                    vc.contact = person;
                 }
             }
         }
@@ -79,9 +78,9 @@
 
 //my methods
 -(void)reloadData{
-    NSLog(@"relaodData %d", self.myUser.contactList.count);
+    NSLog(@"relaodData %lu", (unsigned long)self.myUser.contactDictionary.count);
     
-    self.data = [self.myUser.contactList copy];
+    self.data = [self.myUser.contactDictionary copy];
     
     [self.tableView reloadData];
 }
@@ -143,11 +142,15 @@
     [cell.textLabel setTextColor:[UIColor colorWithRed:242/255.0f green:242/255.0f blue:242/255.0f alpha:1.0f]];
     cell.textLabel.text = text;
     
+    UIView * selectedBackgroundView = [[UIView alloc] init];
+    [selectedBackgroundView setBackgroundColor:[UIColor colorWithWhite:220/255.0f alpha:0.2f]]; // set color here
+    [cell setSelectedBackgroundView:selectedBackgroundView];
+    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSLog(@"didSelectRowAtIndexPath");
+    //NSLog(@"didSelectRowAtIndexPath");
 }
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {

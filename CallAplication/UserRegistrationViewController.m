@@ -220,6 +220,7 @@
             user.email = self.emailUITextField.text;
             user.logedIn = YES;
             [[SharedPreferences shared]saveUserData:user];
+            [user refreshContactList];
             
             [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
             
@@ -251,6 +252,7 @@
             user.email = [pom2 objectForKey:@"Email"];
             user.logedIn = YES;
             [[SharedPreferences shared]saveUserData:user];
+            [user refreshContactList];
             
             [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
             
