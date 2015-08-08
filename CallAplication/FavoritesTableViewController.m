@@ -11,6 +11,7 @@
 #import "Myuser.h"
 #import "Contact.h"
 #import "FavoritTableViewCell.h"
+#import "ContactDetailViewController.h"
 
 
 @interface FavoritesTableViewController()<UITableViewDataSource, UITableViewDelegate>
@@ -68,7 +69,7 @@
         }
     }
     
-    NSLog(@"favoritContacts %@", self.favoritContacts);
+   // NSLog(@"favoritContacts %@", self.favoritContacts);
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
@@ -95,13 +96,9 @@
 {
     FavoritTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     
-   //UITableViewCellStyleDefault FavoritTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    
     if (cell == nil) {
         cell = [[FavoritTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
     }
-    
-    NSLog(@"cellForRowAtIndexPath");
     
     Contact *contact = self.favoritContacts[indexPath.row];
 
@@ -118,6 +115,7 @@
         [cell.image setImage:img2 forState:UIControlStateNormal];
         [cell.image setBackgroundColor:[UIColor clearColor]];
     }else {
+        [cell.image setImage:nil forState:UIControlStateNormal];
         NSString *text = [[contact.firstName substringToIndex:1] uppercaseString];
         if (contact.lastName) {
             text = [NSString stringWithFormat:@"%@%@", text, [[contact.lastName substringToIndex:1] uppercaseString]];
@@ -154,7 +152,7 @@
             break;
     }
     
-    [cell.info addTarget:self action:@selector(infoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+//    [cell.info addTarget:self action:@selector(infoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
     
@@ -229,6 +227,23 @@
         [self.navigationItem.leftBarButtonItem setTitle:@"Done"];
         [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStyleDone];
         [self reloadData];
+    }
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([sender isKindOfClass:[UIButton class]]){
+        CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.tableView];
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
+        if(indexPath){
+            if([[segue identifier]isEqualToString:@"Contact Detail Segue From Favorites"]){
+                if([segue.destinationViewController isKindOfClass:[ContactDetailViewController class]]){
+                    
+                    Contact *contact = self.favoritContacts[indexPath.row];
+                    ContactDetailViewController *vc = (ContactDetailViewController *)segue.destinationViewController;
+                    vc.contact = contact;
+                }
+            }
+        }
     }
 }
 

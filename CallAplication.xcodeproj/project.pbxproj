@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34A0B4581B7627A000023649 /* ContactsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A0B4571B7627A000023649 /* ContactsTableViewCell.m */; };
 		3C06BA4DD9C526D38C309478 /* libPods-CallAplication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 703D6876163156DA9B989C36 /* libPods-CallAplication.a */; };
 		DB291B9C1B6625D50028C022 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291B9B1B6625D50028C022 /* main.m */; };
 		DB291B9F1B6625D50028C022 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291B9E1B6625D50028C022 /* AppDelegate.m */; };
@@ -50,6 +51,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		34A0B4561B7627A000023649 /* ContactsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewCell.h; sourceTree = "<group>"; };
+		34A0B4571B7627A000023649 /* ContactsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewCell.m; sourceTree = "<group>"; };
 		5FAF003EADE7C2B717A4FE56 /* Pods-CallAplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CallAplication.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CallAplication/Pods-CallAplication.debug.xcconfig"; sourceTree = "<group>"; };
 		703D6876163156DA9B989C36 /* libPods-CallAplication.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CallAplication.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE703E9F6DD675AAC4E1D88A /* Pods-CallAplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CallAplication.release.xcconfig"; path = "Pods/Target Support Files/Pods-CallAplication/Pods-CallAplication.release.xcconfig"; sourceTree = "<group>"; };
@@ -241,6 +244,8 @@
 				DB4B886F1B73A8B4005D15F6 /* DBManager.m */,
 				DB490EC21B74E7B20063CBE9 /* FavoritTableViewCell.h */,
 				DB490EC31B74E7B20063CBE9 /* FavoritTableViewCell.m */,
+				34A0B4561B7627A000023649 /* ContactsTableViewCell.h */,
+				34A0B4571B7627A000023649 /* ContactsTableViewCell.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -403,6 +408,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34A0B4581B7627A000023649 /* ContactsTableViewCell.m in Sources */,
 				DBFD97961B6BA8BA000958B7 /* Myuser.m in Sources */,
 				DB291BA21B6625D50028C022 /* UserRegistrationViewController.m in Sources */,
 				DBFD97A61B6BB376000958B7 /* TabBarViewController.m in Sources */,

@@ -13,8 +13,6 @@
 
 @interface KeyboardViewController()<JCDialPadDelegate>
 
-@property (nonatomic, strong) NSTimer *timer;
-
 @end
 
 
@@ -54,8 +52,18 @@
 {
     if ([text isEqualToString:@"P"]) {
         
-        NSString *phoneNumber = [@"telprompt://" stringByAppendingString:@"+385955679733"];
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneNumber]];
+        NSString *phoneNumber = dialPad.rawText;
+        
+        if (phoneNumber) {
+            phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
+            // NSLog(@"phoneNumberA %@", phoneNumber);
+            
+            NSString *pNumber = [@"telprompt://" stringByAppendingString:phoneNumber];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
+        }
+        
+        
+
         
         
 //        UIWebView *callWebview = [[UIWebView alloc] init];

@@ -92,7 +92,7 @@ static Myuser *myUser;
                                                              for (int i=0; i<favoritPhoneNumbers.count; i++) {
                                                                  if ([person.phoneNumber isEqualToString:favoritPhoneNumbers[i]]) {
                                                                      person.favorit = YES;
-                                                                     NSLog(@"favorit %@", person.phoneNumber);
+                                                                 //    NSLog(@"favorit %@", person.phoneNumber);
                                                                      break;
                                                                  }
                                                              }
