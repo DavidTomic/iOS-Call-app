@@ -22,5 +22,8 @@
 
 @property (nonatomic, strong) NSMutableDictionary *contactDictionary;
 
+@property (nonatomic) int lastDialedRecordId;
+@property (nonatomic, strong) NSString *lastDialedPhoneNumber;
+
 -(void)refreshContactList;
 @end

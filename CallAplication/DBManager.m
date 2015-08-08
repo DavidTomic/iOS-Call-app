@@ -53,41 +53,33 @@ static sqlite3 *database = nil;
         {
             NSLog(@"OPEN");
             char *errMsg;
-            const char *sql_stmt_drive =
+            const char *sql_stmt_ContactTable =
             "create table if not exists ContactTable (phoneNumber text, status integer, statusText text, endTime text)";
-            if (sqlite3_exec(database, sql_stmt_drive, NULL, NULL, &errMsg)
+            if (sqlite3_exec(database, sql_stmt_ContactTable, NULL, NULL, &errMsg)
                 != SQLITE_OK)
             {
                 isSuccess = NO;
                 NSLog(@"Failed to create ContactTable");
             }
             
-            const char *sql_stmt_drive_temp =
-            "create table if not exists FavoritTable (phoneNumber text)";
-            if (sqlite3_exec(database, sql_stmt_drive_temp, NULL, NULL, &errMsg)
+            const char *sql_stmt_FavoritTable =
+            "create table if not exists FavoritTable (recordId integer)";
+            if (sqlite3_exec(database, sql_stmt_FavoritTable, NULL, NULL, &errMsg)
                 != SQLITE_OK)
             {
                 isSuccess = NO;
                 NSLog(@"Failed to create FavoritTable");
             }
-//
-//            const char *sql_stmt_myScore =
-//            "create table if not exists myScoreTable (distanceWithoutSpeedingSum real, eligibleDiscount real, nextKm real, nextDiscount real, topDriverName text, topDriverDistance real)";
-//            if (sqlite3_exec(database, sql_stmt_myScore, NULL, NULL, &errMsg)
-//                != SQLITE_OK)
-//            {
-//                isSuccess = NO;
-//                NSLog(@"Failed to create table");
-//            }
-//            
-//            const char *sql_stmt_benefits =
-//            "create table if not exists benefitsTable (km text, discount text)";
-//            if (sqlite3_exec(database, sql_stmt_benefits, NULL, NULL, &errMsg)
-//                != SQLITE_OK)
-//            {
-//                isSuccess = NO;
-//                NSLog(@"Failed to create table");
-//            }
+            
+            const char *sql_stmt_RecentTable =
+            "create table if not exists RecentTable (recordId integer, phoneNumber text, timestamp integer)";
+            if (sqlite3_exec(database, sql_stmt_RecentTable, NULL, NULL, &errMsg)
+                != SQLITE_OK)
+            {
+                isSuccess = NO;
+                NSLog(@"Failed to create FavoritTable");
+            }
+
             
             sqlite3_close(database);
             return  isSuccess;
@@ -288,28 +280,69 @@ static sqlite3 *database = nil;
 }
 
 
--(void)addOrRemoveContactInFavoritWithPhoneNumber:(NSString *)phoneNumber{
-    NSString *query = [NSString stringWithFormat:@"select * from FavoritTable where phoneNumber='%@'", phoneNumber];
+-(void)addOrRemoveContactInFavoritWithRecordId:(int)recordId{
+    NSString *query = [NSString stringWithFormat:@"select * from FavoritTable where recordId=%d", recordId];
     
     if([[self loadDataFromDB:query] count]>0){
-        query = [NSString stringWithFormat:@"delete from FavoritTable where phoneNumber='%@'", phoneNumber];
+        query = [NSString stringWithFormat:@"delete from FavoritTable where recordId=%d", recordId];
     }else{
-        query = [NSString stringWithFormat:@"insert into FavoritTable values('%@')", phoneNumber];
+        query = [NSString stringWithFormat:@"insert into FavoritTable values(%d)", recordId];
     }
     [self executeQuery:query];
 }
--(NSArray *)getAllContactPhoneNumbersFromFavoritTable{
-    NSString *query = [NSString stringWithFormat:@"select phoneNumber from FavoritTable"];
+-(NSArray *)getAllContactRecordIdsFromFavoritTable{
+    NSString *query = [NSString stringWithFormat:@"select recordId from FavoritTable"];
     NSArray *results = [self loadDataFromDB:query];
     
-    NSMutableArray *contacts = [NSMutableArray array];
+    NSMutableArray *recordIdArray = [NSMutableArray array];
     
     for(NSMutableArray *array in results){
-        NSString *phoneNumber = array[0];
-        [contacts addObject:phoneNumber];
+        NSNumber *recordId = @([array[0] integerValue]);
+        [recordIdArray addObject:recordId];
     }
     
-    return contacts;
+    return recordIdArray;
+}
+
+-(void)addContactInRecentWithRecordId:(int)recordId phoneNumber:(NSString *)phoneNumber timestamp:(long long)timestamp{
+    
+    NSLog(@"insert %d, phoneNumber %@, timestamp %lld", recordId, phoneNumber, timestamp);
+    
+    if (!recordId) {
+        recordId=0;
+    }else if (!phoneNumber) {
+        phoneNumber=@"";
+    }
+
+     NSString *query = [NSString stringWithFormat:@"insert into RecentTable values(%d, '%@', %lld)", recordId, phoneNumber, timestamp];
+    [self executeQuery:query];
+}
+-(void)deleteContactFromRecentWithRecordId:(int)recordId phoneNumber:(NSString *)phoneNumber timestamp:(long long)timestamp{
+    
+    NSString *query;
+    
+    if (recordId && recordId != 0) {
+        query = [NSString stringWithFormat:@"delete from RecentTable where recordId=%d and timestamp=%lld", recordId, timestamp];
+    }else {
+        query = [NSString stringWithFormat:@"delete from RecentTable where phoneNumber='%@' and timestamp=%lld", phoneNumber, timestamp];
+    }
+    
+    [self executeQuery:query];
+}
+-(NSArray *)getAllContactDataFromRecentTable{
+    NSString *query = [NSString stringWithFormat:@"select * from RecentTable"];
+    NSArray *results = [self loadDataFromDB:query];
+    
+//    NSMutableArray *recordIdArray = [NSMutableArray array];
+    
+//    for(NSMutableArray *array in results){
+//        NSNumber *recordId = @([array[0] integerValue]);
+//        NSNumber *timestamp = @([array[1] longLongValue]);
+//        [recordIdArray addObject:recordId];
+//    }
+    NSLog(@"result %@", results);
+    
+    return results;
 }
 
 -(NSArray *)getTableList{

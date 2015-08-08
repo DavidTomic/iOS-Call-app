@@ -19,11 +19,12 @@
 -(NSArray *)getContactsFromDb;
 -(void)saveContactsToDb:(NSArray *)contactList;
 
--(void)addOrRemoveContactInFavoritWithPhoneNumber:(NSString *)phoneNumber;
--(NSArray *)getAllContactPhoneNumbersFromFavoritTable;
+-(void)addOrRemoveContactInFavoritWithRecordId:(int)recordId;
+-(NSArray *)getAllContactRecordIdsFromFavoritTable;
 
-
-
+-(void)addContactInRecentWithRecordId:(int)recordId phoneNumber:(NSString *)phoneNumber timestamp:(long long)timestamp;
+-(void)deleteContactFromRecentWithRecordId:(int)recordId phoneNumber:(NSString *)phoneNumber timestamp:(long long)timestamp;
+-(NSArray *)getAllContactDataFromRecentTable;
 
 //temp
 -(NSArray *)getTableList;

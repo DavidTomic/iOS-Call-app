@@ -88,6 +88,8 @@
         phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
        // NSLog(@"phoneNumberA %@", phoneNumber);
         
+        [Myuser sharedUser].lastDialedRecordId = self.contact.recordId;
+        
         NSString *pNumber = [@"telprompt://" stringByAppendingString:phoneNumber];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
     }
@@ -120,11 +122,7 @@
         [sender setImage:[UIImage imageNamed:@"star_full"] forState:UIControlStateNormal];
     }
     
-    NSString *phoneNumber = self.contact.phoneNumber;
-    
-    if (phoneNumber) {
-        [[DBManager sharedInstance]addOrRemoveContactInFavoritWithPhoneNumber:phoneNumber];
-    }
+    [[DBManager sharedInstance]addOrRemoveContactInFavoritWithRecordId:self.contact.recordId];
 
 }
 

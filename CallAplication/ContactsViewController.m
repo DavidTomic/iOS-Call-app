@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSDictionary *data;
 @property (nonatomic) ABAddressBookRef addressBook;
 @property (nonatomic, strong) Myuser * myUser;
+@property (nonatomic, strong) UIView *navView;
 
 @property (strong,nonatomic) NSMutableArray *filteredContactArray;
 
@@ -32,6 +33,29 @@
     [super viewDidLoad];
     
     self.myUser = [Myuser sharedUser];
+    
+    float navViewHeight = 43;
+    self.navView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, navViewHeight)];
+    
+    UIView *circle = [[UIView alloc]initWithFrame:CGRectMake(10, navViewHeight/2-5, 10, 10)];
+    circle.backgroundColor = [UIColor greenColor];
+    circle.layer.cornerRadius = circle.frame.size.width / 2;
+    circle.layer.borderWidth = 0;
+    circle.clipsToBounds = YES;
+    [self.navView addSubview:circle];
+    
+    UILabel *statusLabel = [[UILabel alloc]init];
+    statusLabel.text = @"This is my status..";
+    statusLabel.textColor = [UIColor lightGrayColor];
+    [statusLabel setFont:[statusLabel.font fontWithSize:10]];
+    [statusLabel sizeToFit];
+    statusLabel.frame = CGRectMake(10, navViewHeight-statusLabel.frame.size.height-2, statusLabel.frame.size.width, statusLabel.frame.size.height);
+    [self.navView addSubview:statusLabel];
+    
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(statusTapped:)];
+    [self.navView addGestureRecognizer:tapRecognizer];
+    
+    [self.navigationController.navigationBar addSubview:self.navView];
     
     self.filteredContactArray = [[NSMutableArray alloc]init];
     self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithRed:55/255.0f green:60/255.0f blue:65/255.0f alpha:1.0f];
@@ -54,8 +78,6 @@
     NSLog(@"receiveContactListReloadedNotification");
     [self reloadData];
 }
-
-
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -90,6 +112,13 @@
         }
     }
 }
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navView.hidden = YES;
+}
+-(void)viewDidAppear:(BOOL)animated{
+    self.navView.hidden = NO;
+}
 
 //my methods
 -(void)reloadData{
@@ -98,6 +127,9 @@
     self.data = [self.myUser.contactDictionary copy];
     
     [self.tableView reloadData];
+}
+-(void)statusTapped:(UITapGestureRecognizer *)tapRecognizer{
+    NSLog(@"status tapped");
 }
 
 //IBAction methods

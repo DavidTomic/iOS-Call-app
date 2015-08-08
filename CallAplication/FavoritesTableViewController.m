@@ -101,13 +101,6 @@
     }
     
     Contact *contact = self.favoritContacts[indexPath.row];
-
-//    UIButton *image = (UIButton *)[cell viewWithTag:1];
-//    UILabel *nameLabel = (UILabel *)[cell viewWithTag:2];
-//    UILabel *statusTextLabel = (UILabel *)[cell viewWithTag:3];
-//    
-//    UIButton *status = (UIButton *)[cell viewWithTag:4];
-//    UIButton *info = (UIButton *)[cell viewWithTag:5];
     
     UIImage *img2 = contact.image;
     
@@ -170,6 +163,8 @@
         phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
         // NSLog(@"phoneNumberA %@", phoneNumber);
         
+        [Myuser sharedUser].lastDialedRecordId = contact.recordId;
+        
         NSString *pNumber = [@"telprompt://" stringByAppendingString:phoneNumber];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
     }
@@ -189,11 +184,8 @@
     Contact *contact = self.favoritContacts[indexPath.row];
     contact.favorit = NO;
     
-    NSString *phoneNumber = contact.phoneNumber;
+    [[DBManager sharedInstance]addOrRemoveContactInFavoritWithRecordId:contact.recordId];
     
-    if (phoneNumber) {
-        [[DBManager sharedInstance]addOrRemoveContactInFavoritWithPhoneNumber:phoneNumber];
-    }
     
     [self.favoritContacts removeObjectAtIndex:indexPath.row];
     
@@ -201,14 +193,14 @@
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
--(void)infoButtonTapped:(UIButton *)button{
-    CGPoint buttonPosition = [button convertPoint:CGPointZero toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
-    if (indexPath != nil)
-    {
-        NSLog(@"index %d", indexPath.row);
-    }
-}
+//-(void)infoButtonTapped:(UIButton *)button{
+//    CGPoint buttonPosition = [button convertPoint:CGPointZero toView:self.tableView];
+//    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
+//    if (indexPath != nil)
+//    {
+//        NSLog(@"index %d", indexPath.row);
+//    }
+//}
 
 - (IBAction)editButtonPressed:(UIBarButtonItem *)sender {
     if(self.editing)

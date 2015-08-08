@@ -17,6 +17,7 @@
 @property (nonatomic) int recordId;
 @property (nonatomic) BOOL favorit;
 @property (nonatomic, strong) UIImage *image;
+@property (nonatomic) long long timestamp;
 
 @property (nonatomic) int status;
 @property (nonatomic, strong) NSString *statusText;
