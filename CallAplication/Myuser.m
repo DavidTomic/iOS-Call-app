@@ -137,13 +137,13 @@ static Myuser *myUser;
                                                          
                                                          lettersArray = [NSArray arrayWithArray:[[lettersSet allObjects] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
                                                      
-                                                      NSSortDescriptor *sorter2 = [[NSSortDescriptor alloc] initWithKey:@"recordId" ascending:YES];
-                                                     
-                                                      NSMutableArray *pom = [NSMutableArray arrayWithArray:[personArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:sorter2]]];
-                                                     
-                                                         for (int i=0; i<pom.count; i++) {
-                                                         NSLog(@"pom %d", ((Contact *)pom[i]).recordId);
-                                                         }
+//                                                      NSSortDescriptor *sorter2 = [[NSSortDescriptor alloc] initWithKey:@"recordId" ascending:YES];
+//                                                     
+//                                                      NSMutableArray *pom = [NSMutableArray arrayWithArray:[personArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:sorter2]]];
+//                                                     
+//                                                         for (int i=0; i<pom.count; i++) {
+//                                                         NSLog(@"pom %d", ((Contact *)pom[i]).recordId);
+//                                                         }
                                                      
                                                          for (int i=0; i<lettersArray.count; i++) {
                                                              NSMutableArray *pom = [[NSMutableArray alloc]init];

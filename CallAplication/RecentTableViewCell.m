@@ -18,6 +18,22 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+    UIView * selectedBackgroundView = [[UIView alloc] init];
+    [selectedBackgroundView setBackgroundColor:[UIColor colorWithWhite:220/255.0f alpha:0.2f]]; // set color here
+    [self setSelectedBackgroundView:selectedBackgroundView];
+}
+
+-(void)layoutSubviews{
+    [super layoutSubviews];
+    [self layoutIfNeeded];
+}
+
+-(void)layoutIfNeeded{
+    [super layoutIfNeeded];
+    //  NSLog(@"W %f",self.image.frame.size.width);
+    self.status.layer.cornerRadius = self.status.frame.size.width / 2;
+    self.status.layer.borderWidth = 0;
+    self.status.clipsToBounds = YES;
 }
 
 @end

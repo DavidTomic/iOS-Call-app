@@ -10,6 +10,7 @@
 #import "JCDialPad.h"
 #import "JCPadButton.h"
 #import "FontasticIcons.h"
+#import "Myuser.h"
 
 @interface KeyboardViewController()<JCDialPadDelegate>
 
@@ -54,10 +55,11 @@
         
         NSString *phoneNumber = dialPad.rawText;
         
+        [Myuser sharedUser].lastDialedPhoneNumber = phoneNumber;
+        
         if (phoneNumber) {
             phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
             // NSLog(@"phoneNumberA %@", phoneNumber);
-       //     [Myuser sharedUser].lastDialedRecordId = self.contact.recordId;
             
             NSString *pNumber = [@"telprompt://" stringByAppendingString:phoneNumber];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];

@@ -17,6 +17,7 @@
 @interface FavoritesTableViewController()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *favoritContacts;
+@property (nonatomic, strong) UIView *navView;
 
 @end
 
@@ -29,6 +30,29 @@
     
   //  NSString * s = NSLocalizedString(@"TEST_STRING", @"");
  //   NSLog(@"string: %@", s);
+    
+    float navViewHeight = 43;
+    self.navView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, navViewHeight)];
+    
+    UIView *circle = [[UIView alloc]initWithFrame:CGRectMake(10, navViewHeight/2-5, 10, 10)];
+    circle.backgroundColor = [UIColor greenColor];
+    circle.layer.cornerRadius = circle.frame.size.width / 2;
+    circle.layer.borderWidth = 0;
+    circle.clipsToBounds = YES;
+    [self.navView addSubview:circle];
+    
+    UILabel *statusLabel = [[UILabel alloc]init];
+    statusLabel.text = @"This is my status..";
+    statusLabel.textColor = [UIColor lightGrayColor];
+    [statusLabel setFont:[statusLabel.font fontWithSize:10]];
+    [statusLabel sizeToFit];
+    statusLabel.frame = CGRectMake(10, navViewHeight-statusLabel.frame.size.height-2, statusLabel.frame.size.width, statusLabel.frame.size.height);
+    [self.navView addSubview:statusLabel];
+    
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(statusTapped:)];
+    [self.navView addGestureRecognizer:tapRecognizer];
+    
+    [self.navigationController.navigationBar addSubview:self.navView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receiveContactListReloadedNotification:)
@@ -56,6 +80,14 @@
 //    NSArray *tables = [[DBManager sharedInstance]getTableList];
 //    NSLog(@"tables %@", tables);
 }
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navView.hidden = YES;
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    self.navView.hidden = NO;
+}
 
 -(void)reloadData{
     NSArray *contactArray = [[Myuser sharedUser].contactDictionary allValues];
@@ -74,6 +106,9 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
+}
+-(void)statusTapped:(UITapGestureRecognizer *)tapRecognizer{
+    NSLog(@"status tapped");
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -150,7 +185,6 @@
     return cell;
     
 }
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
@@ -208,16 +242,16 @@
         [super setEditing:NO animated:NO];
         [self.tableView setEditing:NO animated:NO];
         [self.tableView reloadData];
-        [self.navigationItem.leftBarButtonItem setTitle:@"Edit"];
-        [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStylePlain];
+        [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
+        [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStylePlain];
     }
     else
     {
         [super setEditing:YES animated:YES];
         [self.tableView setEditing:YES animated:YES];
         [self.tableView reloadData];
-        [self.navigationItem.leftBarButtonItem setTitle:@"Done"];
-        [self.navigationItem.leftBarButtonItem setStyle:UIBarButtonItemStyleDone];
+        [self.navigationItem.rightBarButtonItem setTitle:@"Done"];
+        [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStyleDone];
         [self reloadData];
     }
 }

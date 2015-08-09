@@ -17,6 +17,8 @@
 @property (nonatomic, strong) CTCallCenter *callCenter1;
 @property (nonatomic, strong) CTCallCenter *callCenter2;
 
+@property (nonatomic) BOOL processingState;
+
 @end
 
 @implementation AppDelegate
@@ -44,12 +46,11 @@ void (^block)(CTCall*) = ^(CTCall* call) {
         NSLog(@"Connected");
     } else if ([call.callState isEqualToString: CTCallStateDialing]) {
         NSLog(@"Dialing");
-        if([Myuser sharedUser].lastDialedRecordId && [Myuser sharedUser].lastDialedRecordId !=0){
-                   [[DBManager sharedInstance]addContactInRecentWithRecordId:[Myuser sharedUser].lastDialedRecordId phoneNumber:nil timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
-        }else if([Myuser sharedUser].lastDialedPhoneNumber){
-                    [[DBManager sharedInstance]addContactInRecentWithRecordId:0 phoneNumber:[Myuser sharedUser].lastDialedPhoneNumber timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
-        }
-
+            if([Myuser sharedUser].lastDialedRecordId && [Myuser sharedUser].lastDialedRecordId !=0){
+                [[DBManager sharedInstance]addContactInRecentWithRecordId:[Myuser sharedUser].lastDialedRecordId phoneNumber:nil timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
+            }else if([Myuser sharedUser].lastDialedPhoneNumber){
+                [[DBManager sharedInstance]addContactInRecentWithRecordId:0 phoneNumber:[Myuser sharedUser].lastDialedPhoneNumber timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
+            }
     } else if ([call.callState isEqualToString: CTCallStateDisconnected]) {
         NSLog(@"Disconnected");
     } else if ([call.callState isEqualToString: CTCallStateIncoming]) {
@@ -57,6 +58,16 @@ void (^block)(CTCall*) = ^(CTCall* call) {
     }
 
 };
+
+
+//-(void)processState:(^block)(CTCall*)app{
+//    NSLog(@"processState");
+//    if([Myuser sharedUser].lastDialedRecordId && [Myuser sharedUser].lastDialedRecordId !=0){
+//        [[DBManager sharedInstance]addContactInRecentWithRecordId:[Myuser sharedUser].lastDialedRecordId phoneNumber:nil timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
+//    }else if([Myuser sharedUser].lastDialedPhoneNumber){
+//        [[DBManager sharedInstance]addContactInRecentWithRecordId:0 phoneNumber:[Myuser sharedUser].lastDialedPhoneNumber timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
+//    }
+//}
 
 -(BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     

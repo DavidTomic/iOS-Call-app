@@ -117,6 +117,7 @@
     self.navView.hidden = YES;
 }
 -(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     self.navView.hidden = NO;
 }
 
