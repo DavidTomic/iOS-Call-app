@@ -17,7 +17,8 @@
 @property (nonatomic, strong) CTCallCenter *callCenter1;
 @property (nonatomic, strong) CTCallCenter *callCenter2;
 
-@property (nonatomic) BOOL processingState;
+@property (nonatomic) BOOL processingOtherStatesActive;
+@property (nonatomic, strong) NSMutableArray *states;
 
 @end
 
@@ -26,6 +27,46 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+   // [self performSelector:@selector(processOtherStates) withObject:self afterDelay:0.5];
+    
+    void (^block)(CTCall*) = ^(CTCall* call) {
+        
+        NSString *state;
+        
+        if ([call.callState isEqualToString: CTCallStateConnected]) {
+            state = @"Connected";
+        } else if ([call.callState isEqualToString: CTCallStateDialing]) {
+            state = @"Dialing";
+        } else if ([call.callState isEqualToString: CTCallStateDisconnected]) {
+            state = @"Disconnected";
+        } else if ([call.callState isEqualToString: CTCallStateIncoming]) {
+            state = @"Incomming";
+            return;
+        }
+        
+        NSLog(@"STATE %@", state);
+        
+        
+        if (![self.states containsObject:state]) {
+            [self.states addObject:state];
+            
+            if ([state isEqualToString:@"Dialing"]) {
+                [self processDialState];
+            }else{
+                if(self.processingOtherStatesActive)
+                    return;
+                
+                self.processingOtherStatesActive = YES;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self performSelector:@selector(processOtherStates) withObject:self afterDelay:0.5];
+                });
+            }
+        }
+        
+        
+        
+    };
     
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:55/255.0f green:60/255.0f blue:65/255.0f alpha:1.0f]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
@@ -40,34 +81,32 @@
     return YES;
 }
 
-void (^block)(CTCall*) = ^(CTCall* call) {
+-(NSMutableArray *)states{
     
-    if ([call.callState isEqualToString: CTCallStateConnected]) {
-        NSLog(@"Connected");
-    } else if ([call.callState isEqualToString: CTCallStateDialing]) {
-        NSLog(@"Dialing");
-            if([Myuser sharedUser].lastDialedRecordId && [Myuser sharedUser].lastDialedRecordId !=0){
-                [[DBManager sharedInstance]addContactInRecentWithRecordId:[Myuser sharedUser].lastDialedRecordId phoneNumber:nil timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
-            }else if([Myuser sharedUser].lastDialedPhoneNumber){
-                [[DBManager sharedInstance]addContactInRecentWithRecordId:0 phoneNumber:[Myuser sharedUser].lastDialedPhoneNumber timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
-            }
-    } else if ([call.callState isEqualToString: CTCallStateDisconnected]) {
-        NSLog(@"Disconnected");
-    } else if ([call.callState isEqualToString: CTCallStateIncoming]) {
-        NSLog(@"Incomming");
+    if(!_states) _states = [[NSMutableArray alloc]init];
+    
+    return _states;
+}
+
+-(void)processDialState{
+    NSLog(@"processState %@", self.states);
+    
+    if([Myuser sharedUser].lastDialedRecordId && [Myuser sharedUser].lastDialedRecordId !=0){
+        [[DBManager sharedInstance]addContactInRecentWithRecordId:[Myuser sharedUser].lastDialedRecordId phoneNumber:nil timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
+    }else if([Myuser sharedUser].lastDialedPhoneNumber){
+        [[DBManager sharedInstance]addContactInRecentWithRecordId:0 phoneNumber:[Myuser sharedUser].lastDialedPhoneNumber timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
     }
 
-};
+}
 
+-(void)processOtherStates{
+    NSLog(@"processOtherStates %@", self.states);
+    
+    self.processingOtherStatesActive = NO;
+    [self.states removeAllObjects];
+    
+}
 
-//-(void)processState:(^block)(CTCall*)app{
-//    NSLog(@"processState");
-//    if([Myuser sharedUser].lastDialedRecordId && [Myuser sharedUser].lastDialedRecordId !=0){
-//        [[DBManager sharedInstance]addContactInRecentWithRecordId:[Myuser sharedUser].lastDialedRecordId phoneNumber:nil timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
-//    }else if([Myuser sharedUser].lastDialedPhoneNumber){
-//        [[DBManager sharedInstance]addContactInRecentWithRecordId:0 phoneNumber:[Myuser sharedUser].lastDialedPhoneNumber timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
-//    }
-//}
 
 -(BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
@@ -95,19 +134,20 @@ void (^block)(CTCall*) = ^(CTCall* call) {
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-  //  NSLog(@"applicationWillResignActive");
+    //NSLog(@"applicationWillResignActive");
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
- //   NSLog(@"applicationDidEnterBackground");
+   // NSLog(@"applicationDidEnterBackground");
+     [self.states removeAllObjects];
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-     NSLog(@"applicationWillEnterForeground");
+  //   NSLog(@"applicationWillEnterForeground");
     
     Myuser *user = [Myuser sharedUser];
     if (user!=nil && user.logedIn) {
@@ -123,7 +163,7 @@ void (^block)(CTCall*) = ^(CTCall* call) {
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     [Myuser sharedUser].lastDialedPhoneNumber = nil;
     [Myuser sharedUser].lastDialedRecordId = 0;
-    NSLog(@"applicationDidBecomeActive");
+  //  NSLog(@"applicationDidBecomeActive");
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 

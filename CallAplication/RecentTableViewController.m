@@ -85,14 +85,16 @@
 -(void)reloadData{
     NSArray *contactArray = [[Myuser sharedUser].contactDictionary allValues];
     NSArray *recentCallArray = [[DBManager sharedInstance]getAllContactDataFromRecentTable];
+    NSLog(@"recentCallArray %@",recentCallArray);
     self.recentContacts = nil;
     
     for (NSArray *pomArray1 in contactArray){
         for (Contact *contact in pomArray1){
             for(NSArray *pomArray2 in recentCallArray){
                 if (contact.recordId == [pomArray2[0] integerValue]) {
-                    contact.timestamp = [pomArray2[2]longLongValue];
-                    [self.recentContacts addObject:contact];
+                    Contact *c = [contact copy];
+                    c.timestamp = [pomArray2[2]longLongValue];
+                    [self.recentContacts addObject:c];
                 }
             }
 
@@ -107,6 +109,8 @@
             [self.recentContacts addObject:c];
         }
     }
+    
+    [self.recentContacts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES]]];
     
     for (Contact *contact in self.recentContacts){
         NSLog(@"recentContacts %@ time: %lld", contact.firstName, contact.timestamp);
@@ -146,9 +150,11 @@
     if (contact.recordId !=0) {
         cell.infoButton.hidden = NO;
         cell.status.hidden = NO;
+        cell.topSpaceDateLabelConstraint.constant = 11;
     }else{
         cell.infoButton.hidden = YES;
         cell.status.hidden = YES;
+        cell.topSpaceDateLabelConstraint.constant = -3;
     }
     
     
@@ -163,7 +169,11 @@
         cell.nameLabel.text = contact.phoneNumber;
     }
     cell.statusTextLabel.text = @"hello this is my status";
+    NSDateFormatter *objDateFormatter = [[NSDateFormatter alloc] init];
+    [objDateFormatter setDateFormat:@"dd-MM-yyyy"];
     
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:contact.timestamp/1000.0f];
+    cell.dateLabel.text =[objDateFormatter stringFromDate:date];
     
     switch (contact.status) {
         case 0:
@@ -223,8 +233,10 @@
     Contact *contact = self.recentContacts[indexPath.row];
     
     if (contact.recordId != 0) {
+        NSLog(@"delete 1");
         [[DBManager sharedInstance]deleteContactFromRecentWithRecordId:contact.recordId phoneNumber:nil timestamp:contact.timestamp];
     }else{
+        NSLog(@"delete 2");
         [[DBManager sharedInstance]deleteContactFromRecentWithRecordId:0 phoneNumber:contact.phoneNumber timestamp:contact.timestamp];
     }
     
@@ -250,7 +262,7 @@
         [self.tableView reloadData];
         [self.navigationItem.rightBarButtonItem setTitle:@"Done"];
         [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStyleDone];
-        [self reloadData];
+     //   [self reloadData];
     }
 }
 

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface Contact : NSObject
+@interface Contact : NSObject<NSCopying>
 
 @property (nonatomic, strong) NSString *firstName;
 @property (nonatomic, strong) NSString *lastName;
@@ -22,5 +22,7 @@
 @property (nonatomic) int status;
 @property (nonatomic, strong) NSString *statusText;
 @property (nonatomic, strong) NSString *endTime;
+
+-(id)copyWithZone:(NSZone *)zone;
 
 @end

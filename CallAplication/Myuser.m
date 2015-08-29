@@ -92,7 +92,7 @@ static Myuser *myUser;
                                                              for (int i=0; i<favoritRecordIds.count; i++) {
                                                                  if (person.recordId == [favoritRecordIds[i] integerValue]) {
                                                                      person.favorit = YES;
-                                                                     NSLog(@"favorit %@", person.phoneNumber);
+                                                                 //    NSLog(@"favorit %@", person.phoneNumber);
                                                                      break;
                                                                  }
                                                              }
@@ -158,7 +158,7 @@ static Myuser *myUser;
                                                              [self.contactDictionary setObject:pom forKey:lettersArray[i]];
                                                          }
                                                          
-                                                          NSLog(@"contactList.count %d", self.contactDictionary.count);
+                                                     //     NSLog(@"contactList.count %d", self.contactDictionary.count);
                                                          
                                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"ContactListReloaded"
                                                                                                              object:self];

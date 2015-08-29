@@ -123,7 +123,7 @@
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"COUNT %d", [self.favoritContacts count]);
+   // NSLog(@"COUNT %d", [self.favoritContacts count]);
     return [self.favoritContacts count];
 }
 

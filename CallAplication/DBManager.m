@@ -322,6 +322,7 @@ static sqlite3 *database = nil;
     NSString *query;
     
     if (recordId && recordId != 0) {
+        NSLog(@"HERE");
         query = [NSString stringWithFormat:@"delete from RecentTable where recordId=%d and timestamp=%lld", recordId, timestamp];
     }else {
         query = [NSString stringWithFormat:@"delete from RecentTable where phoneNumber='%@' and timestamp=%lld", phoneNumber, timestamp];
@@ -340,7 +341,7 @@ static sqlite3 *database = nil;
 //        NSNumber *timestamp = @([array[1] longLongValue]);
 //        [recordIdArray addObject:recordId];
 //    }
-    NSLog(@"result %@", results);
+//    NSLog(@"result %@", results);
     
     return results;
 }
