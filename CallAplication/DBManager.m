@@ -12,6 +12,10 @@
 
 NSString * const VERSION_KEY = @"version";
 
+NSString * const DEFAULT_TEXT_TABLE = @"DefaultTextTable";
+NSString * const FAVORIT_TABLE = @"FavoritTable";
+NSString * const RECENT_TABLE = @"RecentTable";
+
 static DBManager *sharedInstance = nil;
 static sqlite3 *database = nil;
 
@@ -53,33 +57,38 @@ static sqlite3 *database = nil;
         {
             NSLog(@"OPEN");
             char *errMsg;
-            const char *sql_stmt_ContactTable =
-            "create table if not exists ContactTable (phoneNumber text, status integer, statusText text, endTime text)";
-            if (sqlite3_exec(database, sql_stmt_ContactTable, NULL, NULL, &errMsg)
-                != SQLITE_OK)
-            {
-                isSuccess = NO;
-                NSLog(@"Failed to create ContactTable");
-            }
+//            const char *sql_stmt_ContactTable =
+//            "create table if not exists ContactTable (phoneNumber text, status integer, statusText text, endTime text)";
+//            if (sqlite3_exec(database, sql_stmt_ContactTable, NULL, NULL, &errMsg)
+//                != SQLITE_OK)
+//            {
+//                isSuccess = NO;
+//                NSLog(@"Failed to create ContactTable");
+//            }
             
-            const char *sql_stmt_FavoritTable =
-            "create table if not exists FavoritTable (recordId integer)";
+            const char *sql_stmt_FavoritTable = [[NSString stringWithFormat:@"create table if not exists %@ (recordId integer)", FAVORIT_TABLE]cStringUsingEncoding:NSASCIIStringEncoding];
             if (sqlite3_exec(database, sql_stmt_FavoritTable, NULL, NULL, &errMsg)
                 != SQLITE_OK)
             {
                 isSuccess = NO;
-                NSLog(@"Failed to create FavoritTable");
+                NSLog(@"Failed to create FAVORIT_TABLE");
             }
             
-            const char *sql_stmt_RecentTable =
-            "create table if not exists RecentTable (recordId integer, phoneNumber text, timestamp integer)";
+            const char *sql_stmt_RecentTable = [[NSString stringWithFormat:@"create table if not exists %@ (recordId integer, phoneNumber text, timestamp integer)", RECENT_TABLE] cStringUsingEncoding:NSASCIIStringEncoding];
             if (sqlite3_exec(database, sql_stmt_RecentTable, NULL, NULL, &errMsg)
                 != SQLITE_OK)
             {
                 isSuccess = NO;
-                NSLog(@"Failed to create FavoritTable");
+                NSLog(@"Failed to create RECENT_TABLE");
             }
-
+            
+            const char *sql_stmt_DefaultTextTable = [[NSString stringWithFormat:@"create table if not exists %@ (Id INTEGER PRIMARY KEY, defaultText text)", DEFAULT_TEXT_TABLE] cStringUsingEncoding:NSASCIIStringEncoding];
+            if (sqlite3_exec(database, sql_stmt_DefaultTextTable, NULL, NULL, &errMsg)
+                != SQLITE_OK)
+            {
+                isSuccess = NO;
+                NSLog(@"Failed to create DEFAULT_TEXT_TABLE");
+            }
             
             sqlite3_close(database);
             return  isSuccess;
@@ -262,23 +271,51 @@ static sqlite3 *database = nil;
 }
 
 //my methods
--(NSArray *)getContactsFromDb{
-    NSString *query = [NSString stringWithFormat:@"select * from ContactTable"];
-    NSArray *contacts = [self loadDataFromDB:query];
+//-(NSArray *)getContactsFromDb{
+//    NSString *query = [NSString stringWithFormat:@"select * from ContactTable"];
+//    NSArray *contacts = [self loadDataFromDB:query];
+//
+//    return contacts;
+//}
+//-(void)saveContactsToDb:(NSArray *)contactList{
+//    NSString *deleteQuery = @"delete from ContactTable";
+//    [self executeQuery:deleteQuery];
+//    
+//    for (Contact *contact in contactList){
+//        
+//        NSString *query = [NSString stringWithFormat:@"insert into ContactTable values('%@',%d,'%@','%@')", contact.phoneNumber, contact.status, contact.statusText,contact.endTime];
+//        [self executeQuery:query];
+//    }
+//}
 
-    return contacts;
-}
--(void)saveContactsToDb:(NSArray *)contactList{
-    NSString *deleteQuery = @"delete from ContactTable";
-    [self executeQuery:deleteQuery];
+-(void)addDefaultTextToDefaultTextDb:(NSString *)text{
+
+    NSString *query = [NSString stringWithFormat:@"insert into %@ values('%@')", DEFAULT_TEXT_TABLE, text];
     
-    for (Contact *contact in contactList){
-        
-        NSString *query = [NSString stringWithFormat:@"insert into ContactTable values('%@',%d,'%@','%@')", contact.phoneNumber, contact.status, contact.statusText,contact.endTime];
+    [self executeQuery:query];
+}
+-(void)removeDefaultTextFromDefaultTextDb:(int)dtId{
+    
+    NSString *query = [NSString stringWithFormat:@"delete from %@ where recordId=%d",DEFAULT_TEXT_TABLE, dtId];
+    
+    [self executeQuery:query];
+}
+-(NSArray *)getAllDefaultTextsFromDb{
+    NSString *query = [NSString stringWithFormat:@"select * from %@", DEFAULT_TEXT_TABLE];
+    NSArray *results = [self loadDataFromDB:query];
+    
+    return results;
+}
+-(void)saveDefaultTextsToDb:(NSArray *)textList{
+    NSString *deleteQuery = [NSString stringWithFormat:@"delete from %@", DEFAULT_TEXT_TABLE];
+    [self executeQuery:deleteQuery];
+
+    for (NSString *text in textList){
+
+        NSString *query = [NSString stringWithFormat:@"insert into %@ (defaultText) values('%@')", DEFAULT_TEXT_TABLE, text];
         [self executeQuery:query];
     }
 }
-
 
 -(void)addOrRemoveContactInFavoritWithRecordId:(int)recordId{
     NSString *query = [NSString stringWithFormat:@"select * from FavoritTable where recordId=%d", recordId];
@@ -345,6 +382,11 @@ static sqlite3 *database = nil;
     
     return results;
 }
+
+
+
+
+
 
 -(NSArray *)getTableList{
     NSString *query = [NSString stringWithFormat:@"select * from sqlite_master where type='table'"];

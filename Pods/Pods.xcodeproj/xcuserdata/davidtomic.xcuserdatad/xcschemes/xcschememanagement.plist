@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>Pods-CallAplication-FontasticIcons.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>Pods-CallAplication-JCDialPad.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>Pods-CallAplication-libPhoneNumber-iOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>Pods-CallAplication.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>05DD9DE4EF0EFDBDE13B7D26</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>584C71348E42E5DF66D9C1D1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7617611BFAC87F4623666A95</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DBF74A9E7BFF3461B05081D0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>

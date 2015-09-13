@@ -16,4 +16,6 @@
 -(void)saveUserData:(Myuser *)user;
 -(void)loadUserData:(Myuser *)user;
 
+-(void)setLastCallTime:(long long)time;
+-(long long)getLastCallTime;
 @end

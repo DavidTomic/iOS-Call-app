@@ -16,8 +16,8 @@
 @property (nonatomic) int affectedRows;
 @property (nonatomic) long long lastInsertedRowID;
 
--(NSArray *)getContactsFromDb;
--(void)saveContactsToDb:(NSArray *)contactList;
+//-(NSArray *)getContactsFromDb;
+//-(void)saveContactsToDb:(NSArray *)contactList;
 
 -(void)addOrRemoveContactInFavoritWithRecordId:(int)recordId;
 -(NSArray *)getAllContactRecordIdsFromFavoritTable;
@@ -25,6 +25,11 @@
 -(void)addContactInRecentWithRecordId:(int)recordId phoneNumber:(NSString *)phoneNumber timestamp:(long long)timestamp;
 -(void)deleteContactFromRecentWithRecordId:(int)recordId phoneNumber:(NSString *)phoneNumber timestamp:(long long)timestamp;
 -(NSArray *)getAllContactDataFromRecentTable;
+
+-(void)addDefaultTextToDefaultTextDb:(NSString *)text;
+-(void)removeDefaultTextFromDefaultTextDb:(int)dtId;
+-(NSArray *)getAllDefaultTextsFromDb;
+-(void)saveDefaultTextsToDb:(NSArray *)textList;
 
 //temp
 -(NSArray *)getTableList;

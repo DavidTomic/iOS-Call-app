@@ -188,7 +188,8 @@
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return nil;
     } else {
-        NSArray *keys = [self.data allKeys];
+     //   NSArray *keys = [self.data allKeys];
+        NSArray * keys = @[@"A", @"B", @"C", @"D", @"H", @"E", @"T", @"R", @"I", @"M", @"Z"];
         keys = [keys sortedArrayUsingComparator:^(id a, id b) {
             return [a compare:b options:NSNumericSearch];
         }];
@@ -249,6 +250,8 @@
     // [cell.textLabel setTextColor:[UIColor colorWithRed:242/255.0f green:242/255.0f blue:242/255.0f alpha:1.0f]];
     cell.name.text = text;
     cell.statusText.text = @"this is my status";
+    
+    NSLog(@"person.status %d", person.status);
     
     
     switch (person.status) {

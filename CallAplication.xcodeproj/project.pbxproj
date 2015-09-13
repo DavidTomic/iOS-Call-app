@@ -39,6 +39,9 @@
 		DBFD97991B6BA92A000958B7 /* SharedPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD97981B6BA92A000958B7 /* SharedPreferences.m */; };
 		DBFD979E1B6BADEE000958B7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DBFD97A01B6BADEE000958B7 /* Localizable.strings */; };
 		DBFD97A61B6BB376000958B7 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD97A51B6BB376000958B7 /* TabBarViewController.m */; };
+		EE009AA91BA5EFCC009898C0 /* MyLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = EE009AA81BA5EFCC009898C0 /* MyLanguage.m */; };
+		EE9A742B1BA6196E00084B83 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE9A742A1BA6196E00084B83 /* SystemConfiguration.framework */; };
+		EE9A742E1BA61A9B00084B83 /* InternetStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = EE9A742D1BA61A9B00084B83 /* InternetStatus.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,8 +90,8 @@
 		DB490EC01B74A8320063CBE9 /* UpgradeDatabase.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UpgradeDatabase.plist; sourceTree = "<group>"; };
 		DB490EC21B74E7B20063CBE9 /* FavoritTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritTableViewCell.h; sourceTree = "<group>"; };
 		DB490EC31B74E7B20063CBE9 /* FavoritTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritTableViewCell.m; sourceTree = "<group>"; };
-		DB4B88661B734B72005D15F6 /* StartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartViewController.h; sourceTree = "<group>"; };
-		DB4B88671B734B72005D15F6 /* StartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartViewController.m; sourceTree = "<group>"; };
+		DB4B88661B734B72005D15F6 /* StartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartViewController.h; path = CallAplication/StartViewController.h; sourceTree = "<group>"; };
+		DB4B88671B734B72005D15F6 /* StartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StartViewController.m; path = CallAplication/StartViewController.m; sourceTree = "<group>"; };
 		DB4B88691B735C50005D15F6 /* ContactDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailViewController.h; sourceTree = "<group>"; };
 		DB4B886A1B735C50005D15F6 /* ContactDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailViewController.m; sourceTree = "<group>"; };
 		DB4B886C1B736609005D15F6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -113,6 +116,11 @@
 		DBFD97A31B6BAFAB000958B7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DBFD97A41B6BB376000958B7 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
 		DBFD97A51B6BB376000958B7 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
+		EE009AA71BA5EFCC009898C0 /* MyLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLanguage.h; sourceTree = "<group>"; };
+		EE009AA81BA5EFCC009898C0 /* MyLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLanguage.m; sourceTree = "<group>"; };
+		EE9A742A1BA6196E00084B83 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		EE9A742C1BA61A9B00084B83 /* InternetStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InternetStatus.h; sourceTree = "<group>"; };
+		EE9A742D1BA61A9B00084B83 /* InternetStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InternetStatus.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE9A742B1BA6196E00084B83 /* SystemConfiguration.framework in Frameworks */,
 				DB490EBD1B7499B60063CBE9 /* libsqlite3.dylib in Frameworks */,
 				DB4B886D1B736609005D15F6 /* QuartzCore.framework in Frameworks */,
 				DBD6953B1B6A69BB00337DFF /* libxml2.dylib in Frameworks */,
@@ -140,6 +149,7 @@
 		5B7D43C1FB2D6034F12AA464 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EE9A742A1BA6196E00084B83 /* SystemConfiguration.framework */,
 				DB490EBC1B7499B60063CBE9 /* libsqlite3.dylib */,
 				DB4B886C1B736609005D15F6 /* QuartzCore.framework */,
 				DBD6953A1B6A69BB00337DFF /* libxml2.dylib */,
@@ -171,8 +181,7 @@
 		DB291B981B6625D50028C022 /* CallAplication */ = {
 			isa = PBXGroup;
 			children = (
-				DB4B88661B734B72005D15F6 /* StartViewController.h */,
-				DB4B88671B734B72005D15F6 /* StartViewController.m */,
+				EE009AA61BA5EFB6009898C0 /* enum */,
 				DB291BA01B6625D50028C022 /* UserRegistrationViewController.h */,
 				DB291BA11B6625D50028C022 /* UserRegistrationViewController.m */,
 				DBFD97A41B6BB376000958B7 /* TabBarViewController.h */,
@@ -193,6 +202,7 @@
 				DBAB15241B67C37E00EADB9C /* Model */,
 				DBFD978D1B6B73D5000958B7 /* External classes */,
 				DB291B991B6625D50028C022 /* Supporting Files */,
+				EE009AA51BA5EC73009898C0 /* old */,
 			);
 			path = CallAplication;
 			sourceTree = "<group>";
@@ -260,8 +270,29 @@
 			children = (
 				DBFD978E1B6B7409000958B7 /* NSDictionary+XMLDictionary.h */,
 				DBFD978F1B6B7409000958B7 /* NSDictionary+XMLDictionary.m */,
+				EE9A742C1BA61A9B00084B83 /* InternetStatus.h */,
+				EE9A742D1BA61A9B00084B83 /* InternetStatus.m */,
 			);
 			name = "External classes";
+			sourceTree = "<group>";
+		};
+		EE009AA51BA5EC73009898C0 /* old */ = {
+			isa = PBXGroup;
+			children = (
+				DB4B88661B734B72005D15F6 /* StartViewController.h */,
+				DB4B88671B734B72005D15F6 /* StartViewController.m */,
+			);
+			name = old;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		EE009AA61BA5EFB6009898C0 /* enum */ = {
+			isa = PBXGroup;
+			children = (
+				EE009AA71BA5EFCC009898C0 /* MyLanguage.h */,
+				EE009AA81BA5EFCC009898C0 /* MyLanguage.m */,
+			);
+			name = enum;
 			sourceTree = "<group>";
 		};
 		FE45E300627764852E5A359B /* Pods */ = {
@@ -420,12 +451,14 @@
 				DB4B88701B73A8B4005D15F6 /* DBManager.m in Sources */,
 				DBFD97991B6BA92A000958B7 /* SharedPreferences.m in Sources */,
 				DB4B886B1B735C50005D15F6 /* ContactDetailViewController.m in Sources */,
+				EE9A742E1BA61A9B00084B83 /* InternetStatus.m in Sources */,
 				34A0B45B1B766FEB00023649 /* RecentTableViewCell.m in Sources */,
 				DB291B9F1B6625D50028C022 /* AppDelegate.m in Sources */,
 				DB291BCA1B66335F0028C022 /* KeyboardViewController.m in Sources */,
 				DBD695331B6A331000337DFF /* MyConnection.m in Sources */,
 				DB490EC41B74E7B20063CBE9 /* FavoritTableViewCell.m in Sources */,
 				DBD695301B6A328E00337DFF /* MyConnectionManager.m in Sources */,
+				EE009AA91BA5EFCC009898C0 /* MyLanguage.m in Sources */,
 				DBFD97901B6B7409000958B7 /* NSDictionary+XMLDictionary.m in Sources */,
 				DB291BCD1B665F2C0028C022 /* SettingsViewController.m in Sources */,
 				DB291BC41B662BE30028C022 /* ContactsViewController.m in Sources */,

@@ -43,7 +43,7 @@ static SharedPreferences *sharedProperties;
     [myDefaults setObject:user.password forKey:@"password"];
     [myDefaults setObject:user.name forKey:@"name"];
     [myDefaults setObject:user.email forKey:@"email"];
-    [myDefaults setObject:user.language forKey:@"language"];
+    [myDefaults setInteger:user.language forKey:@"language"];
     [myDefaults setObject:user.defaultText forKey:@"defaultText"];
     [myDefaults setBool:user.logedIn forKey:@"logedIn"];
     [myDefaults synchronize];
@@ -55,10 +55,19 @@ static SharedPreferences *sharedProperties;
     user.password = [myDefaults objectForKey:@"password"];
     user.name = [myDefaults objectForKey:@"name"];
     user.email = [myDefaults objectForKey:@"email"];
-    user.language = [myDefaults objectForKey:@"language"];
+    user.language = [myDefaults integerForKey:@"language"];
     user.defaultText = [myDefaults objectForKey:@"defaultText"];
     user.logedIn = [myDefaults boolForKey:@"logedIn"];
     
+}
+
+-(void)setLastCallTime:(long long)time {
+    [myDefaults  setObject:@(time) forKey:@"lastCallTime"];
+    [myDefaults synchronize];
+}
+-(long long)getLastCallTime{
+    long long int time = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastCallTime"] longLongValue];
+    return time;
 }
 
 @end

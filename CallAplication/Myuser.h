@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MyLanguage.h"
 
 @interface Myuser : NSObject
 
@@ -16,11 +17,16 @@
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *email;
-@property (nonatomic, strong) NSString *language;
+@property (nonatomic) Language language;
 @property (nonatomic, strong) NSString *defaultText;
 @property (nonatomic) BOOL logedIn;
 
+
+
 @property (nonatomic, strong) NSMutableDictionary *contactDictionary;
+
+
+
 
 @property (nonatomic) int lastDialedRecordId;
 @property (nonatomic, strong) NSString *lastDialedPhoneNumber;

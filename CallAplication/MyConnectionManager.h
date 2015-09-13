@@ -16,7 +16,7 @@
 -(void)testHelloWorldWithDelegate:(id)delegate selector:(SEL)selector;
 
 -(void)createAcountWithDelegate:(id)delegate selector:(SEL)selector phone:(NSString*)phone password:(NSString*)password name:(NSString*)name email:(NSString *)email language:(int)language;
--(void)logInAcountWithDelegate:(id)delegate selector:(SEL)selector phone:(NSString*)phone password:(NSString*)password;
+-(void)getAcountSetupWithDelegate:(id)delegate selector:(SEL)selector phone:(NSString*)phone password:(NSString*)password;
 
 
 

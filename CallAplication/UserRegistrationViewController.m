@@ -10,6 +10,7 @@
 #import "MyConnectionManager.h"
 #import "Myuser.h"
 #import "SharedPreferences.h"
+#import "DBManager.h"
 
 #define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
 #define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
@@ -55,8 +56,11 @@
     if (self.logIn) {
         [self showLogInViews];
     }
+
+    [[DBManager sharedInstance]getAllDefaultTextsFromDb];
     
 }
+
 
 -(void)tester:(NSDictionary *)dict{
     NSLog(@"responseToCreateUser %@", dict);
@@ -176,7 +180,7 @@
 
     }else{
         if (self.phoneNumberUITextField.text.length >5 && self.passwordUITextField.text.length > 3) {
-                    [[MyConnectionManager sharedManager] logInAcountWithDelegate:self selector:@selector(responseToLogIn:) phone:self.phoneNumberUITextField.text password:self.passwordUITextField.text];
+                    [[MyConnectionManager sharedManager] getAcountSetupWithDelegate:self selector:@selector(responseToGetAcountSetupWithDelegate:) phone:self.phoneNumberUITextField.text password:self.passwordUITextField.text];
         }else{
             [self showErrorAlert];
         }
@@ -219,6 +223,23 @@
             user.name = self.nameUITextField.text;
             user.email = self.emailUITextField.text;
             user.logedIn = YES;
+
+            NSString *lCode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0];
+            enum Language language;
+            
+            if ([lCode isEqualToString:@"en"]) {
+                language = English;
+            }else if ([lCode isEqualToString:@"da"]){
+                language = Danish;
+            }else{
+                language = Default;
+            }
+            
+            user.language = language;
+            
+            
+            NSLog(@"language %d", user.language);
+            
             [[SharedPreferences shared]saveUserData:user];
             [user refreshContactList];
             
@@ -234,8 +255,7 @@
     
     [self showErrorAlert];
 }
-
--(void)responseToLogIn:(NSDictionary *)dict{
+-(void)responseToGetAcountSetupWithDelegate:(NSDictionary *)dict{
     NSLog(@"responseToLogIn %@", dict);
     
     if (dict) {
@@ -251,7 +271,37 @@
             user.name = [pom2 objectForKey:@"Name"];
             user.email = [pom2 objectForKey:@"Email"];
             user.logedIn = YES;
+            
+            
+            NSString *lCode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0];
+            enum Language language;
+            
+            if ([lCode isEqualToString:@"en"]) {
+                language = English;
+            }else if ([lCode isEqualToString:@"da"]){
+                language = Danish;
+            }else{
+                language = Default;
+            }
+            
+            user.language = language;
+            
+            NSLog(@"language %d", user.language);
             [[SharedPreferences shared]saveUserData:user];
+            
+            
+            
+            NSDictionary *dfDict = [[pom1 objectForKey:@"DefaultText"] objectForKey:@"Text"];
+            if (dfDict) {
+                NSArray *textArray = [dfDict objectForKey:@"string"];
+                if (textArray && [textArray count]>0) {
+                    [[DBManager sharedInstance] saveDefaultTextsToDb:textArray];
+                }
+            }
+            
+            
+            
+            
             [user refreshContactList];
             
             [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];

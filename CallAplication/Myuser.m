@@ -43,7 +43,7 @@ static Myuser *myUser;
 -(void)refreshContactList{
     self.contactDictionary = nil;
     
-    NSArray *contacts = [[DBManager sharedInstance] getContactsFromDb];
+  //  NSArray *contacts = [[DBManager sharedInstance] getContactsFromDb];
     NSArray *favoritRecordIds = [[DBManager sharedInstance]getAllContactRecordIdsFromFavoritTable];
     
     ABAddressBookRequestAccessWithCompletion(self.addressBook, ^(bool granted, CFErrorRef error)
@@ -166,11 +166,7 @@ static Myuser *myUser;
                                              //        });
                                                  }
                                                  
-                                                
-                                                 
-                                                 
-                                                 
-                                                 
+
                                              });
 
 }

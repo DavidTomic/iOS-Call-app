@@ -18,11 +18,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+ //   [self performSelector:@selector(startMainVC) withObject:self afterDelay:1.5f];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)startMainVC{
+    [self performSegueWithIdentifier:@"signUp Segue" sender:self];
 }
 
 
