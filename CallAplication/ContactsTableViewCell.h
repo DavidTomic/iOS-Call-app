@@ -11,6 +11,9 @@
 @interface ContactsTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UILabel *statusText;
-@property (weak, nonatomic) IBOutlet UIButton *status;
+
+@property (weak, nonatomic) IBOutlet UIButton *statusRed;
+@property (weak, nonatomic) IBOutlet UIButton *statusYellow;
+@property (weak, nonatomic) IBOutlet UIButton *statusGreen;
 
 @end

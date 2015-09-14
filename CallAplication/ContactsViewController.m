@@ -34,28 +34,28 @@
     
     self.myUser = [Myuser sharedUser];
     
-    float navViewHeight = 43;
-    self.navView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, navViewHeight)];
-    
-    UIView *circle = [[UIView alloc]initWithFrame:CGRectMake(10, navViewHeight/2-5, 10, 10)];
-    circle.backgroundColor = [UIColor greenColor];
-    circle.layer.cornerRadius = circle.frame.size.width / 2;
-    circle.layer.borderWidth = 0;
-    circle.clipsToBounds = YES;
-    [self.navView addSubview:circle];
-    
-    UILabel *statusLabel = [[UILabel alloc]init];
-    statusLabel.text = @"This is my status..";
-    statusLabel.textColor = [UIColor lightGrayColor];
-    [statusLabel setFont:[statusLabel.font fontWithSize:10]];
-    [statusLabel sizeToFit];
-    statusLabel.frame = CGRectMake(10, navViewHeight-statusLabel.frame.size.height-2, statusLabel.frame.size.width, statusLabel.frame.size.height);
-    [self.navView addSubview:statusLabel];
-    
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(statusTapped:)];
-    [self.navView addGestureRecognizer:tapRecognizer];
-    
-    [self.navigationController.navigationBar addSubview:self.navView];
+//    float navViewHeight = 43;
+//    self.navView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, navViewHeight)];
+//    
+//    UIView *circle = [[UIView alloc]initWithFrame:CGRectMake(10, navViewHeight/2-5, 10, 10)];
+//    circle.backgroundColor = [UIColor greenColor];
+//    circle.layer.cornerRadius = circle.frame.size.width / 2;
+//    circle.layer.borderWidth = 0;
+//    circle.clipsToBounds = YES;
+//    [self.navView addSubview:circle];
+//    
+//    UILabel *statusLabel = [[UILabel alloc]init];
+//    statusLabel.text = @"This is my status..";
+//    statusLabel.textColor = [UIColor lightGrayColor];
+//    [statusLabel setFont:[statusLabel.font fontWithSize:10]];
+//    [statusLabel sizeToFit];
+//    statusLabel.frame = CGRectMake(10, navViewHeight-statusLabel.frame.size.height-2, statusLabel.frame.size.width, statusLabel.frame.size.height);
+//    [self.navView addSubview:statusLabel];
+//    
+//    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(statusTapped:)];
+//    [self.navView addGestureRecognizer:tapRecognizer];
+//    
+//    [self.navigationController.navigationBar addSubview:self.navView];
     
     self.filteredContactArray = [[NSMutableArray alloc]init];
     self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithRed:55/255.0f green:60/255.0f blue:65/255.0f alpha:1.0f];
@@ -164,6 +164,43 @@
 {
     return 55;
 }
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    float height = 25;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, height)];
+    /* Create custom view to display section header... */
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, height, height)];
+    [label setFont:[UIFont boldSystemFontOfSize:12]];
+    [label setTextColor:[UIColor whiteColor]];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.backgroundColor = self.view.tintColor;
+    label.layer.cornerRadius = label.frame.size.width / 2;
+    label.layer.borderWidth = 0;
+    label.clipsToBounds = YES;
+    
+    NSString *string =@"";
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        if (self.filteredContactArray.count == 0) {
+            return nil;
+        }
+        string = [[((Contact *)self.filteredContactArray[0]).firstName substringToIndex:1] uppercaseString];
+    } else {
+        NSArray *keys = [self.data allKeys];
+        keys = [keys sortedArrayUsingComparator:^(id a, id b) {
+            return [a compare:b options:NSNumericSearch];
+        }];
+        string = keys[section];
+    }
+    
+    
+    
+    /* Section header is in 0th index... */
+    [label setText:string];
+    
+    
+    [view addSubview:label];
+    [view setBackgroundColor:[UIColor whiteColor]]; //your background color...
+    return view;
+}
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     
@@ -188,8 +225,8 @@
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return nil;
     } else {
-     //   NSArray *keys = [self.data allKeys];
-        NSArray * keys = @[@"A", @"B", @"C", @"D", @"H", @"E", @"T", @"R", @"I", @"M", @"Z"];
+        NSArray *keys = [self.data allKeys];
+      //  NSArray * keys = @[@"A", @"B", @"C", @"D", @"H", @"E", @"T", @"R", @"I", @"M", @"Z"];
         keys = [keys sortedArrayUsingComparator:^(id a, id b) {
             return [a compare:b options:NSNumericSearch];
         }];
@@ -249,29 +286,30 @@
     }
     // [cell.textLabel setTextColor:[UIColor colorWithRed:242/255.0f green:242/255.0f blue:242/255.0f alpha:1.0f]];
     cell.name.text = text;
-    cell.statusText.text = @"this is my status";
+    cell.statusText.text = @"";
     
     NSLog(@"person.status %d", person.status);
     
+    [cell.statusRed setHighlighted:YES];
     
-    switch (person.status) {
-        case 0:
-            [cell.status setBackgroundColor:[UIColor grayColor]];
-            break;
-        case 1:
-            [cell.status setBackgroundColor:[UIColor redColor]];
-            break;
-        case 2:
-            [cell.status setBackgroundColor:[UIColor yellowColor]];
-            break;
-        case 3:
-            [cell.status setBackgroundColor:[UIColor greenColor]];
-            break;
-            
-        default:
-            [cell.status setBackgroundColor:[UIColor grayColor]];
-            break;
-    }
+//    switch (person.status) {
+//        case 0:
+//            [cell.status setBackgroundColor:[UIColor grayColor]];
+//            break;
+//        case 1:
+//            [cell.status setBackgroundColor:[UIColor redColor]];
+//            break;
+//        case 2:
+//            [cell.status setBackgroundColor:[UIColor yellowColor]];
+//            break;
+//        case 3:
+//            [cell.status setBackgroundColor:[UIColor greenColor]];
+//            break;
+//            
+//        default:
+//            [cell.status setBackgroundColor:[UIColor grayColor]];
+//            break;
+//    }
 
     
     

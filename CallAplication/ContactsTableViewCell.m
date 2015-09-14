@@ -32,9 +32,10 @@
     [super layoutIfNeeded];
     //  NSLog(@"W %f",self.image.frame.size.width);
     
-    self.status.layer.cornerRadius = self.status.frame.size.width / 2;
-    self.status.layer.borderWidth = 0;
-    self.status.clipsToBounds = YES;
+//    self.status.layer.cornerRadius = self.status.frame.size.width / 2;
+//    self.status.layer.borderWidth = 0;
+//    self.status.clipsToBounds = YES;
+    
 }
 
 @end

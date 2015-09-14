@@ -116,5 +116,49 @@ static MyConnectionManager *mySharedManager;
     [conn sendMessageWithMethodName:@"RequestStatusInfo" soapMessage:soapMessage];
 }
 
+-(void)requestDefaultTextsWithDelegate:(id)delegate selector:(SEL)selector{
+    MyConnection *conn = [[MyConnection alloc]init];
+    conn.delegate = delegate;
+    conn.selector = selector;
+    
+    Myuser *user = [Myuser sharedUser];
+    
+    NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
+                             <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
+                             <soap:Body> \
+                             <GetDefaultText xmlns=\"http://tempuri.org/\"> \
+                             <Phonenumber>%@</Phonenumber> \
+                             <password>%@</password> \
+                             </GetDefaultText> \
+                             </soap:Body> \
+                             </soap:Envelope>", user.phoneNumber, user.password];
+    
+    [conn sendMessageWithMethodName:@"GetDefaultText" soapMessage:soapMessage];
+}
+
+-(void)requestLogInWithDelegate:(id)delegate selector:(SEL)selector{
+    MyConnection *conn = [[MyConnection alloc]init];
+    conn.delegate = delegate;
+    conn.selector = selector;
+    
+    Myuser *user = [Myuser sharedUser];
+    
+    NSString * appBuildString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    NSString * appVersionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    
+    NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
+                             <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
+                             <soap:Body> \
+                             <Login xmlns=\"http://tempuri.org/\"> \
+                             <Phonenumber>%@</Phonenumber> \
+                             <Password>%@</Password> \
+                             <VersionNumber>%@</VersionNumber> \
+                             <AppType>%d</AppType> \
+                             </Login> \
+                             </soap:Body> \
+                             </soap:Envelope>", user.phoneNumber, user.password, [NSString stringWithFormat:@"Version: %@ (%@)", appVersionString, appBuildString], 3];
+    
+    [conn sendMessageWithMethodName:@"Login" soapMessage:soapMessage];
+}
 
 @end

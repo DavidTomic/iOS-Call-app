@@ -27,28 +27,28 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    float navViewHeight = 43;
-    self.navView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, navViewHeight)];
-    
-    UIView *circle = [[UIView alloc]initWithFrame:CGRectMake(10, navViewHeight/2-5, 10, 10)];
-    circle.backgroundColor = [UIColor greenColor];
-    circle.layer.cornerRadius = circle.frame.size.width / 2;
-    circle.layer.borderWidth = 0;
-    circle.clipsToBounds = YES;
-    [self.navView addSubview:circle];
-    
-    UILabel *statusLabel = [[UILabel alloc]init];
-    statusLabel.text = @"This is my status..";
-    statusLabel.textColor = [UIColor lightGrayColor];
-    [statusLabel setFont:[statusLabel.font fontWithSize:10]];
-    [statusLabel sizeToFit];
-    statusLabel.frame = CGRectMake(10, navViewHeight-statusLabel.frame.size.height-2, statusLabel.frame.size.width, statusLabel.frame.size.height);
-    [self.navView addSubview:statusLabel];
-    
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(statusTapped:)];
-    [self.navView addGestureRecognizer:tapRecognizer];
-    
-    [self.navigationController.navigationBar addSubview:self.navView];
+//    float navViewHeight = 43;
+//    self.navView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, navViewHeight)];
+//    
+//    UIView *circle = [[UIView alloc]initWithFrame:CGRectMake(10, navViewHeight/2-5, 10, 10)];
+//    circle.backgroundColor = [UIColor greenColor];
+//    circle.layer.cornerRadius = circle.frame.size.width / 2;
+//    circle.layer.borderWidth = 0;
+//    circle.clipsToBounds = YES;
+//    [self.navView addSubview:circle];
+//    
+//    UILabel *statusLabel = [[UILabel alloc]init];
+//    statusLabel.text = @"This is my status..";
+//    statusLabel.textColor = [UIColor lightGrayColor];
+//    [statusLabel setFont:[statusLabel.font fontWithSize:10]];
+//    [statusLabel sizeToFit];
+//    statusLabel.frame = CGRectMake(10, navViewHeight-statusLabel.frame.size.height-2, statusLabel.frame.size.width, statusLabel.frame.size.height);
+//    [self.navView addSubview:statusLabel];
+//    
+//    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(statusTapped:)];
+//    [self.navView addGestureRecognizer:tapRecognizer];
+//    
+//    [self.navigationController.navigationBar addSubview:self.navView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receiveContactListReloadedNotification:)
@@ -149,11 +149,11 @@
     
     if (contact.recordId !=0) {
         cell.infoButton.hidden = NO;
-        cell.status.hidden = NO;
+       // cell.status.hidden = NO;
         cell.topSpaceDateLabelConstraint.constant = 11;
     }else{
         cell.infoButton.hidden = YES;
-        cell.status.hidden = YES;
+      //  cell.status.hidden = YES;
         cell.topSpaceDateLabelConstraint.constant = -3;
     }
     
@@ -175,24 +175,24 @@
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:contact.timestamp/1000.0f];
     cell.dateLabel.text =[objDateFormatter stringFromDate:date];
     
-    switch (contact.status) {
-        case 0:
-            [cell.status setBackgroundColor:[UIColor grayColor]];
-            break;
-        case 1:
-            [cell.status setBackgroundColor:[UIColor redColor]];
-            break;
-        case 2:
-            [cell.status setBackgroundColor:[UIColor yellowColor]];
-            break;
-        case 3:
-            [cell.status setBackgroundColor:[UIColor greenColor]];
-            break;
-            
-        default:
-            [cell.status setBackgroundColor:[UIColor grayColor]];
-            break;
-    }
+//    switch (contact.status) {
+//        case 0:
+//            [cell.status setBackgroundColor:[UIColor grayColor]];
+//            break;
+//        case 1:
+//            [cell.status setBackgroundColor:[UIColor redColor]];
+//            break;
+//        case 2:
+//            [cell.status setBackgroundColor:[UIColor yellowColor]];
+//            break;
+//        case 3:
+//            [cell.status setBackgroundColor:[UIColor greenColor]];
+//            break;
+//            
+//        default:
+//            [cell.status setBackgroundColor:[UIColor grayColor]];
+//            break;
+//    }
     
     return cell;
     

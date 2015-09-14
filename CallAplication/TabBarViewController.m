@@ -9,6 +9,8 @@
 #import "TabBarViewController.h"
 //#import "DBManager.h"
 #import "MyConnectionManager.h"
+#import "SharedPreferences.h"
+#import "InternetStatus.h"
 
 @interface TabBarViewController ()
 
@@ -18,53 +20,56 @@
 
 @implementation TabBarViewController
 
+//viewController methods
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //area for testing
+    //   NSLog(@"DT %@", [[DBManager sharedInstance]getAllDefaultTextsFromDb]);
     // Do any additional setup after loading the view.
   //  NSLog(@"TabBarViewController");
   //  [[UITabBar appearance] setTintColor:[UIColor redColor]];
-    [[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:55/255.0f green:60/255.0f blue:65/255.0f alpha:1.0f]];
+      //  self.view.backgroundColor = [UIColor colorWithRed:35/255.0f green:40/255.0f blue:45/255.0f alpha:1.0f];
     
-  //  self.view.backgroundColor = [UIColor colorWithRed:35/255.0f green:40/255.0f blue:45/255.0f alpha:1.0f];
+    
+    [[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:234/255.0f green:234/255.0f blue:234/255.0f alpha:1.0f]];
+
+    [[SharedPreferences shared]setLastCallTime:0];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationWillResign)
                                                 name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationDidBecomeActiveNotification)
                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
     
-    
-    //area for testing
- //   NSLog(@"DT %@", [[DBManager sharedInstance]getAllDefaultTextsFromDb]);
+    [[MyConnectionManager sharedManager]requestDefaultTextsWithDelegate:self selector:@selector(responseToDefaultText:)];
     
 }
-
 - (void)applicationWillResign {
     NSLog(@"applicationWillResign...");
     [self.timer invalidate];
     self.timer = nil;
 }
-
 - (void)applicationDidBecomeActiveNotification {
     NSLog(@"applicationDidBecomeActiveNotification...");
     [self requsetStatusInfo];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:10.0f target:self selector:@selector(onTick:) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:180.0f target:self selector:@selector(onTick:) userInfo:nil repeats:YES];
+    
+    if ([InternetStatus isNetworkAvailable]) {
+        
+    }else{
+           [[MyConnectionManager sharedManager]requestLogInWithDelegate:self selector:@selector(responseToLogIn:)];
+    }
+ 
 }
-
--(void)onTick:(NSTimer*)timer
+- (void)viewWillLayoutSubviews
 {
-      NSLog(@"Tick...");
-    [self requsetStatusInfo];
+    float tabBarHeigt = 70;
+    CGRect tabFrame = self.tabBar.frame; //self.TabBar is IBOutlet of your TabBar
+    tabFrame.size.height = tabBarHeigt;
+    tabFrame.origin.y = self.view.frame.size.height - tabBarHeigt;
+    self.tabBar.frame = tabFrame;
+    
+    [UITabBarItem appearance].titlePositionAdjustment = UIOffsetMake(0, -4);
 }
-
--(void)requsetStatusInfo{
-        [[MyConnectionManager sharedManager]requestStatusInfoWithDelegate:self selector:@selector(responseToRequestStatusInfo:)];
-}
-
--(void)responseToRequestStatusInfo:(NSDictionary *)dict{
-    NSLog(@"dict %@", dict);
-}
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -72,6 +77,37 @@
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
+
+
+//my methods
+-(void)onTick:(NSTimer*)timer
+{
+      NSLog(@"Tick...");
+    [self requsetStatusInfo];
+}
+-(void)requsetStatusInfo{
+        [[MyConnectionManager sharedManager]requestStatusInfoWithDelegate:self selector:@selector(responseToRequestStatusInfo:)];
+}
+-(void)refreshCheckPhoneNumbers{
+    
+}
+-(void)showErrorAlert{
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Warning" message:@"Please check your informations are correct" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
+}
+
+//response methods
+-(void)responseToRequestStatusInfo:(NSDictionary *)dict{
+    NSLog(@"responseToRequestStatusInfo %@", dict);
+}
+-(void)responseToDefaultText:(NSDictionary *)dict{
+    NSLog(@"responseToDefaultText %@", dict);
+}
+-(void)responseToLogIn:(NSDictionary *)dict{
+    NSLog(@"responseToLogIn %@", dict);
+}
+
+
 
 
 @end

@@ -83,8 +83,8 @@
 {
     self.borderColor = [UIColor grayColor];
     self.selectedColor = [UIColor grayColor];
-    self.textColor = [UIColor whiteColor];
-    self.hightlightedTextColor = [UIColor whiteColor];
+    self.textColor = [UIColor blackColor];
+    self.hightlightedTextColor = [UIColor darkGrayColor];
 	
 	static NSString* fontName = @"HelveticaNeue-Thin";
 	

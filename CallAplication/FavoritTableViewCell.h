@@ -13,7 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *image;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *statusTextLabel;
-@property (weak, nonatomic) IBOutlet UIButton *status;
 @property (weak, nonatomic) IBOutlet UIButton *info;
 
 @end

@@ -181,7 +181,6 @@
 		DB291B981B6625D50028C022 /* CallAplication */ = {
 			isa = PBXGroup;
 			children = (
-				EE009AA61BA5EFB6009898C0 /* enum */,
 				DB291BA01B6625D50028C022 /* UserRegistrationViewController.h */,
 				DB291BA11B6625D50028C022 /* UserRegistrationViewController.m */,
 				DBFD97A41B6BB376000958B7 /* TabBarViewController.h */,
@@ -199,7 +198,9 @@
 				DB291BCB1B665F2C0028C022 /* SettingsViewController.h */,
 				DB291BCC1B665F2C0028C022 /* SettingsViewController.m */,
 				DB291BA31B6625D50028C022 /* Main.storyboard */,
+				DB291BA61B6625D50028C022 /* Images.xcassets */,
 				DBAB15241B67C37E00EADB9C /* Model */,
+				EE009AA61BA5EFB6009898C0 /* enum */,
 				DBFD978D1B6B73D5000958B7 /* External classes */,
 				DB291B991B6625D50028C022 /* Supporting Files */,
 				EE009AA51BA5EC73009898C0 /* old */,
@@ -212,7 +213,6 @@
 			children = (
 				DB291B9D1B6625D50028C022 /* AppDelegate.h */,
 				DB291B9E1B6625D50028C022 /* AppDelegate.m */,
-				DB291BA61B6625D50028C022 /* Images.xcassets */,
 				DB291BA81B6625D50028C022 /* LaunchScreen.xib */,
 				DB291B9A1B6625D50028C022 /* Info.plist */,
 				DB291B9B1B6625D50028C022 /* main.m */,

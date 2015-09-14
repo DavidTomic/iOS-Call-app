@@ -26,7 +26,7 @@
     NSLog(@"H %f", self.view.bounds.size.height);
   //  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"wallpaper"]];
     
-    self.view.backgroundColor = [UIColor colorWithRed:55/255.0f green:60/255.0f blue:65/255.0f alpha:1.0f];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     JCDialPad *pad = [[JCDialPad alloc] initWithFrame:self.view.bounds];
     pad.buttons = [[JCDialPad defaultButtons] arrayByAddingObjectsFromArray:@[self.callButton]];

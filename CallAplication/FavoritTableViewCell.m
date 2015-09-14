@@ -35,9 +35,6 @@
     self.image.layer.borderWidth = 0;
     self.image.clipsToBounds = YES;
     
-    self.status.layer.cornerRadius = self.status.frame.size.width / 2;
-    self.status.layer.borderWidth = 0;
-    self.status.clipsToBounds = YES;
 }
 
 @end

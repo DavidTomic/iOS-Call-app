@@ -28,6 +28,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:234/255.0f green:234/255.0f blue:234/255.0f alpha:1.0f]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+    [self.window setTintColor:[UIColor colorWithRed:0/255.0f green:93/255.0f blue:193/255.0f alpha:1.0f]];
+    
+    
    // [self performSelector:@selector(processOtherStates) withObject:self afterDelay:0.5];
     
     void (^block)(CTCall*) = ^(CTCall* call) {
@@ -67,11 +72,7 @@
         
         
     };
-    
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:55/255.0f green:60/255.0f blue:65/255.0f alpha:1.0f]];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    [self.window setTintColor:[UIColor colorWithRed:46/255.0f green:179/255.0f blue:192/255.0f alpha:1.0f]];
-    
+
     self.callCenter1 = [[CTCallCenter alloc] init];
     self.callCenter1.callEventHandler = block;
     
