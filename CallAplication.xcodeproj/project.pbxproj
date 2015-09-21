@@ -13,7 +13,6 @@
 		DB291B9C1B6625D50028C022 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291B9B1B6625D50028C022 /* main.m */; };
 		DB291B9F1B6625D50028C022 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291B9E1B6625D50028C022 /* AppDelegate.m */; };
 		DB291BA21B6625D50028C022 /* UserRegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BA11B6625D50028C022 /* UserRegistrationViewController.m */; };
-		DB291BA51B6625D50028C022 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB291BA31B6625D50028C022 /* Main.storyboard */; };
 		DB291BA71B6625D50028C022 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB291BA61B6625D50028C022 /* Images.xcassets */; };
 		DB291BAA1B6625D50028C022 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB291BA81B6625D50028C022 /* LaunchScreen.xib */; };
 		DB291BB61B6625D50028C022 /* CallAplicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BB51B6625D50028C022 /* CallAplicationTests.m */; };
@@ -30,6 +29,8 @@
 		DB4B886B1B735C50005D15F6 /* ContactDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4B886A1B735C50005D15F6 /* ContactDetailViewController.m */; };
 		DB4B886D1B736609005D15F6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB4B886C1B736609005D15F6 /* QuartzCore.framework */; };
 		DB4B88701B73A8B4005D15F6 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4B886F1B73A8B4005D15F6 /* DBManager.m */; };
+		DB6A15861BA9742A0073B14E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB6A15881BA9742A0073B14E /* InfoPlist.strings */; };
+		DB8518DB1BA9A6610023B156 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB8518DD1BA9A6610023B156 /* Main.storyboard */; };
 		DBC17C6F1B6F5AFF00BF1DE4 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC17C6E1B6F5AFF00BF1DE4 /* Contact.m */; };
 		DBD695301B6A328E00337DFF /* MyConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD6952F1B6A328E00337DFF /* MyConnectionManager.m */; };
 		DBD695331B6A331000337DFF /* MyConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD695321B6A331000337DFF /* MyConnection.m */; };
@@ -69,7 +70,6 @@
 		DB291B9E1B6625D50028C022 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		DB291BA01B6625D50028C022 /* UserRegistrationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserRegistrationViewController.h; sourceTree = "<group>"; };
 		DB291BA11B6625D50028C022 /* UserRegistrationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserRegistrationViewController.m; sourceTree = "<group>"; };
-		DB291BA41B6625D50028C022 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DB291BA61B6625D50028C022 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		DB291BA91B6625D50028C022 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		DB291BAF1B6625D50028C022 /* CallAplicationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CallAplicationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +97,13 @@
 		DB4B886C1B736609005D15F6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DB4B886E1B73A8B4005D15F6 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
 		DB4B886F1B73A8B4005D15F6 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
+		DB6A158D1BA97AEC0073B14E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DB6A158E1BA97AEC0073B14E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		DB8518D11BA9996B0023B156 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DB8518D51BA999AC0023B156 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DB8518DC1BA9A6610023B156 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DB8518DF1BA9A6650023B156 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		DB8518E11BA9A6680023B156 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Main.strings; sourceTree = "<group>"; };
 		DBC17C6D1B6F5AFF00BF1DE4 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		DBC17C6E1B6F5AFF00BF1DE4 /* Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
 		DBD6952E1B6A328E00337DFF /* MyConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyConnectionManager.h; sourceTree = "<group>"; };
@@ -110,10 +117,6 @@
 		DBFD97951B6BA8BA000958B7 /* Myuser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Myuser.m; sourceTree = "<group>"; };
 		DBFD97971B6BA92A000958B7 /* SharedPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedPreferences.h; sourceTree = "<group>"; };
 		DBFD97981B6BA92A000958B7 /* SharedPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedPreferences.m; sourceTree = "<group>"; };
-		DBFD979A1B6BAD0D000958B7 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Main.strings; sourceTree = "<group>"; };
-		DBFD979B1B6BAD0D000958B7 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		DBFD97A11B6BADF4000958B7 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DBFD97A31B6BAFAB000958B7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DBFD97A41B6BB376000958B7 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
 		DBFD97A51B6BB376000958B7 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
 		EE009AA71BA5EFCC009898C0 /* MyLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLanguage.h; sourceTree = "<group>"; };
@@ -197,7 +200,7 @@
 				DB291BC91B66335F0028C022 /* KeyboardViewController.m */,
 				DB291BCB1B665F2C0028C022 /* SettingsViewController.h */,
 				DB291BCC1B665F2C0028C022 /* SettingsViewController.m */,
-				DB291BA31B6625D50028C022 /* Main.storyboard */,
+				DB8518DD1BA9A6610023B156 /* Main.storyboard */,
 				DB291BA61B6625D50028C022 /* Images.xcassets */,
 				DBAB15241B67C37E00EADB9C /* Model */,
 				EE009AA61BA5EFB6009898C0 /* enum */,
@@ -211,6 +214,7 @@
 		DB291B991B6625D50028C022 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				DB6A15881BA9742A0073B14E /* InfoPlist.strings */,
 				DB291B9D1B6625D50028C022 /* AppDelegate.h */,
 				DB291B9E1B6625D50028C022 /* AppDelegate.m */,
 				DB291BA81B6625D50028C022 /* LaunchScreen.xib */,
@@ -388,8 +392,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB8518DB1BA9A6610023B156 /* Main.storyboard in Resources */,
 				DB490EC11B74A8320063CBE9 /* UpgradeDatabase.plist in Resources */,
-				DB291BA51B6625D50028C022 /* Main.storyboard in Resources */,
+				DB6A15861BA9742A0073B14E /* InfoPlist.strings in Resources */,
 				DB490EBF1B74A0BC0063CBE9 /* UpgradeDatabaseExample.plist in Resources */,
 				DB291BAA1B6625D50028C022 /* LaunchScreen.xib in Resources */,
 				DBFD979E1B6BADEE000958B7 /* Localizable.strings in Resources */,
@@ -489,29 +494,39 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		DB291BA31B6625D50028C022 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DB291BA41B6625D50028C022 /* Base */,
-				DBFD979A1B6BAD0D000958B7 /* da */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		DB291BA81B6625D50028C022 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				DB291BA91B6625D50028C022 /* Base */,
-				DBFD979B1B6BAD0D000958B7 /* da */,
+				DB6A158E1BA97AEC0073B14E /* en */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		DB6A15881BA9742A0073B14E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB6A158D1BA97AEC0073B14E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DB8518DD1BA9A6610023B156 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB8518DC1BA9A6610023B156 /* Base */,
+				DB8518DF1BA9A6650023B156 /* en */,
+				DB8518E11BA9A6680023B156 /* da */,
+			);
+			name = Main.storyboard;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		DBFD97A01B6BADEE000958B7 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DBFD97A11B6BADF4000958B7 /* da */,
-				DBFD97A31B6BAFAB000958B7 /* en */,
+				DB8518D11BA9996B0023B156 /* en */,
+				DB8518D51BA999AC0023B156 /* da */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

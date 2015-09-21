@@ -10,6 +10,7 @@
 #import "MyConnection.h"
 #import "Myuser.h"
 #import "SharedPreferences.h"
+#import "Contact.h"
 
 @implementation MyConnectionManager
 
@@ -159,6 +160,47 @@ static MyConnectionManager *mySharedManager;
                              </soap:Envelope>", user.phoneNumber, user.password, [NSString stringWithFormat:@"Version: %@ (%@)", appVersionString, appBuildString], 3];
     
     [conn sendMessageWithMethodName:@"Login" soapMessage:soapMessage];
+}
+
+-(void)requestAddContactsWithDelegate:(id)delegate selector:(SEL)selector{
+    MyConnection *conn = [[MyConnection alloc]init];
+    conn.delegate = delegate;
+    conn.selector = selector;
+    
+    Myuser *user = [Myuser sharedUser];
+    
+    NSArray *pom = [user.contactDictionary allValues];
+    NSMutableArray *contactArray = [[NSMutableArray alloc]init];
+    
+    for (NSArray *array in pom){
+        for (Contact *c in array)
+            [contactArray addObject:c];
+    }
+    
+    NSLog(@"contactArray %@", contactArray);
+    
+    Contact *contact = contactArray[0];
+    
+    NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
+                             <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
+                             <soap:Body> \
+                             <AddContacts xmlns=\"http://tempuri.org/\"> \
+                             <Phonenumber>%@</Phonenumber> \
+                             <password>%@</password> \
+                             <ContactsPhoneNumber>%@</ContactsPhoneNumber> \
+                             <Name>%@</Name> \
+                             <Noter>%@</Noter> \
+                             <Number>%@</Number> \
+                             <URL>%@</URL> \
+                             <Adress>%@</Adress> \
+                             <Birthsday>%@</Birthsday> \
+                             <pDate>%@</pDate> \
+                             <Favorites>%d</Favorites> \
+                             </AddContacts> \
+                             </soap:Body> \
+                             </soap:Envelope>", user.phoneNumber, user.password, contact.phoneNumber, @"", @"", @"", @"", @"", @"", @"2000-01-01T00:00:00", YES];
+    
+    [conn sendMessageWithMethodName:@"AddContacts" soapMessage:soapMessage];
 }
 
 @end

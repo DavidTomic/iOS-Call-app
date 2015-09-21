@@ -60,14 +60,6 @@
     [[DBManager sharedInstance]getAllDefaultTextsFromDb];
     
 }
-
-
--(void)tester:(NSDictionary *)dict{
-    NSLog(@"responseToCreateUser %@", dict);
-    
-}
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -107,16 +99,16 @@
     [self.emailUITextField setValue:[UIColor colorWithRed:157.0f/255 green:157.0f/255 blue:157.0f/255 alpha:1.0f]
                                forKeyPath:@"_placeholderLabel.textColor"];
 }
-- (void)observeKeyboard {
+-(void)observeKeyboard {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 -(void)showErrorAlert{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Warning" message:@"Please check your informations are correct" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", @"") message:NSLocalizedString(@"Please check your informations are correct", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
 }
 -(void)showLogInViews{
-    [self.confirmButton setTitle:@"LOG IN" forState:UIControlStateNormal];
+    [self.confirmButton setTitle:NSLocalizedString(@"LOG IN", nil) forState:UIControlStateNormal];
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.titleButton.titleLabel.text];
     [attributedString addAttribute:NSForegroundColorAttributeName
@@ -133,7 +125,7 @@
     }];
 }
 -(void)showSignUpViews{
-    [self.confirmButton setTitle:@"SIGN UP" forState:UIControlStateNormal];
+    [self.confirmButton setTitle:NSLocalizedString(@"SIGN UP", nil) forState:UIControlStateNormal];
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.titleButton.titleLabel.text];
     [attributedString addAttribute:NSForegroundColorAttributeName
@@ -216,7 +208,7 @@
     if (dict) {
         NSDictionary *pom1 = [[dict objectForKey:@"CreateAccountResponse"] objectForKey:@"CreateAccountResult"];
         
-        if ([[pom1 objectForKey:@"Result"] integerValue] == 1) {
+        if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
             Myuser *user = [Myuser sharedUser];
             user.phoneNumber = self.phoneNumberUITextField.text;
             user.password = self.passwordUITextField.text;
@@ -237,17 +229,16 @@
             
             user.language = language;
             
-            
             NSLog(@"language %d", user.language);
             
             [[SharedPreferences shared]saveUserData:user];
-            [user refreshContactList];
+            [[Myuser sharedUser] refreshContactList];
             
-            [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
+            [[MyConnectionManager sharedManager]requestAddContactsWithDelegate:self selector:@selector(responseToAddContacts:)];
             
             return;
         }else if ([[pom1 objectForKey:@"Result"] integerValue] == 0){
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Phone number already exists" message:@"Please change number or Log in with existng phone number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Phone number already exists", nil) message:NSLocalizedString(@"Please change number or Log in with existng phone number", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             return;
         }
@@ -311,6 +302,21 @@
     }
     
     [self showErrorAlert];
+}
+
+-(void)responseToAddContacts:(NSDictionary *)dict{
+    NSLog(@"responseToAddContacts %@", dict);
+    
+    if (dict) {
+        NSDictionary *pom1 = [[dict objectForKey:@"AddContactsResponse"] objectForKey:@"AddContactsResult"];
+        
+        if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
+            
+             [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
+        }else {
+            [self showErrorAlert];
+        }
+    }
 }
 
 @end

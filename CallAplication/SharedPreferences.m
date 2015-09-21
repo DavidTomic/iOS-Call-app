@@ -66,8 +66,17 @@ static SharedPreferences *sharedProperties;
     [myDefaults synchronize];
 }
 -(long long)getLastCallTime{
-    long long int time = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastCallTime"] longLongValue];
+    long long time = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastCallTime"] longLongValue];
     return time;
+}
+
+-(void)setLastContactsPhoneBookCount:(int)count{
+    [myDefaults  setObject:@(count) forKey:@"lastContactsPhoneBookCount"];
+    [myDefaults synchronize];
+}
+-(int)getLastContactsPhoneBookCount{
+    int count = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastContactsPhoneBookCount"] intValue];
+    return count;
 }
 
 @end

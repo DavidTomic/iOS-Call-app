@@ -150,7 +150,7 @@
     else
     {
         // Show an alert if "Appleseed" is not in Contacts
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
                                                         message:@"Could not find Appleseed in the Contacts application"
                                                        delegate:nil
                                               cancelButtonTitle:@"Cancel"

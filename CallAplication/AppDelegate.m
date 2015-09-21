@@ -150,10 +150,10 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application {
   //   NSLog(@"applicationWillEnterForeground");
     
-    Myuser *user = [Myuser sharedUser];
-    if (user!=nil && user.logedIn) {
-        [user refreshContactList];
-    }
+//    Myuser *user = [Myuser sharedUser];
+//    if (user!=nil && user.logedIn) {
+//        [user refreshContactList];
+//    }
     
     [Myuser sharedUser].lastDialedPhoneNumber = nil;
     [Myuser sharedUser].lastDialedRecordId = 0;

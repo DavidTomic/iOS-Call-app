@@ -18,4 +18,8 @@
 
 -(void)setLastCallTime:(long long)time;
 -(long long)getLastCallTime;
+
+-(void)setLastContactsPhoneBookCount:(int)count;
+-(int)getLastContactsPhoneBookCount;
+
 @end

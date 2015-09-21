@@ -21,5 +21,6 @@
 -(void)requestStatusInfoWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestDefaultTextsWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestLogInWithDelegate:(id)delegate selector:(SEL)selector;
+-(void)requestAddContactsWithDelegate:(id)delegate selector:(SEL)selector;
 
 @end

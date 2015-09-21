@@ -51,12 +51,10 @@
 - (void)applicationDidBecomeActiveNotification {
     NSLog(@"applicationDidBecomeActiveNotification...");
     [self requsetStatusInfo];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:180.0f target:self selector:@selector(onTick:) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1000*60*3) target:self selector:@selector(onTick:) userInfo:nil repeats:YES];
     
     if ([InternetStatus isNetworkAvailable]) {
-        
-    }else{
-           [[MyConnectionManager sharedManager]requestLogInWithDelegate:self selector:@selector(responseToLogIn:)];
+        [[MyConnectionManager sharedManager]requestLogInWithDelegate:self selector:@selector(responseToLogIn:)];
     }
  
 }
@@ -91,8 +89,10 @@
 -(void)refreshCheckPhoneNumbers{
     
 }
+
+
 -(void)showErrorAlert{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Warning" message:@"Please check your informations are correct" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", nil) message:NSLocalizedString(@"Please check your informations are correct", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
 }
 

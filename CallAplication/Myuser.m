@@ -40,6 +40,7 @@ static Myuser *myUser;
     return _contactDictionary;
 }
 
+
 -(void)refreshContactList{
     self.contactDictionary = nil;
     
@@ -157,9 +158,8 @@ static Myuser *myUser;
                                                                //    NSLog(@"setObject lettersArray %@", lettersArray[i]);
                                                              [self.contactDictionary setObject:pom forKey:lettersArray[i]];
                                                          }
-                                                         
-                                                     //     NSLog(@"contactList.count %d", self.contactDictionary.count);
-                                                         
+                                                     
+                                                         [[SharedPreferences shared]setLastContactsPhoneBookCount:personArray.count];
                                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"ContactListReloaded"
                                                                                                              object:self];
 

@@ -242,7 +242,7 @@
         [super setEditing:NO animated:NO];
         [self.tableView setEditing:NO animated:NO];
         [self.tableView reloadData];
-        [self.navigationItem.rightBarButtonItem setTitle:@"Edit"];
+        [self.navigationItem.rightBarButtonItem setTitle:NSLocalizedString(@"Edit", nil)];
         [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStylePlain];
     }
     else
@@ -250,7 +250,7 @@
         [super setEditing:YES animated:YES];
         [self.tableView setEditing:YES animated:YES];
         [self.tableView reloadData];
-        [self.navigationItem.rightBarButtonItem setTitle:@"Done"];
+        [self.navigationItem.rightBarButtonItem setTitle:NSLocalizedString(@"Done", nil)];
         [self.navigationItem.rightBarButtonItem setStyle:UIBarButtonItemStyleDone];
         [self reloadData];
     }
