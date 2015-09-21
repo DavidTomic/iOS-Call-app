@@ -19,7 +19,7 @@
 -(void)setLastCallTime:(long long)time;
 -(long long)getLastCallTime;
 
--(void)setLastContactsPhoneBookCount:(int)count;
--(int)getLastContactsPhoneBookCount;
+-(void)setLastContactsPhoneBookCount:(NSInteger)count;
+-(NSInteger)getLastContactsPhoneBookCount;
 
 @end

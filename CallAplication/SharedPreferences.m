@@ -70,12 +70,12 @@ static SharedPreferences *sharedProperties;
     return time;
 }
 
--(void)setLastContactsPhoneBookCount:(int)count{
+-(void)setLastContactsPhoneBookCount:(NSInteger)count{
     [myDefaults  setObject:@(count) forKey:@"lastContactsPhoneBookCount"];
     [myDefaults synchronize];
 }
--(int)getLastContactsPhoneBookCount{
-    int count = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastContactsPhoneBookCount"] intValue];
+-(NSInteger)getLastContactsPhoneBookCount{
+    NSInteger count = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastContactsPhoneBookCount"] integerValue];
     return count;
 }
 

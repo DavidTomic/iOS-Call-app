@@ -24,7 +24,7 @@
 
 
 @property (nonatomic, strong) NSMutableDictionary *contactDictionary;
-
+@property (nonatomic, strong) NSMutableArray *checkPhoneNumberArray;
 
 
 

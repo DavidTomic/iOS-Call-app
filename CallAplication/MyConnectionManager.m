@@ -162,6 +162,7 @@ static MyConnectionManager *mySharedManager;
     [conn sendMessageWithMethodName:@"Login" soapMessage:soapMessage];
 }
 
+
 -(void)requestAddContactsWithDelegate:(id)delegate selector:(SEL)selector{
     MyConnection *conn = [[MyConnection alloc]init];
     conn.delegate = delegate;
@@ -201,6 +202,90 @@ static MyConnectionManager *mySharedManager;
                              </soap:Envelope>", user.phoneNumber, user.password, contact.phoneNumber, @"", @"", @"", @"", @"", @"", @"2000-01-01T00:00:00", YES];
     
     [conn sendMessageWithMethodName:@"AddContacts" soapMessage:soapMessage];
+}
+
+-(void)requestAddMultipleContactsWithDelegate:(id)delegate selector:(SEL)selector{
+    MyConnection *conn = [[MyConnection alloc]init];
+    conn.delegate = delegate;
+    conn.selector = selector;
+    
+    Myuser *user = [Myuser sharedUser];
+    
+    NSArray *pom = [user.contactDictionary allValues];
+    NSMutableString *contactsString = [[NSMutableString alloc]init];
+    
+    for (NSArray *array in pom){
+        for (Contact *c in array){
+            [contactsString appendString:@"<csContacts>"];
+            
+            [contactsString appendString:[NSString stringWithFormat:@"<Phonenumber>%@</Phonenumber>", c.phoneNumber]];
+            [contactsString appendString:[NSString stringWithFormat:@"<Name>%@ %@</Name>", c.firstName, c.lastName]];
+            [contactsString appendString:[NSString stringWithFormat:@"<Noter>%@</Noter>", @""]];
+            [contactsString appendString:[NSString stringWithFormat:@"<Number>%@</Number>", @""]];
+            [contactsString appendString:[NSString stringWithFormat:@"<URL>%@</URL>", @""]];
+            [contactsString appendString:[NSString stringWithFormat:@"<Adress>%@</Adress>", @""]];
+            [contactsString appendString:[NSString stringWithFormat:@"<Birthsday>%@</Birthsday>", @"2000-01-01T00:00:00"]];
+            [contactsString appendString:[NSString stringWithFormat:@"<pDate>%@</pDate>", @"2000-01-01T00:00:00"]];
+            [contactsString appendString:[NSString stringWithFormat:@"<Favorites>%d</Favorites>", c.favorit]];
+            
+            [contactsString appendString:@"</csContacts>"];
+        }
+    }
+    
+   
+    
+    NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
+                             <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
+                             <soap:Body> \
+                             <AddMultiContacts xmlns=\"http://tempuri.org/\"> \
+                             <Phonenumber>%@</Phonenumber> \
+                             <password>%@</password> \
+                                <Contacts> \
+                                    %@ \
+                                </Contacts> \
+                             </AddMultiContacts> \
+                             </soap:Body> \
+                             </soap:Envelope>", user.phoneNumber, user.password, contactsString];
+    
+   //  NSLog(@"soapMessage %@", soapMessage);
+
+    
+    [conn sendMessageWithMethodName:@"AddMultiContacts" soapMessage:soapMessage];
+    
+}
+
+-(void)requestCheckPhoneNumbers:(id)delegate selector:(SEL)selector{
+    MyConnection *conn = [[MyConnection alloc]init];
+    conn.delegate = delegate;
+    conn.selector = selector;
+    
+    Myuser *user = [Myuser sharedUser];
+    
+    NSArray *pom = [user.contactDictionary allValues];
+    NSMutableString *numbersString = [[NSMutableString alloc]init];
+    
+    for (NSArray *array in pom){
+        for (Contact *c in array){
+            [numbersString appendString:[NSString stringWithFormat:@"<string>%@</string>", c.phoneNumber]];
+        }
+    }
+    NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
+                             <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
+                             <soap:Body> \
+                             <CheckPhoneNumbers xmlns=\"http://tempuri.org/\"> \
+                             <Phonenumber>%@</Phonenumber> \
+                             <password>%@</password> \
+                             <PhoneNumbers> \
+                                %@ \
+                             </PhoneNumbers> \
+                             </CheckPhoneNumbers> \
+                             </soap:Body> \
+                             </soap:Envelope>", user.phoneNumber, user.password, numbersString];
+    
+      NSLog(@"soapMessage %@", soapMessage);
+    
+    
+    [conn sendMessageWithMethodName:@"CheckPhoneNumbers" soapMessage:soapMessage];
 }
 
 @end

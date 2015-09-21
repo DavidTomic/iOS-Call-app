@@ -73,7 +73,6 @@
                                                object:nil];
     
 }
-
 -(void)receiveContactListReloadedNotification:(NSNotification *)notification{
     NSLog(@"receiveContactListReloadedNotification");
     [self reloadData];
@@ -120,6 +119,15 @@
     [super viewDidAppear:animated];
     self.navView.hidden = NO;
 }
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    CGRect frame = self.tableView.tableHeaderView.frame;
+    frame.size.height = 44;
+    UILabel *headerView = [[UILabel alloc] initWithFrame:frame];
+    [headerView setText:[NSString stringWithFormat:@"   %@: %@", NSLocalizedString(@"My number", nil), [Myuser sharedUser].phoneNumber]];
+    [self.tableView setTableHeaderView:headerView];
+}
 
 //my methods
 -(void)reloadData{
@@ -142,12 +150,18 @@
     [self presentViewController:navigation animated:YES completion:nil];
     
 }
+- (IBAction)yellowStatusTapped:(UITapGestureRecognizer *)sender {
+}
+- (IBAction)redStatusTapped:(UITapGestureRecognizer *)sender {
+}
+- (IBAction)greenStatusTapped:(UITapGestureRecognizer *)sender {
+}
 
 //delegate methods
 #pragma mark UITableViewDelegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    int count = 0;
+    NSInteger count = 0;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
    
             count = 1;

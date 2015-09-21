@@ -28,6 +28,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    [Myuser sharedUser];
+    
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:234/255.0f green:234/255.0f blue:234/255.0f alpha:1.0f]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
     [self.window setTintColor:[UIColor colorWithRed:0/255.0f green:93/255.0f blue:193/255.0f alpha:1.0f]];
@@ -113,7 +115,6 @@
     
     Myuser *user = [Myuser sharedUser];
     if (user!=nil && user.logedIn) {
-        [user refreshContactList];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UIViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"tab bar"];
         self.window.rootViewController = rootViewController;

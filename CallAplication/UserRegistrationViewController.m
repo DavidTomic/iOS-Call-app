@@ -212,29 +212,8 @@
             Myuser *user = [Myuser sharedUser];
             user.phoneNumber = self.phoneNumberUITextField.text;
             user.password = self.passwordUITextField.text;
-            user.name = self.nameUITextField.text;
-            user.email = self.emailUITextField.text;
-            user.logedIn = YES;
-
-            NSString *lCode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0];
-            enum Language language;
             
-            if ([lCode isEqualToString:@"en"]) {
-                language = English;
-            }else if ([lCode isEqualToString:@"da"]){
-                language = Danish;
-            }else{
-                language = Default;
-            }
-            
-            user.language = language;
-            
-            NSLog(@"language %d", user.language);
-            
-            [[SharedPreferences shared]saveUserData:user];
-            [[Myuser sharedUser] refreshContactList];
-            
-            [[MyConnectionManager sharedManager]requestAddContactsWithDelegate:self selector:@selector(responseToAddContacts:)];
+            [[MyConnectionManager sharedManager]requestAddMultipleContactsWithDelegate:self selector:@selector(responseToAddMultipleContacts:)];
             
             return;
         }else if ([[pom1 objectForKey:@"Result"] integerValue] == 0){
@@ -277,7 +256,7 @@
             
             user.language = language;
             
-            NSLog(@"language %d", user.language);
+            NSLog(@"language %u", user.language);
             [[SharedPreferences shared]saveUserData:user];
             
             
@@ -290,11 +269,6 @@
                 }
             }
             
-            
-            
-            
-            [user refreshContactList];
-            
             [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
             
             return;
@@ -304,18 +278,44 @@
     [self showErrorAlert];
 }
 
--(void)responseToAddContacts:(NSDictionary *)dict{
-    NSLog(@"responseToAddContacts %@", dict);
+-(void)responseToAddMultipleContacts:(NSDictionary *)dict{
+    NSLog(@"responseToAddMultipleContacts %@", dict);
     
     if (dict) {
-        NSDictionary *pom1 = [[dict objectForKey:@"AddContactsResponse"] objectForKey:@"AddContactsResult"];
+        NSDictionary *pom1 = [[dict objectForKey:@"AddMultiContactsResponse"] objectForKey:@"AddMultiContactsResult"];
         
         if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
             
-             [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
+            Myuser *user = [Myuser sharedUser];
+            user.phoneNumber = self.phoneNumberUITextField.text;
+            user.password = self.passwordUITextField.text;
+            user.name = self.nameUITextField.text;
+            user.email = self.emailUITextField.text;
+            user.logedIn = YES;
+            
+            NSString *lCode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0];
+            enum Language language;
+            
+            if ([lCode isEqualToString:@"en"]) {
+                language = English;
+            }else if ([lCode isEqualToString:@"da"]){
+                language = Danish;
+            }else{
+                language = English;
+            }
+            
+            user.language = language;
+            
+            NSLog(@"language %u", user.language);
+            
+            [[SharedPreferences shared]saveUserData:user];
+            
+            [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
         }else {
             [self showErrorAlert];
         }
+    }else {
+        [self showErrorAlert];
     }
 }
 

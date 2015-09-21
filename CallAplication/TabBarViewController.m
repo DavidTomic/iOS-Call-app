@@ -51,11 +51,13 @@
 - (void)applicationDidBecomeActiveNotification {
     NSLog(@"applicationDidBecomeActiveNotification...");
     [self requsetStatusInfo];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:(1000*60*3) target:self selector:@selector(onTick:) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:(5) target:self selector:@selector(onTick:) userInfo:nil repeats:YES];
     
     if ([InternetStatus isNetworkAvailable]) {
         [[MyConnectionManager sharedManager]requestLogInWithDelegate:self selector:@selector(responseToLogIn:)];
     }
+    
+    [self refreshCheckPhoneNumbers];
  
 }
 - (void)viewWillLayoutSubviews
@@ -75,7 +77,9 @@
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"viewWillAppear");
+}
 
 //my methods
 -(void)onTick:(NSTimer*)timer
@@ -86,8 +90,11 @@
 -(void)requsetStatusInfo{
         [[MyConnectionManager sharedManager]requestStatusInfoWithDelegate:self selector:@selector(responseToRequestStatusInfo:)];
 }
+
+
 -(void)refreshCheckPhoneNumbers{
     
+    [[MyConnectionManager sharedManager] requestCheckPhoneNumbers:self selector:@selector(responseCheckPhoneNumbers:)];
 }
 
 
@@ -105,6 +112,15 @@
 }
 -(void)responseToLogIn:(NSDictionary *)dict{
     NSLog(@"responseToLogIn %@", dict);
+}
+-(void)responseCheckPhoneNumbers:(NSDictionary *)dict{
+    NSLog(@"responseCheckPhoneNumbers %@", dict);
+    
+    if (dict) {
+        NSMutableArray *array = [Myuser sharedUser].checkPhoneNumberArray;
+        [array removeAllObjects];
+        
+    }
 }
 
 
