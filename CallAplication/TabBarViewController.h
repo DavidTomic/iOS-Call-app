@@ -10,6 +10,8 @@
 
 @interface TabBarViewController : UITabBarController
 
--(void)refreshCheckPhoneNumbers;
+@property (nonatomic) BOOL cameFromRegistration;
 
+-(void)refreshCheckPhoneNumbers;
+-(void)checkAndUpdateAllContact;
 @end

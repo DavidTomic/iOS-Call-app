@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MyStatus.h"
 
 @interface MyConnectionManager : NSObject
 
@@ -24,6 +25,7 @@
 -(void)requestLogInWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestAddContactsWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestAddMultipleContactsWithDelegate:(id)delegate selector:(SEL)selector;
--(void)requestCheckPhoneNumbers:(id)delegate selector:(SEL)selector;
+-(void)requestCheckPhoneNumbersWithDelegate:(id)delegate selector:(SEL)selector;
+-(void)requestUpdateStatusWithDelegate:(id)delegate selector:(SEL)selector;
 
 @end

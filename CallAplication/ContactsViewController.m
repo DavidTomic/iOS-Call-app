@@ -13,6 +13,9 @@
 #import "ContactDetailViewController.h"
 #import "Myuser.h"
 #import "ContactsTableViewCell.h"
+#import "TabBarViewController.h"
+#import "SharedPreferences.h"
+#import "MyConnectionManager.h"
 
 @interface ContactsViewController()<UITableViewDataSource, UITableViewDelegate, ABNewPersonViewControllerDelegate,UISearchBarDelegate, UISearchDisplayDelegate>
 
@@ -23,6 +26,9 @@
 @property (nonatomic, strong) UIView *navView;
 
 @property (strong,nonatomic) NSMutableArray *filteredContactArray;
+@property (weak, nonatomic) IBOutlet UIImageView *redCircle;
+@property (weak, nonatomic) IBOutlet UIImageView *yellowCircle;
+@property (weak, nonatomic) IBOutlet UIImageView *greenCircle;
 
 @end
 
@@ -71,12 +77,21 @@
                                              selector:@selector(receiveContactListReloadedNotification:)
                                                  name:@"ContactListReloaded"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveRefreshStatusNotification:)
+                                                 name:@"RefreshStatus"
+                                               object:nil];
     
 }
 -(void)receiveContactListReloadedNotification:(NSNotification *)notification{
-    NSLog(@"receiveContactListReloadedNotification");
+   // NSLog(@"receiveContactListReloadedNotification");
     [self reloadData];
 }
+-(void)receiveRefreshStatusNotification:(NSNotification *)notification{
+   // NSLog(@"receiveRefreshStatusNotification");
+    [self reloadData];
+}
+
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -127,6 +142,8 @@
     UILabel *headerView = [[UILabel alloc] initWithFrame:frame];
     [headerView setText:[NSString stringWithFormat:@"   %@: %@", NSLocalizedString(@"My number", nil), [Myuser sharedUser].phoneNumber]];
     [self.tableView setTableHeaderView:headerView];
+    
+    [self refreshMyStatusUI];
 }
 
 //my methods
@@ -137,8 +154,45 @@
     
     [self.tableView reloadData];
 }
--(void)statusTapped:(UITapGestureRecognizer *)tapRecognizer{
-    NSLog(@"status tapped");
+-(void)refreshMyStatusUI{
+
+    [self setMyStatusCircles];
+}
+-(void)setMyStatusCircles{
+    
+    Status status = [Myuser sharedUser].status;
+    
+    switch (status) {
+        case Red_status:
+            [self.redCircle setHighlighted:YES];
+            [self.yellowCircle setHighlighted:NO];
+            [self.greenCircle setHighlighted:NO];
+            break;
+        case Green_status:
+            [self.redCircle setHighlighted:NO];
+            [self.yellowCircle setHighlighted:NO];
+            [self.greenCircle setHighlighted:YES];
+            break;
+        case Yellow_status:
+            [self.redCircle setHighlighted:NO];
+            [self.yellowCircle setHighlighted:YES];
+            [self.greenCircle setHighlighted:NO];
+            break;
+        default:
+            [self.redCircle setHighlighted:NO];
+            [self.yellowCircle setHighlighted:NO];
+            [self.greenCircle setHighlighted:YES];
+            
+            [Myuser sharedUser].status = Green_status;
+            [[MyConnectionManager sharedManager]requestUpdateStatusWithDelegate:self selector:@selector(responseToUpdateStatus:)];
+            
+            break;
+    }
+}
+-(void)changeMyStatusTo:(Status)status{
+    [Myuser sharedUser].status = status;
+    [[MyConnectionManager sharedManager]requestUpdateStatusWithDelegate:self selector:@selector(responseToUpdateStatus:)];
+    [self setMyStatusCircles];
 }
 
 //IBAction methods
@@ -151,10 +205,26 @@
     
 }
 - (IBAction)yellowStatusTapped:(UITapGestureRecognizer *)sender {
+    [self changeMyStatusTo:Yellow_status];
 }
 - (IBAction)redStatusTapped:(UITapGestureRecognizer *)sender {
+    [self changeMyStatusTo:Red_status];
 }
 - (IBAction)greenStatusTapped:(UITapGestureRecognizer *)sender {
+    [self changeMyStatusTo:Green_status];
+}
+
+//response methods
+-(void)responseToUpdateStatus:(NSDictionary *)dict{
+     NSLog(@"responseToUpdateStatus %@", dict);
+    if (dict) {
+        NSDictionary *pom1 = [[dict objectForKey:@"UpdateStatusResponse"] objectForKey:@"UpdateStatusResult"];
+        
+        if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
+            [[SharedPreferences shared]saveUserData:[Myuser sharedUser]];
+        }
+        
+    }
 }
 
 //delegate methods
@@ -275,11 +345,11 @@
     }
     
 
-    Contact *person = nil;
+    Contact *contact = nil;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         
       //  NSLog(@"COUNT %d", self.filteredContactArray.count);
-        person = [self.filteredContactArray objectAtIndex:indexPath.row];
+        contact = [self.filteredContactArray objectAtIndex:indexPath.row];
         
         cell.backgroundColor = [UIColor clearColor];
     } else {
@@ -290,43 +360,49 @@
         NSString *key = keys[indexPath.section];
         
         
-        person = [self.data objectForKey:key][indexPath.row];
+        contact = [self.data objectForKey:key][indexPath.row];
         
     }
     
-    NSString *text = person.firstName;
-    if (person.lastName) {
-        text = [NSString stringWithFormat:@"%@ %@", person.firstName, person.lastName];
+    NSString *text = contact.firstName;
+    if (contact.lastName) {
+        text = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
     }
     // [cell.textLabel setTextColor:[UIColor colorWithRed:242/255.0f green:242/255.0f blue:242/255.0f alpha:1.0f]];
     cell.name.text = text;
-    cell.statusText.text = @"";
+    cell.statusText.text = contact.statusText;
     
-    NSLog(@"person.status %d", person.status);
+    NSLog(@"person.status %d", contact.status);
     
-    [cell.statusRed setHighlighted:YES];
-    
-//    switch (person.status) {
-//        case 0:
-//            [cell.status setBackgroundColor:[UIColor grayColor]];
-//            break;
-//        case 1:
-//            [cell.status setBackgroundColor:[UIColor redColor]];
-//            break;
-//        case 2:
-//            [cell.status setBackgroundColor:[UIColor yellowColor]];
-//            break;
-//        case 3:
-//            [cell.status setBackgroundColor:[UIColor greenColor]];
-//            break;
-//            
-//        default:
-//            [cell.status setBackgroundColor:[UIColor grayColor]];
-//            break;
-//    }
+    switch (contact.status) {
+        case Red_status:
+            [cell.redStatus setSelected:YES];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:NO];
+            break;
+        case Green_status:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:YES];
+            [cell.yellowStatus setSelected:NO];
+            break;
+        case Yellow_status:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:YES];
+            break;
+        case On_phone:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:NO];
+            break;
+            
+        default:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:NO];
+            break;
+    }
 
-    
-    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -345,7 +421,8 @@
     if (person != nil)  //nil = Cancel button clicked
     {
         NSLog(@"person %@", person);
-        [self.myUser refreshContactList];
+        [[SharedPreferences shared]setLastCallTime:0];
+        [(TabBarViewController *)self.tabBarController checkAndUpdateAllContact];
     }
     [self dismissViewControllerAnimated:YES completion:NULL];
 }

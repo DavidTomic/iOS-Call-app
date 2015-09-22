@@ -19,4 +19,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *infoButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceDateLabelConstraint;
 
+@property (weak, nonatomic) IBOutlet UIButton *redStatus;
+@property (weak, nonatomic) IBOutlet UIButton *yellowStatus;
+@property (weak, nonatomic) IBOutlet UIButton *greenStatus;
+
 @end

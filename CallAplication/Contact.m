@@ -22,7 +22,7 @@
     c.timestamp = self.timestamp;
     c.status = self.status;
     c.statusText = self.statusText;
-    c.endTime = self.endTime;
+  //  c.endTime = self.endTime;
     return c;
 }
 

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MyLanguage.h"
+#import "MyStatus.h"
 
 @interface Myuser : NSObject
 
@@ -18,10 +19,14 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *email;
 @property (nonatomic) Language language;
-@property (nonatomic, strong) NSString *defaultText;
 @property (nonatomic) BOOL logedIn;
 
+@property (nonatomic) Status status;
+@property (nonatomic, strong) NSString *statusText;
 
+@property (nonatomic, strong) NSString *smsInviteText;
+@property (nonatomic, strong) NSString *statusStartTime;
+@property (nonatomic, strong) NSString *statusEndTime;
 
 @property (nonatomic, strong) NSMutableDictionary *contactDictionary;
 @property (nonatomic, strong) NSMutableArray *checkPhoneNumberArray;
@@ -31,5 +36,4 @@
 @property (nonatomic) int lastDialedRecordId;
 @property (nonatomic, strong) NSString *lastDialedPhoneNumber;
 
--(void)refreshContactList;
 @end

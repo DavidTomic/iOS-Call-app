@@ -22,4 +22,7 @@
 -(void)setLastContactsPhoneBookCount:(NSInteger)count;
 -(NSInteger)getLastContactsPhoneBookCount;
 
+-(void)setVoiceMailNumber:(NSString *)number;
+-(NSString *)getVoiceMailNumber;
+
 @end

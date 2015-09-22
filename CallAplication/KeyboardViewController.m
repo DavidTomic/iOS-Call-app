@@ -22,8 +22,8 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    NSLog(@"W %f", self.view.bounds.size.width);
-    NSLog(@"H %f", self.view.bounds.size.height);
+//    NSLog(@"W %f", self.view.bounds.size.width);
+//    NSLog(@"H %f", self.view.bounds.size.height);
   //  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"wallpaper"]];
     
     self.view.backgroundColor = [UIColor whiteColor];

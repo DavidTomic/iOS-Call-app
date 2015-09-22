@@ -139,7 +139,7 @@
     
     if (people)
     {
-        [[Myuser sharedUser] refreshContactList];
+      //  [[Myuser sharedUser] refreshContactList];
         ABPersonViewController *personViewController = [[ABPersonViewController alloc] init];
         personViewController.personViewDelegate = self;
         personViewController.displayedPerson = people;

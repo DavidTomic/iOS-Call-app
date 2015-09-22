@@ -11,6 +11,7 @@
 #import "Myuser.h"
 #import "SharedPreferences.h"
 #import "DBManager.h"
+#import "TabBarViewController.h"
 
 #define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
 #define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
@@ -63,6 +64,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if ([segue.identifier isEqualToString:@"mainControllerSegue"]) {
+        TabBarViewController *destinationVC = segue.destinationViewController;
+        destinationVC.cameFromRegistration = YES;
+    }
 }
 
 //my methods
@@ -226,7 +233,7 @@
     [self showErrorAlert];
 }
 -(void)responseToGetAcountSetupWithDelegate:(NSDictionary *)dict{
-    NSLog(@"responseToLogIn %@", dict);
+    NSLog(@"responseToGetAcountSetupWithDelegate %@", dict);
     
     if (dict) {
         NSDictionary *pom1 = [[dict objectForKey:@"GetAccountSetupResponse"] objectForKey:@"GetAccountSetupResult"];
@@ -277,7 +284,6 @@
     
     [self showErrorAlert];
 }
-
 -(void)responseToAddMultipleContacts:(NSDictionary *)dict{
     NSLog(@"responseToAddMultipleContacts %@", dict);
     
@@ -309,6 +315,14 @@
             NSLog(@"language %u", user.language);
             
             [[SharedPreferences shared]saveUserData:user];
+            
+            int count = 0;
+            NSArray *pom = [user.contactDictionary allValues];
+            for (NSArray *array in pom){
+                count += array.count;
+            }
+            
+            [[SharedPreferences shared]setLastContactsPhoneBookCount:count];
             
             [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
         }else {

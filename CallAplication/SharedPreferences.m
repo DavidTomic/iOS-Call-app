@@ -37,15 +37,19 @@ static SharedPreferences *sharedProperties;
 
 -(void)saveUserData:(Myuser *)user{
     
-    NSLog(@"phoneNumber %@", user.phoneNumber);
+   // NSLog(@"phoneNumber %@", user.phoneNumber);
     
     [myDefaults setObject:user.phoneNumber forKey:@"phoneNumber"];
     [myDefaults setObject:user.password forKey:@"password"];
     [myDefaults setObject:user.name forKey:@"name"];
     [myDefaults setObject:user.email forKey:@"email"];
     [myDefaults setInteger:user.language forKey:@"language"];
-    [myDefaults setObject:user.defaultText forKey:@"defaultText"];
+    [myDefaults setObject:user.statusText forKey:@"statusText"];
     [myDefaults setBool:user.logedIn forKey:@"logedIn"];
+    [myDefaults setInteger:user.status forKey:@"status"];
+    [myDefaults setObject:user.smsInviteText forKey:@"smsInviteText"];
+    [myDefaults setObject:user.statusStartTime forKey:@"statusStartTime"];
+    [myDefaults setObject:user.statusEndTime forKey:@"statusEndTime"];
     [myDefaults synchronize];
 }
 
@@ -56,9 +60,12 @@ static SharedPreferences *sharedProperties;
     user.name = [myDefaults objectForKey:@"name"];
     user.email = [myDefaults objectForKey:@"email"];
     user.language = [myDefaults integerForKey:@"language"];
-    user.defaultText = [myDefaults objectForKey:@"defaultText"];
+    user.statusText = [myDefaults objectForKey:@"statusText"];
     user.logedIn = [myDefaults boolForKey:@"logedIn"];
-    
+    user.status = [myDefaults integerForKey:@"status"];
+    user.smsInviteText = [myDefaults objectForKey:@"smsInviteText"];
+    user.statusStartTime = [myDefaults objectForKey:@"statusStartTime"];
+    user.statusEndTime = [myDefaults objectForKey:@"statusEndTime"];
 }
 
 -(void)setLastCallTime:(long long)time {
@@ -66,7 +73,7 @@ static SharedPreferences *sharedProperties;
     [myDefaults synchronize];
 }
 -(long long)getLastCallTime{
-    long long time = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastCallTime"] longLongValue];
+    long long time = [[myDefaults objectForKey:@"lastCallTime"] longLongValue];
     return time;
 }
 
@@ -75,8 +82,17 @@ static SharedPreferences *sharedProperties;
     [myDefaults synchronize];
 }
 -(NSInteger)getLastContactsPhoneBookCount{
-    NSInteger count = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastContactsPhoneBookCount"] integerValue];
+    NSInteger count = [[myDefaults objectForKey:@"lastContactsPhoneBookCount"] integerValue];
     return count;
+}
+
+-(void)setVoiceMailNumber:(NSString *)number {
+    [myDefaults  setObject:number forKey:@"voiceMailNumber"];
+    [myDefaults synchronize];
+}
+-(NSString *)getVoiceMailNumber{
+    NSString *number = [myDefaults objectForKey:@"voiceMailNumber"];
+    return number;
 }
 
 @end

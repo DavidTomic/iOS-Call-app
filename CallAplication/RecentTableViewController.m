@@ -54,6 +54,11 @@
                                              selector:@selector(receiveContactListReloadedNotification:)
                                                  name:@"ContactListReloaded"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveRefreshStatusNotification:)
+                                                 name:@"RefreshStatus"
+                                               object:nil];
+    
 }
 -(NSMutableArray *)recentContacts{
     
@@ -65,6 +70,10 @@
     //    NSLog(@"COUNT %lu", (unsigned long)[Myuser sharedUser].contactDictionary.count);
     [self reloadData];
     
+}
+-(void)receiveRefreshStatusNotification:(NSNotification *)notification{
+   // NSLog(@"receiveRefreshStatusNotification");
+    [self reloadData];
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -81,11 +90,14 @@
 -(void)statusTapped:(UITapGestureRecognizer *)tapRecognizer{
     NSLog(@"status tapped");
 }
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
 
 -(void)reloadData{
     NSArray *contactArray = [[Myuser sharedUser].contactDictionary allValues];
     NSArray *recentCallArray = [[DBManager sharedInstance]getAllContactDataFromRecentTable];
-    NSLog(@"recentCallArray %@",recentCallArray);
+   // NSLog(@"recentCallArray %@",recentCallArray);
     self.recentContacts = nil;
     
     for (NSArray *pomArray1 in contactArray){
@@ -168,31 +180,41 @@
     }else{
         cell.nameLabel.text = contact.phoneNumber;
     }
-    cell.statusTextLabel.text = @"hello this is my status";
+    cell.statusTextLabel.text = contact.statusText;
     NSDateFormatter *objDateFormatter = [[NSDateFormatter alloc] init];
     [objDateFormatter setDateFormat:@"dd-MM-yyyy"];
     
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:contact.timestamp/1000.0f];
     cell.dateLabel.text =[objDateFormatter stringFromDate:date];
     
-//    switch (contact.status) {
-//        case 0:
-//            [cell.status setBackgroundColor:[UIColor grayColor]];
-//            break;
-//        case 1:
-//            [cell.status setBackgroundColor:[UIColor redColor]];
-//            break;
-//        case 2:
-//            [cell.status setBackgroundColor:[UIColor yellowColor]];
-//            break;
-//        case 3:
-//            [cell.status setBackgroundColor:[UIColor greenColor]];
-//            break;
-//            
-//        default:
-//            [cell.status setBackgroundColor:[UIColor grayColor]];
-//            break;
-//    }
+    switch (contact.status) {
+        case Red_status:
+            [cell.redStatus setSelected:YES];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:NO];
+            break;
+        case Green_status:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:YES];
+            [cell.yellowStatus setSelected:NO];
+            break;
+        case Yellow_status:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:YES];
+            break;
+        case On_phone:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:NO];
+            break;
+            
+        default:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:NO];
+            break;
+    }
     
     return cell;
     

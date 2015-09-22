@@ -24,6 +24,7 @@ NSString *const urlString = @"http://call.celox.dk/wsCall.asmx";
 
 - (void)sendMessageWithMethodName:(NSString *)methodName soapMessage:(NSString *)soapMessage
 {
+    NSLog(@"sendMessageWithMethodName %@", methodName);
     
     NSString *msgLength = [NSString stringWithFormat:@"%lu", (unsigned long)[soapMessage length]];
     NSURL *pomUrl = [NSURL URLWithString:urlString];

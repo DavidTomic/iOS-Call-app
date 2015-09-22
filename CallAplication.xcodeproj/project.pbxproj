@@ -21,6 +21,8 @@
 		DB291BC71B662D810028C022 /* FavoritesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BC61B662D810028C022 /* FavoritesTableViewController.m */; };
 		DB291BCA1B66335F0028C022 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BC91B66335F0028C022 /* KeyboardViewController.m */; };
 		DB291BCD1B665F2C0028C022 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BCC1B665F2C0028C022 /* SettingsViewController.m */; };
+		DB4645AA1BB13B5200ABF6A8 /* MyStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4645A91BB13B5200ABF6A8 /* MyStatus.m */; };
+		DB4645AD1BB193EA00ABF6A8 /* VoiceMailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4645AC1BB193EA00ABF6A8 /* VoiceMailViewController.m */; };
 		DB490EBD1B7499B60063CBE9 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DB490EBC1B7499B60063CBE9 /* libsqlite3.dylib */; };
 		DB490EBF1B74A0BC0063CBE9 /* UpgradeDatabaseExample.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB490EBE1B74A0BC0063CBE9 /* UpgradeDatabaseExample.plist */; };
 		DB490EC11B74A8320063CBE9 /* UpgradeDatabase.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB490EC01B74A8320063CBE9 /* UpgradeDatabase.plist */; };
@@ -85,6 +87,10 @@
 		DB291BC91B66335F0028C022 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
 		DB291BCB1B665F2C0028C022 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		DB291BCC1B665F2C0028C022 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		DB4645A81BB13B5200ABF6A8 /* MyStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyStatus.h; sourceTree = "<group>"; };
+		DB4645A91BB13B5200ABF6A8 /* MyStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyStatus.m; sourceTree = "<group>"; };
+		DB4645AB1BB193EA00ABF6A8 /* VoiceMailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceMailViewController.h; sourceTree = "<group>"; };
+		DB4645AC1BB193EA00ABF6A8 /* VoiceMailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoiceMailViewController.m; sourceTree = "<group>"; };
 		DB490EBC1B7499B60063CBE9 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		DB490EBE1B74A0BC0063CBE9 /* UpgradeDatabaseExample.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UpgradeDatabaseExample.plist; sourceTree = "<group>"; };
 		DB490EC01B74A8320063CBE9 /* UpgradeDatabase.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UpgradeDatabase.plist; sourceTree = "<group>"; };
@@ -200,6 +206,8 @@
 				DB291BC91B66335F0028C022 /* KeyboardViewController.m */,
 				DB291BCB1B665F2C0028C022 /* SettingsViewController.h */,
 				DB291BCC1B665F2C0028C022 /* SettingsViewController.m */,
+				DB4645AB1BB193EA00ABF6A8 /* VoiceMailViewController.h */,
+				DB4645AC1BB193EA00ABF6A8 /* VoiceMailViewController.m */,
 				DB8518DD1BA9A6610023B156 /* Main.storyboard */,
 				DB291BA61B6625D50028C022 /* Images.xcassets */,
 				DBAB15241B67C37E00EADB9C /* Model */,
@@ -295,6 +303,8 @@
 			children = (
 				EE009AA71BA5EFCC009898C0 /* MyLanguage.h */,
 				EE009AA81BA5EFCC009898C0 /* MyLanguage.m */,
+				DB4645A81BB13B5200ABF6A8 /* MyStatus.h */,
+				DB4645A91BB13B5200ABF6A8 /* MyStatus.m */,
 			);
 			name = enum;
 			sourceTree = "<group>";
@@ -453,6 +463,7 @@
 				DBFD97961B6BA8BA000958B7 /* Myuser.m in Sources */,
 				DB291BA21B6625D50028C022 /* UserRegistrationViewController.m in Sources */,
 				DBFD97A61B6BB376000958B7 /* TabBarViewController.m in Sources */,
+				DB4645AD1BB193EA00ABF6A8 /* VoiceMailViewController.m in Sources */,
 				DB4B88701B73A8B4005D15F6 /* DBManager.m in Sources */,
 				DBFD97991B6BA92A000958B7 /* SharedPreferences.m in Sources */,
 				DB4B886B1B735C50005D15F6 /* ContactDetailViewController.m in Sources */,
@@ -472,6 +483,7 @@
 				DB4B88681B734B72005D15F6 /* StartViewController.m in Sources */,
 				DB291B9C1B6625D50028C022 /* main.m in Sources */,
 				DB291BC11B662BAB0028C022 /* RecentTableViewController.m in Sources */,
+				DB4645AA1BB13B5200ABF6A8 /* MyStatus.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

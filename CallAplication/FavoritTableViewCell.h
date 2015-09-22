@@ -14,5 +14,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *statusTextLabel;
 @property (weak, nonatomic) IBOutlet UIButton *info;
+@property (weak, nonatomic) IBOutlet UIButton *redStatus;
+@property (weak, nonatomic) IBOutlet UIButton *yellowStatus;
+@property (weak, nonatomic) IBOutlet UIButton *greenStatus;
+
+
 
 @end

@@ -50,9 +50,7 @@ static Myuser *myUser;
 -(void)refreshContactList{
     self.contactDictionary = nil;
     
-    NSLog(@"refreshContactList");
-    
-  //  NSArray *contacts = [[DBManager sharedInstance] getContactsFromDb];
+   // NSLog(@"refreshContactList");
     NSArray *favoritRecordIds = [[DBManager sharedInstance]getAllContactRecordIdsFromFavoritTable];
     
     CFErrorRef * error = NULL;
@@ -103,7 +101,7 @@ static Myuser *myUser;
                                                              person.recordId = recordId;
                                                              person.image = image;
                                                              
-                                                            NSLog(@"person.firstName %@", person.firstName);
+                                                        //    NSLog(@"person.firstName %@", person.firstName);
                                                              
                                                              for (int i=0; i<favoritRecordIds.count; i++) {
                                                                  if (person.recordId == [favoritRecordIds[i] integerValue]) {
@@ -128,7 +126,7 @@ static Myuser *myUser;
                                                          
                                                          lettersArray = [NSArray arrayWithArray:[[lettersSet allObjects] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
                                                      
-                                                          NSLog(@"personArray %d", personArray.count);
+                                                     //     NSLog(@"personArray %d", personArray.count);
                                                      
                                                          for (int i=0; i<lettersArray.count; i++) {
                                                              NSMutableArray *pom = [[NSMutableArray alloc]init];
@@ -142,15 +140,12 @@ static Myuser *myUser;
                                                              
                                                              [self.contactDictionary setObject:pom forKey:lettersArray[i]];
                                                          }
-                                                     
-                                                         [[SharedPreferences shared]setLastContactsPhoneBookCount:personArray.count];
+  
                                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"ContactListReloaded"
                                                                                                              object:self];
-
                                                      });
                                                  }
                                                  
-
                                              });
 
 }

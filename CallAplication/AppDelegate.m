@@ -28,7 +28,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    [Myuser sharedUser];
+//    NSLog(@"SMSTEXT %@", [Myuser sharedUser].smsInviteText);
+//    NSLog(@"statusText %@", [Myuser sharedUser].statusText);
     
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:234/255.0f green:234/255.0f blue:234/255.0f alpha:1.0f]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];

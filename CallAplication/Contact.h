@@ -21,7 +21,7 @@
 
 @property (nonatomic) int status;
 @property (nonatomic, strong) NSString *statusText;
-@property (nonatomic, strong) NSString *endTime;
+//@property (nonatomic, strong) NSString *endTime;
 
 -(id)copyWithZone:(NSZone *)zone;
 

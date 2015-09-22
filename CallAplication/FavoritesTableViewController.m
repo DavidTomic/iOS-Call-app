@@ -58,6 +58,10 @@
                                              selector:@selector(receiveContactListReloadedNotification:)
                                                  name:@"ContactListReloaded"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveRefreshStatusNotification:)
+                                                 name:@"RefreshStatus"
+                                               object:nil];
     
 }
 
@@ -68,10 +72,12 @@
 }
 
 -(void)receiveContactListReloadedNotification:(NSNotification *)notification{
-//    NSLog(@"receiveContactListReloadedNotification");
-//    NSLog(@"COUNT %lu", (unsigned long)[Myuser sharedUser].contactDictionary.count);
     [self reloadData];
 
+}
+-(void)receiveRefreshStatusNotification:(NSNotification *)notification{
+   // NSLog(@"receiveRefreshStatusNotification");
+    [self reloadData];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -87,6 +93,9 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     self.navView.hidden = NO;
+}
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 -(void)reloadData{
@@ -158,27 +167,36 @@
     }
     
     cell.nameLabel.text = text;
-    cell.statusTextLabel.text = @"hello this is my status";
+    cell.statusTextLabel.text = contact.statusText;
     
-    
-//    switch (contact.status) {
-//        case 0:
-//            [cell.status setBackgroundColor:[UIColor grayColor]];
-//            break;
-//        case 1:
-//            [cell.status setBackgroundColor:[UIColor redColor]];
-//            break;
-//        case 2:
-//            [cell.status setBackgroundColor:[UIColor yellowColor]];
-//            break;
-//        case 3:
-//            [cell.status setBackgroundColor:[UIColor greenColor]];
-//            break;
-//            
-//        default:
-//            [cell.status setBackgroundColor:[UIColor grayColor]];
-//            break;
-//    }
+    switch (contact.status) {
+        case Red_status:
+            [cell.redStatus setSelected:YES];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:NO];
+            break;
+        case Green_status:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:YES];
+            [cell.yellowStatus setSelected:NO];
+            break;
+        case Yellow_status:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:YES];
+            break;
+        case On_phone:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:NO];
+            break;
+            
+        default:
+            [cell.redStatus setSelected:NO];
+            [cell.greenStatus setSelected:NO];
+            [cell.yellowStatus setSelected:NO];
+            break;
+    }
     
 //    [cell.info addTarget:self action:@selector(infoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     

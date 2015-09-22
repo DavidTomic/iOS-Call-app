@@ -97,11 +97,21 @@ static MyConnectionManager *mySharedManager;
         NSDateFormatter *dateFormater = [[NSDateFormatter alloc] init];
         [dateFormater setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
         date = [[dateFormater stringFromDate:[NSDate dateWithTimeIntervalSince1970:lastCallTime/1000]] uppercaseString];
+    }else {
+        
+        NSArray *pomArray = [[Myuser sharedUser].contactDictionary allValues];
+        
+        for (NSArray *array in pomArray){
+            for (Contact *contact in array){
+                contact.status = Undefined;
+                contact.statusText = nil;
+            }
+        }
     }
     
     [[SharedPreferences shared]setLastCallTime:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
     
-    NSLog(@"lastCallDate %@", date);
+ //   NSLog(@"lastCallDate %@", date);
     
     NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
                              <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
@@ -178,7 +188,7 @@ static MyConnectionManager *mySharedManager;
             [contactArray addObject:c];
     }
     
-    NSLog(@"contactArray %@", contactArray);
+  //  NSLog(@"contactArray %@", contactArray);
     
     Contact *contact = contactArray[0];
     
@@ -203,7 +213,6 @@ static MyConnectionManager *mySharedManager;
     
     [conn sendMessageWithMethodName:@"AddContacts" soapMessage:soapMessage];
 }
-
 -(void)requestAddMultipleContactsWithDelegate:(id)delegate selector:(SEL)selector{
     MyConnection *conn = [[MyConnection alloc]init];
     conn.delegate = delegate;
@@ -253,8 +262,7 @@ static MyConnectionManager *mySharedManager;
     [conn sendMessageWithMethodName:@"AddMultiContacts" soapMessage:soapMessage];
     
 }
-
--(void)requestCheckPhoneNumbers:(id)delegate selector:(SEL)selector{
+-(void)requestCheckPhoneNumbersWithDelegate:(id)delegate selector:(SEL)selector{
     MyConnection *conn = [[MyConnection alloc]init];
     conn.delegate = delegate;
     conn.selector = selector;
@@ -282,10 +290,31 @@ static MyConnectionManager *mySharedManager;
                              </soap:Body> \
                              </soap:Envelope>", user.phoneNumber, user.password, numbersString];
     
-      NSLog(@"soapMessage %@", soapMessage);
+   //   NSLog(@"soapMessage %@", soapMessage);
     
     
     [conn sendMessageWithMethodName:@"CheckPhoneNumbers" soapMessage:soapMessage];
+}
+-(void)requestUpdateStatusWithDelegate:(id)delegate selector:(SEL)selector{
+    MyConnection *conn = [[MyConnection alloc]init];
+    conn.delegate = delegate;
+    conn.selector = selector;
+    
+    Myuser *user = [Myuser sharedUser];
+    
+    NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
+                             <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
+                             <soap:Body> \
+                             <UpdateStatus xmlns=\"http://tempuri.org/\"> \
+                             <Phonenumber>%@</Phonenumber> \
+                             <password>%@</password> \
+                             <Status>%d</Status> \
+                             <Text>%@</Text> \
+                             </UpdateStatus> \
+                             </soap:Body> \
+                             </soap:Envelope>", user.phoneNumber, user.password, user.status, user.statusText];
+    
+    [conn sendMessageWithMethodName:@"UpdateStatus" soapMessage:soapMessage];
 }
 
 @end

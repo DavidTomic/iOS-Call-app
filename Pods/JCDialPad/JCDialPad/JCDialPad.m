@@ -56,13 +56,10 @@
     self.contentView.center = self.center;
     [self addSubview:self.contentView];
     
-    self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.deleteButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 20, 20)];
     [self.deleteButton addTarget:self action:@selector(didTapDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
-    self.deleteButton.titleLabel.font = [UIFont systemFontOfSize:24.0];
-    [self.deleteButton setTitle:@"◀︎" forState:UIControlStateNormal];
-    [self.deleteButton setTitleColor:[self.mainColor colorWithAlphaComponent:0.500] forState:UIControlStateHighlighted];
+    [self.deleteButton setImage:[UIImage imageNamed:@"delete_icon"] forState:UIControlStateNormal];
     self.deleteButton.hidden = YES;
-    self.deleteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     UIGestureRecognizer *holdRec = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didHoldDeleteButton:)];
     [self.deleteButton addGestureRecognizer:holdRec];
     
@@ -91,7 +88,7 @@
         self.y += 20;
         self.height -= 64;
     }
-    self.mainColor = [UIColor whiteColor];
+    self.mainColor = [UIColor blackColor];
     self.showDeleteButton = YES;
 }
 
@@ -247,9 +244,12 @@
 	
     CGFloat textFieldWidth = 250;
     self.digitsTextField.frame = CGRectMake((self.correctWidth / 2.0) - (textFieldWidth / 2.0), top, textFieldWidth, 40);
+  //  self.digitsTextField.backgroundColor = [UIColor greenColor];
     [self.contentView addSubview:self.digitsTextField];
     
-    self.deleteButton.frame = CGRectMake(self.digitsTextField.right + 2, self.digitsTextField.center.y - 10, top + 28, 20);
+    self.deleteButton.frame = CGRectMake(self.digitsTextField.right + 2, self.digitsTextField.center.y - 20, 30, 40);
+    self.deleteButton.imageEdgeInsets = UIEdgeInsetsMake(10, 5, 10, 5);
+  //  self.deleteButton.backgroundColor = [UIColor grayColor];
     [self.contentView addSubview:self.deleteButton];
 }
 

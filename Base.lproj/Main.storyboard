@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -540,10 +540,13 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="dateLabel" destination="agS-Ss-wYm" id="Vtw-0a-qY0"/>
+                                    <outlet property="greenStatus" destination="WqU-nT-6Ym" id="14u-6h-KJu"/>
                                     <outlet property="image" destination="pyG-mU-AtI" id="WAu-9C-ZP9"/>
                                     <outlet property="infoButton" destination="mkv-CP-Gz6" id="7mp-Di-CVJ"/>
                                     <outlet property="nameLabel" destination="NJS-yj-98q" id="GVn-lF-wYg"/>
+                                    <outlet property="redStatus" destination="3Du-Qu-XM5" id="4vt-sY-AMB"/>
                                     <outlet property="statusTextLabel" destination="2yj-SR-yFQ" id="VGQ-ks-zDX"/>
+                                    <outlet property="yellowStatus" destination="gSD-7Y-t0x" id="DgM-fJ-AmO"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -553,6 +556,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Recents" id="iWq-ga-aZ4">
+                        <barButtonItem key="leftBarButtonItem" image="settings" id="Jbq-xr-hs0"/>
                         <barButtonItem key="rightBarButtonItem" title="Edit" id="RJw-ym-ZgT">
                             <connections>
                                 <action selector="editButtonPressed:" destination="fIy-V0-EA0" id="oOt-Ss-Ox6"/>
@@ -590,7 +594,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u7N-XA-G9S">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="red_circle_empty" translatesAutoresizingMaskIntoConstraints="NO" id="sqa-fF-VXn">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="red_circle_empty" highlightedImage="red_circle_full" translatesAutoresizingMaskIntoConstraints="NO" id="sqa-fF-VXn">
                                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="15" id="jfU-OB-1EI"/>
@@ -643,7 +647,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kDt-fG-UGF">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_circle_empty" translatesAutoresizingMaskIntoConstraints="NO" id="jRG-f5-oLm">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_circle_empty" highlightedImage="yellow_circle_full" translatesAutoresizingMaskIntoConstraints="NO" id="jRG-f5-oLm">
                                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="15" id="9Oc-q3-bt5"/>
@@ -693,7 +697,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SAv-SS-NuP">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="green_circle_empty" translatesAutoresizingMaskIntoConstraints="NO" id="Gvg-Fn-GyP">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="green_circle_empty" highlightedImage="green_cricle_full" translatesAutoresizingMaskIntoConstraints="NO" id="Gvg-Fn-GyP">
                                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="15" id="Ijr-bV-tPj"/>
@@ -701,14 +705,14 @@
                                                 </constraints>
                                                 <variation key="default">
                                                     <mask key="constraints">
-                                                        <exclude reference="lNv-KH-tLn"/>
                                                         <exclude reference="Ijr-bV-tPj"/>
+                                                        <exclude reference="lNv-KH-tLn"/>
                                                     </mask>
                                                 </variation>
                                                 <variation key="heightClass=regular-widthClass=compact">
                                                     <mask key="constraints">
-                                                        <include reference="lNv-KH-tLn"/>
                                                         <include reference="Ijr-bV-tPj"/>
+                                                        <include reference="lNv-KH-tLn"/>
                                                     </mask>
                                                 </variation>
                                             </imageView>
@@ -767,18 +771,18 @@
                                     </mask>
                                     <mask key="constraints">
                                         <exclude reference="D1l-rg-gu5"/>
-                                        <exclude reference="5hf-Fm-GoM"/>
-                                        <exclude reference="VXF-qU-LcG"/>
-                                        <exclude reference="nIX-v9-tiK"/>
-                                        <exclude reference="8Az-hg-BSV"/>
-                                        <exclude reference="BDy-V8-IDi"/>
-                                        <exclude reference="PpZ-Rl-7vC"/>
                                         <exclude reference="AFr-fY-YhF"/>
                                         <exclude reference="RRe-Wq-gW7"/>
                                         <exclude reference="XPd-G8-vcV"/>
                                         <exclude reference="cW1-ga-WaC"/>
                                         <exclude reference="i1T-jW-KYb"/>
                                         <exclude reference="tGy-uq-nah"/>
+                                        <exclude reference="8Az-hg-BSV"/>
+                                        <exclude reference="BDy-V8-IDi"/>
+                                        <exclude reference="PpZ-Rl-7vC"/>
+                                        <exclude reference="5hf-Fm-GoM"/>
+                                        <exclude reference="VXF-qU-LcG"/>
+                                        <exclude reference="nIX-v9-tiK"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
@@ -789,18 +793,18 @@
                                     </mask>
                                     <mask key="constraints">
                                         <include reference="D1l-rg-gu5"/>
-                                        <include reference="5hf-Fm-GoM"/>
-                                        <include reference="VXF-qU-LcG"/>
-                                        <include reference="nIX-v9-tiK"/>
-                                        <include reference="8Az-hg-BSV"/>
-                                        <include reference="BDy-V8-IDi"/>
-                                        <include reference="PpZ-Rl-7vC"/>
                                         <include reference="AFr-fY-YhF"/>
                                         <include reference="RRe-Wq-gW7"/>
                                         <include reference="XPd-G8-vcV"/>
                                         <include reference="cW1-ga-WaC"/>
                                         <include reference="i1T-jW-KYb"/>
                                         <include reference="tGy-uq-nah"/>
+                                        <include reference="8Az-hg-BSV"/>
+                                        <include reference="BDy-V8-IDi"/>
+                                        <include reference="PpZ-Rl-7vC"/>
+                                        <include reference="5hf-Fm-GoM"/>
+                                        <include reference="VXF-qU-LcG"/>
+                                        <include reference="nIX-v9-tiK"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -942,8 +946,11 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
+                                            <outlet property="greenStatus" destination="Z3W-PE-eJp" id="SOU-tp-plG"/>
                                             <outlet property="name" destination="a9d-7V-zZ6" id="mp0-CM-nTl"/>
+                                            <outlet property="redStatus" destination="u8p-O8-uGe" id="hBD-sx-qiD"/>
                                             <outlet property="statusText" destination="tw4-hw-BCB" id="9YX-L8-HxK"/>
+                                            <outlet property="yellowStatus" destination="Enf-WR-aQp" id="qCG-iq-bXP"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -983,6 +990,8 @@
                                 <exclude reference="nGf-cn-TSh"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="AQ2-rd-yHQ"/>
+                                <exclude reference="php-KP-Vj5"/>
                                 <exclude reference="6fc-5W-TGV"/>
                                 <exclude reference="HIp-Mv-DqI"/>
                                 <exclude reference="IeG-PU-YA5"/>
@@ -999,8 +1008,6 @@
                                 <exclude reference="WAm-Jx-xhy"/>
                                 <exclude reference="hdI-eu-yhM"/>
                                 <exclude reference="vgf-MC-W9X"/>
-                                <exclude reference="AQ2-rd-yHQ"/>
-                                <exclude reference="php-KP-Vj5"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -1009,13 +1016,13 @@
                                 <include reference="nGf-cn-TSh"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="php-KP-Vj5"/>
                                 <include reference="IeG-PU-YA5"/>
                                 <include reference="KOy-i1-8wN"/>
                                 <include reference="hrS-ZT-Emi"/>
                                 <include reference="KOb-da-XI1"/>
                                 <include reference="Lk0-li-V9M"/>
                                 <include reference="WAm-Jx-xhy"/>
-                                <include reference="php-KP-Vj5"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -1023,6 +1030,8 @@
                                 <include reference="j8E-35-Bbi"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="AQ2-rd-yHQ"/>
+                                <exclude reference="php-KP-Vj5"/>
                                 <include reference="6fc-5W-TGV"/>
                                 <include reference="HIp-Mv-DqI"/>
                                 <exclude reference="IeG-PU-YA5"/>
@@ -1039,13 +1048,11 @@
                                 <exclude reference="WAm-Jx-xhy"/>
                                 <include reference="hdI-eu-yhM"/>
                                 <include reference="vgf-MC-W9X"/>
-                                <include reference="AQ2-rd-yHQ"/>
-                                <exclude reference="php-KP-Vj5"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="All Contacts" id="AWW-qg-FlN">
-                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="ytK-aK-djD"/>
+                        <barButtonItem key="leftBarButtonItem" image="settings" id="ytK-aK-djD"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="vew-he-TWD">
                             <connections>
                                 <action selector="addContactPressed:" destination="hOe-0Q-Apx" id="Jh2-WW-s9s"/>
@@ -1053,8 +1060,11 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="greenCircle" destination="Gvg-Fn-GyP" id="xC6-eS-whe"/>
+                        <outlet property="redCircle" destination="sqa-fF-VXn" id="1k5-WM-vpO"/>
                         <outlet property="searchDisplayController" destination="tu8-E3-Tze" id="XcH-ba-vj2"/>
                         <outlet property="tableView" destination="nGf-cn-TSh" id="RCf-Hc-kf9"/>
+                        <outlet property="yellowCircle" destination="jRG-f5-oLm" id="INB-ab-poA"/>
                         <segue destination="yVd-md-pb6" kind="show" identifier="Contact Detail Segue" id="j9n-fd-XrW"/>
                     </connections>
                 </viewController>
@@ -1070,12 +1080,12 @@
                 </searchDisplayController>
                 <tapGestureRecognizer id="pWQ-zf-AFP">
                     <connections>
-                        <action selector="yellowStatusTapped:" destination="hOe-0Q-Apx" id="xXC-YG-K3F"/>
+                        <action selector="redStatusTapped:" destination="hOe-0Q-Apx" id="r87-Ei-ifS"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="q9P-9P-AB9">
                     <connections>
-                        <action selector="redStatusTapped:" destination="hOe-0Q-Apx" id="h3U-Ma-3PM"/>
+                        <action selector="yellowStatusTapped:" destination="hOe-0Q-Apx" id="DA6-4v-8Ko"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer id="dyv-yf-uEk">
@@ -1307,10 +1317,10 @@
             </objects>
             <point key="canvasLocation" x="3597" y="-26.25"/>
         </scene>
-        <!--Answer Machine-->
+        <!--Voicemail-->
         <scene sceneID="4Ce-x9-KjV">
             <objects>
-                <viewController id="5sz-WS-HEv" sceneMemberID="viewController">
+                <viewController id="5sz-WS-HEv" customClass="VoiceMailViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Fig-cy-uJ9"/>
                         <viewControllerLayoutGuide type="bottom" id="A1M-Uz-a4A"/>
@@ -1319,10 +1329,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ehg-nC-aUC">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="20" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ehg-nC-aUC">
                                 <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="gqE-mw-nki"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="gqE-mw-nki"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="gqE-mw-nki"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <outlet property="delegate" destination="5sz-WS-HEv" id="wmm-T1-OPo"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HF3-3V-vW9">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
@@ -1345,6 +1371,9 @@
                                         <include reference="tWA-PK-VLj"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <action selector="dialClicked:" destination="5sz-WS-HEv" eventType="touchUpInside" id="NCt-FE-HKg"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1352,7 +1381,9 @@
                             <constraint firstAttribute="centerX" secondItem="HF3-3V-vW9" secondAttribute="centerX" id="TY2-tl-y02"/>
                             <constraint firstItem="ehg-nC-aUC" firstAttribute="top" secondItem="Fig-cy-uJ9" secondAttribute="bottom" constant="45" id="b59-M4-fzO"/>
                             <constraint firstItem="ehg-nC-aUC" firstAttribute="trailing" secondItem="E3g-3o-lcB" secondAttribute="trailingMargin" id="bJo-yl-MSL"/>
-                            <constraint firstItem="HF3-3V-vW9" firstAttribute="top" secondItem="ehg-nC-aUC" secondAttribute="bottom" constant="49" id="szc-DU-g4h"/>
+                            <constraint firstItem="HF3-3V-vW9" firstAttribute="top" secondItem="ehg-nC-aUC" secondAttribute="bottom" constant="49" id="szc-DU-g4h">
+                                <variation key="heightClass=regular-widthClass=compact" constant="39"/>
+                            </constraint>
                             <constraint firstItem="ehg-nC-aUC" firstAttribute="leading" secondItem="E3g-3o-lcB" secondAttribute="leadingMargin" id="w8P-ua-zeQ"/>
                         </constraints>
                         <variation key="default">
@@ -1382,7 +1413,10 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="Answer Machine" id="0bE-wB-Vs7"/>
+                    <navigationItem key="navigationItem" title="Voicemail" id="0bE-wB-Vs7"/>
+                    <connections>
+                        <outlet property="textField" destination="ehg-nC-aUC" id="IW5-qd-iH3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o1O-c6-ppg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1680,10 +1714,13 @@
                                     </variation>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="greenStatus" destination="89b-v0-8rl" id="BFU-aq-Ffi"/>
                                     <outlet property="image" destination="l8O-sR-CfM" id="Q9O-QU-yf1"/>
                                     <outlet property="info" destination="ctx-iV-hhv" id="9jX-41-a4k"/>
                                     <outlet property="nameLabel" destination="B2H-yB-Ii1" id="D5d-il-KrK"/>
+                                    <outlet property="redStatus" destination="0rV-jz-axT" id="2zf-C2-W15"/>
                                     <outlet property="statusTextLabel" destination="e67-sH-jgA" id="Cmx-7H-R3c"/>
+                                    <outlet property="yellowStatus" destination="x7A-DR-REe" id="sJ3-lq-k5q"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1693,6 +1730,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Favorites" id="WmK-7Y-2F1">
+                        <barButtonItem key="leftBarButtonItem" image="settings" id="fjh-Qh-mof"/>
                         <barButtonItem key="rightBarButtonItem" title="Edit" id="i5w-dw-luh">
                             <connections>
                                 <action selector="editButtonPressed:" destination="HKy-ey-80d" id="IMV-PY-w7p"/>
@@ -1730,7 +1768,7 @@
                         <segue destination="Kvv-0O-RUO" kind="relationship" relationship="viewControllers" id="gT2-hc-N4b"/>
                         <segue destination="Rap-Nc-fUy" kind="relationship" relationship="viewControllers" id="xAS-AQ-cUT"/>
                         <segue destination="4EI-9w-0ZM" kind="relationship" relationship="viewControllers" id="6D0-Bf-rgF"/>
-                        <segue destination="PLt-Ea-5BY" kind="relationship" relationship="viewControllers" id="SwL-cp-W8S"/>
+                        <segue destination="LSt-an-33M" kind="relationship" relationship="viewControllers" id="1uZ-bP-gDA"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ezU-Uw-MIb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1933,11 +1971,11 @@
             </objects>
             <point key="canvasLocation" x="2551" y="1363"/>
         </scene>
-        <!--Telefonanswer-->
+        <!--Voicemail-->
         <scene sceneID="mF5-bQ-ZgT">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LSt-an-33M" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Telefonanswer" image="contact" id="tbZ-nJ-vnF"/>
+                    <tabBarItem key="tabBarItem" title="Voicemail" image="voicemail" id="tbZ-nJ-vnF"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="9uN-3o-BvR">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1956,25 +1994,26 @@
     <resources>
         <image name="call_icon" width="256" height="256"/>
         <image name="call_temp" width="150" height="150"/>
-        <image name="contact" width="32" height="36"/>
-        <image name="favorites" width="35" height="33"/>
+        <image name="contact" width="27" height="31"/>
+        <image name="favorites" width="30" height="28"/>
         <image name="green_circle_empty" width="20" height="20"/>
         <image name="green_cricle_full" width="20" height="20"/>
         <image name="info_icon" width="36" height="36"/>
-        <image name="keypad" width="38" height="37"/>
+        <image name="keypad" width="33" height="32"/>
         <image name="out_call_icon" width="25" height="25"/>
-        <image name="recents" width="35" height="35"/>
+        <image name="recents" width="30" height="30"/>
         <image name="red_circle_empty" width="20" height="20"/>
         <image name="red_circle_full" width="20" height="20"/>
-        <image name="settings" width="49" height="37"/>
+        <image name="settings" width="25" height="25"/>
         <image name="splash" width="540" height="960"/>
         <image name="star_empty" width="250" height="235"/>
+        <image name="voicemail" width="43" height="18"/>
         <image name="yellow_circle_empty" width="20" height="20"/>
         <image name="yellow_circle_full" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="j9n-fd-XrW"/>
         <segue reference="OOV-8S-Jik"/>
+        <segue reference="j9n-fd-XrW"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.36470588235294116" blue="0.75686274509803919" alpha="1" colorSpace="calibratedRGB"/>
 </document>
