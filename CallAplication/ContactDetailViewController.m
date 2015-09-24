@@ -14,6 +14,8 @@
 #import "Contact.h"
 #import "Myuser.h"
 #import "DBManager.h"
+#import "TabBarViewController.h"
+#import "SharedPreferences.h"
 
 @interface ContactDetailViewController ()<ABPersonViewControllerDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -21,6 +23,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *username;
 @property (weak, nonatomic) IBOutlet UILabel *userPhone;
 @property (weak, nonatomic) IBOutlet UIButton *favoritButton;
+@property (weak, nonatomic) IBOutlet UIButton *confirmButton;
+
+@property (nonatomic) BOOL editingContact;
 
 @end
 
@@ -32,17 +37,79 @@
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonPressed:)];
     self.navigationItem.rightBarButtonItem = anotherButton;
     
-    if (self.contact.favorit) {
-        [self.favoritButton setImage:[UIImage imageNamed:@"star_full"] forState:UIControlStateNormal];
-    }else{
-        [self.favoritButton setImage:[UIImage imageNamed:@"star_empty"] forState:UIControlStateNormal];
-    }
     
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    if (self.editingContact) {
+        self.editingContact = NO;
+        [self updateContactDataFromAddressBook];
+    }
+    
+    
     [self setValues];
+    
+}
+
+-(void)updateContactDataFromAddressBook{
+    CFErrorRef * error = NULL;
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, error);
+    
+    ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error)
+                                             {
+                                                 if (granted)
+                                                 {
+                                                     
+                                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                                         CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
+                                                         CFIndex numberOfPeople = ABAddressBookGetPersonCount(addressBook);
+                                                         
+                                                         for(int i = 0; i < numberOfPeople; i++){
+                                                             ABRecordRef abPerson = CFArrayGetValueAtIndex( allPeople, i );
+
+                                                            ABMultiValueRef phoneNumbers = ABRecordCopyValue(abPerson, kABPersonPhoneProperty);
+                                                             NSString *phoneNumber = nil;
+                                                             if (ABMultiValueGetCount(phoneNumbers) > 0) {
+                                                                 phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
+                                                             }
+
+                                                             
+                                                             int recordId = ABRecordGetRecordID(abPerson);
+                                                             
+                                                             if (recordId == self.contact.recordId) {
+                                                                 
+                                                                 self.contact.firstName = (__bridge NSString *)(ABRecordCopyValue(abPerson, kABPersonFirstNameProperty));
+                                                                 self.contact.lastName = (__bridge NSString *)(ABRecordCopyValue(abPerson, kABPersonLastNameProperty));
+                                                                 
+                                                                 NSData *imgData2 = (__bridge NSData*)ABPersonCopyImageDataWithFormat(abPerson, kABPersonImageFormatThumbnail);
+                                                                 self.contact.image =[UIImage imageWithData:imgData2];
+                                                                 
+                                                                 if (![self.contact.phoneNumber isEqualToString:phoneNumber]) {
+                                                                     self.contact.phoneNumber = phoneNumber;
+                                                                     
+                                                                     NSLog(@"Call checkAndUpdateAllContact");
+                                                                     
+                                                                     [[SharedPreferences shared]setLastContactsPhoneBookCount:0];
+                                                                     [((TabBarViewController *)self.tabBarController) checkAndUpdateAllContact];
+                                                                 }
+                                                                 
+                                                                 break;
+                                                             }
+
+                                                         }
+                                                         
+                                                         CFRelease(allPeople);
+                                                         CFRelease(addressBook);
+                                                         
+                                                         [self setValues];
+
+                                                     });
+                                                 }
+                                                 
+                                             });
+
 }
 
 -(void)setValues{
@@ -66,6 +133,20 @@
             text = [NSString stringWithFormat:@"%@%@", text, [[self.contact.lastName substringToIndex:1] uppercaseString]];
         }
         [self.profileImage setTitle:text forState:UIControlStateNormal];
+    }
+    
+    if (self.contact.favorit) {
+        [self.favoritButton setImage:[UIImage imageNamed:@"star_full"] forState:UIControlStateNormal];
+    }else{
+        [self.favoritButton setImage:[UIImage imageNamed:@"star_empty"] forState:UIControlStateNormal];
+    }
+    
+    NSArray *mcheckPhoneNumberArray = [Myuser sharedUser].checkPhoneNumberArray;
+    
+    if ([mcheckPhoneNumberArray containsObject:self.contact.phoneNumber]) {
+        [self.confirmButton setTitle:@"Set notification" forState:UIControlStateNormal];
+    }else {
+        [self.confirmButton setTitle:@"Invite" forState:UIControlStateNormal];
     }
     
 
@@ -139,7 +220,7 @@
     
     if (people)
     {
-      //  [[Myuser sharedUser] refreshContactList];
+        self.editingContact = YES;
         ABPersonViewController *personViewController = [[ABPersonViewController alloc] init];
         personViewController.personViewDelegate = self;
         personViewController.displayedPerson = people;
@@ -159,6 +240,24 @@
     }
 }
 
+- (IBAction)confirmButtonPressed:(UIButton *)sender {
+    
+    if ([sender.currentTitle isEqualToString:@"Invite"]) {
+        NSString *phoneNumber = self.contact.phoneNumber;
+        
+        if(phoneNumber && [MFMessageComposeViewController canSendText]) {
+            phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
+            
+            MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+            controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
+            controller.messageComposeDelegate = self;
+            [self presentViewController:controller animated:YES completion:nil];
+        }
+
+    }else {
+        
+    }
+}
 
 #pragma mark ABPersonViewControllerDelegate methods
 // Does not allow users to perform default actions such as dialing a phone number, when they select a contact property.

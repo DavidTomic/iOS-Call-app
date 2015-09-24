@@ -10,15 +10,15 @@
 		34A0B4581B7627A000023649 /* ContactsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A0B4571B7627A000023649 /* ContactsTableViewCell.m */; };
 		34A0B45B1B766FEB00023649 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A0B45A1B766FEB00023649 /* RecentTableViewCell.m */; };
 		3C06BA4DD9C526D38C309478 /* libPods-CallAplication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 703D6876163156DA9B989C36 /* libPods-CallAplication.a */; };
+		DB00700E1BB3E4E400088134 /* FavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB00700D1BB3E4E400088134 /* FavoritesViewController.m */; };
+		DB0070111BB41AD600088134 /* RecentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0070101BB41AD600088134 /* RecentViewController.m */; };
 		DB291B9C1B6625D50028C022 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291B9B1B6625D50028C022 /* main.m */; };
 		DB291B9F1B6625D50028C022 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291B9E1B6625D50028C022 /* AppDelegate.m */; };
 		DB291BA21B6625D50028C022 /* UserRegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BA11B6625D50028C022 /* UserRegistrationViewController.m */; };
 		DB291BA71B6625D50028C022 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB291BA61B6625D50028C022 /* Images.xcassets */; };
 		DB291BAA1B6625D50028C022 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB291BA81B6625D50028C022 /* LaunchScreen.xib */; };
 		DB291BB61B6625D50028C022 /* CallAplicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BB51B6625D50028C022 /* CallAplicationTests.m */; };
-		DB291BC11B662BAB0028C022 /* RecentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BC01B662BAB0028C022 /* RecentTableViewController.m */; };
 		DB291BC41B662BE30028C022 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BC31B662BE30028C022 /* ContactsViewController.m */; };
-		DB291BC71B662D810028C022 /* FavoritesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BC61B662D810028C022 /* FavoritesTableViewController.m */; };
 		DB291BCA1B66335F0028C022 /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BC91B66335F0028C022 /* KeyboardViewController.m */; };
 		DB291BCD1B665F2C0028C022 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB291BCC1B665F2C0028C022 /* SettingsViewController.m */; };
 		DB4645AA1BB13B5200ABF6A8 /* MyStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4645A91BB13B5200ABF6A8 /* MyStatus.m */; };
@@ -65,6 +65,10 @@
 		5FAF003EADE7C2B717A4FE56 /* Pods-CallAplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CallAplication.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CallAplication/Pods-CallAplication.debug.xcconfig"; sourceTree = "<group>"; };
 		703D6876163156DA9B989C36 /* libPods-CallAplication.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CallAplication.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE703E9F6DD675AAC4E1D88A /* Pods-CallAplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CallAplication.release.xcconfig"; path = "Pods/Target Support Files/Pods-CallAplication/Pods-CallAplication.release.xcconfig"; sourceTree = "<group>"; };
+		DB00700C1BB3E4E400088134 /* FavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesViewController.h; sourceTree = "<group>"; };
+		DB00700D1BB3E4E400088134 /* FavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesViewController.m; sourceTree = "<group>"; };
+		DB00700F1BB41AD600088134 /* RecentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentViewController.h; sourceTree = "<group>"; };
+		DB0070101BB41AD600088134 /* RecentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentViewController.m; sourceTree = "<group>"; };
 		DB291B961B6625D50028C022 /* CallAplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CallAplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB291B9A1B6625D50028C022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB291B9B1B6625D50028C022 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -77,12 +81,8 @@
 		DB291BAF1B6625D50028C022 /* CallAplicationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CallAplicationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB291BB41B6625D50028C022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB291BB51B6625D50028C022 /* CallAplicationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CallAplicationTests.m; sourceTree = "<group>"; };
-		DB291BBF1B662BAB0028C022 /* RecentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTableViewController.h; sourceTree = "<group>"; };
-		DB291BC01B662BAB0028C022 /* RecentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTableViewController.m; sourceTree = "<group>"; };
 		DB291BC21B662BE30028C022 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		DB291BC31B662BE30028C022 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
-		DB291BC51B662D810028C022 /* FavoritesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesTableViewController.h; sourceTree = "<group>"; };
-		DB291BC61B662D810028C022 /* FavoritesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesTableViewController.m; sourceTree = "<group>"; };
 		DB291BC81B66335F0028C022 /* KeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
 		DB291BC91B66335F0028C022 /* KeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
 		DB291BCB1B665F2C0028C022 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -194,10 +194,10 @@
 				DB291BA11B6625D50028C022 /* UserRegistrationViewController.m */,
 				DBFD97A41B6BB376000958B7 /* TabBarViewController.h */,
 				DBFD97A51B6BB376000958B7 /* TabBarViewController.m */,
-				DB291BC51B662D810028C022 /* FavoritesTableViewController.h */,
-				DB291BC61B662D810028C022 /* FavoritesTableViewController.m */,
-				DB291BBF1B662BAB0028C022 /* RecentTableViewController.h */,
-				DB291BC01B662BAB0028C022 /* RecentTableViewController.m */,
+				DB00700C1BB3E4E400088134 /* FavoritesViewController.h */,
+				DB00700D1BB3E4E400088134 /* FavoritesViewController.m */,
+				DB00700F1BB41AD600088134 /* RecentViewController.h */,
+				DB0070101BB41AD600088134 /* RecentViewController.m */,
 				DB291BC21B662BE30028C022 /* ContactsViewController.h */,
 				DB291BC31B662BE30028C022 /* ContactsViewController.m */,
 				DB4B88691B735C50005D15F6 /* ContactDetailViewController.h */,
@@ -369,7 +369,7 @@
 				TargetAttributes = {
 					DB291B951B6625D50028C022 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = M9NWKGWJ5P;
+						DevelopmentTeam = P6U4Z3DVN9;
 					};
 					DB291BAE1B6625D50028C022 = {
 						CreatedOnToolsVersion = 6.4;
@@ -478,11 +478,11 @@
 				DBFD97901B6B7409000958B7 /* NSDictionary+XMLDictionary.m in Sources */,
 				DB291BCD1B665F2C0028C022 /* SettingsViewController.m in Sources */,
 				DB291BC41B662BE30028C022 /* ContactsViewController.m in Sources */,
-				DB291BC71B662D810028C022 /* FavoritesTableViewController.m in Sources */,
+				DB0070111BB41AD600088134 /* RecentViewController.m in Sources */,
+				DB00700E1BB3E4E400088134 /* FavoritesViewController.m in Sources */,
 				DBC17C6F1B6F5AFF00BF1DE4 /* Contact.m in Sources */,
 				DB4B88681B734B72005D15F6 /* StartViewController.m in Sources */,
 				DB291B9C1B6625D50028C022 /* main.m in Sources */,
-				DB291BC11B662BAB0028C022 /* RecentTableViewController.m in Sources */,
 				DB4645AA1BB13B5200ABF6A8 /* MyStatus.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

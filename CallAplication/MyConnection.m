@@ -49,7 +49,7 @@ NSString *const urlString = @"http://call.celox.dk/wsCall.asmx";
     NSString *myString = [[NSString alloc] initWithData:_receivedData encoding:NSUTF8StringEncoding];
    // NSLog(@"mystring %@", myString);
     NSDictionary *parsedObject = [[NSDictionary dictionaryWithXMLString:myString] objectForKey:@"soap:Body"];
-   // NSLog(@"dict %@", parsedObject);
+    NSLog(@"response %@", parsedObject);
 
     
     if (parsedObject) {

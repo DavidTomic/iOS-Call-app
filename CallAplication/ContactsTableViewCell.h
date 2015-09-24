@@ -16,4 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *yellowStatus;
 @property (weak, nonatomic) IBOutlet UIButton *greenStatus;
 
+@property (weak, nonatomic) IBOutlet UIView *statusHolderView;
+@property (nonatomic, weak) IBOutlet UILabel *onPhoneLabel;
+
 @end

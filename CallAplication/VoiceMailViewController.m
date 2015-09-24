@@ -24,7 +24,17 @@
     
     self.textField.text = [[SharedPreferences shared]getVoiceMailNumber];
     // Do any additional setup after loading the view.
+
 }
+
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    
+
+    
+
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

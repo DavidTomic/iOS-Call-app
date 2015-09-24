@@ -17,10 +17,13 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *statusTextLabel;
 @property (weak, nonatomic) IBOutlet UIButton *infoButton;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceDateLabelConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceDateLabelConstraint;
 
 @property (weak, nonatomic) IBOutlet UIButton *redStatus;
 @property (weak, nonatomic) IBOutlet UIButton *yellowStatus;
 @property (weak, nonatomic) IBOutlet UIButton *greenStatus;
+
+@property (weak, nonatomic) IBOutlet UIView *statusHolderView;
+@property (nonatomic, weak) IBOutlet UILabel *onPhoneLabel;
 
 @end

@@ -96,6 +96,7 @@ static MyConnectionManager *mySharedManager;
     if (lastCallTime != 0) {
         NSDateFormatter *dateFormater = [[NSDateFormatter alloc] init];
         [dateFormater setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
+        [dateFormater setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]]; 
         date = [[dateFormater stringFromDate:[NSDate dateWithTimeIntervalSince1970:lastCallTime/1000]] uppercaseString];
     }else {
         
@@ -111,7 +112,7 @@ static MyConnectionManager *mySharedManager;
     
     [[SharedPreferences shared]setLastCallTime:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
     
- //   NSLog(@"lastCallDate %@", date);
+    NSLog(@"lastCallDate %@", date);
     
     NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
                              <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \

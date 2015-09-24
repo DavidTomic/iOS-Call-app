@@ -15,6 +15,8 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "Contact.h"
 
+#import "FavoritesViewController.h"
+
 @interface TabBarViewController ()
 
 @property (strong, nonatomic) NSTimer *timer;
@@ -72,6 +74,11 @@
     
     [self refreshCheckPhoneNumbers];
     [self checkAndUpdateAllContact];
+    
+
+    [self.selectedViewController viewWillAppear:false];
+    
+    
 }
 - (void)viewWillLayoutSubviews
 {
@@ -90,7 +97,6 @@
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
-
 
 //my methods
 -(void)receiveContactListReloadedNotification:(NSNotification *)notification{

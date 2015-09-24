@@ -16,19 +16,23 @@
 #import "TabBarViewController.h"
 #import "SharedPreferences.h"
 #import "MyConnectionManager.h"
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMessageComposeViewController.h>
 
-@interface ContactsViewController()<UITableViewDataSource, UITableViewDelegate, ABNewPersonViewControllerDelegate,UISearchBarDelegate, UISearchDisplayDelegate>
+@interface ContactsViewController()<UITableViewDataSource, UITableViewDelegate, ABNewPersonViewControllerDelegate,
+UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSDictionary *data;
 @property (nonatomic) ABAddressBookRef addressBook;
 @property (nonatomic, strong) Myuser * myUser;
-@property (nonatomic, strong) UIView *navView;
 
 @property (strong,nonatomic) NSMutableArray *filteredContactArray;
-@property (weak, nonatomic) IBOutlet UIImageView *redCircle;
-@property (weak, nonatomic) IBOutlet UIImageView *yellowCircle;
-@property (weak, nonatomic) IBOutlet UIImageView *greenCircle;
+@property (nonatomic, strong) UIImageView *redCircle;
+@property (nonatomic, strong) UIImageView *yellowCircle;
+@property (nonatomic, strong) UIImageView *greenCircle;
+
+@property (nonatomic, strong) UIView *statusHolderView;
 
 @end
 
@@ -39,32 +43,10 @@
     [super viewDidLoad];
     
     self.myUser = [Myuser sharedUser];
-    
-//    float navViewHeight = 43;
-//    self.navView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, navViewHeight)];
-//    
-//    UIView *circle = [[UIView alloc]initWithFrame:CGRectMake(10, navViewHeight/2-5, 10, 10)];
-//    circle.backgroundColor = [UIColor greenColor];
-//    circle.layer.cornerRadius = circle.frame.size.width / 2;
-//    circle.layer.borderWidth = 0;
-//    circle.clipsToBounds = YES;
-//    [self.navView addSubview:circle];
-//    
-//    UILabel *statusLabel = [[UILabel alloc]init];
-//    statusLabel.text = @"This is my status..";
-//    statusLabel.textColor = [UIColor lightGrayColor];
-//    [statusLabel setFont:[statusLabel.font fontWithSize:10]];
-//    [statusLabel sizeToFit];
-//    statusLabel.frame = CGRectMake(10, navViewHeight-statusLabel.frame.size.height-2, statusLabel.frame.size.width, statusLabel.frame.size.height);
-//    [self.navView addSubview:statusLabel];
-//    
-//    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(statusTapped:)];
-//    [self.navView addGestureRecognizer:tapRecognizer];
-//    
-//    [self.navigationController.navigationBar addSubview:self.navView];
+    [self createMyStatusView];
     
     self.filteredContactArray = [[NSMutableArray alloc]init];
-    self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithRed:55/255.0f green:60/255.0f blue:65/255.0f alpha:1.0f];
+   // self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithRed:55/255.0f green:60/255.0f blue:65/255.0f alpha:1.0f];
     [self.searchDisplayController.searchResultsTableView registerClass:[ContactsTableViewCell class] forCellReuseIdentifier:@"ContactCell"];
     [self.searchDisplayController.searchResultsTableView setRowHeight:self.tableView.rowHeight];
 
@@ -128,14 +110,11 @@
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    self.navView.hidden = YES;
-}
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    self.navView.hidden = NO;
+    [self closeMyStatusSwipeView];
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    NSLog(@"CT viewWillAppear");
     
     CGRect frame = self.tableView.tableHeaderView.frame;
     frame.size.height = 44;
@@ -146,7 +125,89 @@
     [self refreshMyStatusUI];
 }
 
+
 //my methods
+-(void)createMyStatusView{
+    
+    float width = self.view.frame.size.width/3;
+    float height = 40;
+    
+    self.statusHolderView= [[UIView alloc]initWithFrame:CGRectMake(0, 108, self.view.frame.size.width, height)];
+    self.statusHolderView.backgroundColor = [UIColor whiteColor];
+    UIPanGestureRecognizer * pan1 = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveMyStatusView:)];
+    pan1.minimumNumberOfTouches = 1;
+    [self.statusHolderView addGestureRecognizer:pan1];
+    [self.view addSubview:self.statusHolderView];
+    
+    UIView *redView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, width, height)];
+    UITapGestureRecognizer *redTapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(redStatusTapped:)];
+    [redView addGestureRecognizer:redTapRecognizer];
+    [self.statusHolderView addSubview:redView];
+    UIView *yellowView = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(redView.frame), 0, width, height)];
+    UITapGestureRecognizer *yellowTapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(yellowStatusTapped:)];
+    [yellowView addGestureRecognizer:yellowTapRecognizer];
+    [self.statusHolderView addSubview:yellowView];
+    UIView *greenView = [[UIView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(yellowView.frame), 0, width, height)];
+    UITapGestureRecognizer *greenTapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(greenStatusTapped:)];
+    [greenView addGestureRecognizer:greenTapRecognizer];
+    [self.statusHolderView addSubview:greenView];
+    
+    float ivWidth = 15;
+    float ivHeight = 15;
+    
+    self.redCircle = [[UIImageView alloc]initWithFrame:CGRectMake(width/2-ivWidth/2, height/2-ivHeight/2, ivWidth, ivHeight)];
+    self.redCircle.image = [UIImage imageNamed:@"red_circle_empty"];
+    self.redCircle.highlightedImage = [UIImage imageNamed:@"red_circle_full"];
+    [redView addSubview:self.redCircle];
+    
+    self.yellowCircle = [[UIImageView alloc]initWithFrame:CGRectMake(width/2-ivWidth/2, height/2-ivHeight/2, ivWidth, ivHeight)];
+    self.yellowCircle.image = [UIImage imageNamed:@"yellow_circle_empty"];
+    self.yellowCircle.highlightedImage = [UIImage imageNamed:@"yellow_circle_full"];
+    [yellowView addSubview:self.yellowCircle];
+    
+    self.greenCircle = [[UIImageView alloc]initWithFrame:CGRectMake(width/2-ivWidth/2, height/2-ivHeight/2, ivWidth, ivHeight)];
+    self.greenCircle.image = [UIImage imageNamed:@"green_circle_empty"];
+    self.greenCircle.highlightedImage = [UIImage imageNamed:@"green_circle_full"];
+    [greenView addSubview:self.greenCircle];
+    
+    [self.view layoutIfNeeded];
+}
+-(void)moveMyStatusView:(UIPanGestureRecognizer *)recognizer;
+{
+    // NSLog(@"moveMyStatusView");
+    
+    CGPoint translation = [recognizer translationInView:self.view];
+    [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
+    
+    CGPoint center = recognizer.view.center;
+    center.x += translation.x;
+    
+    //  NSLog(@"center x %f", center.x);
+    
+    if (!(center.x < 0 || center.x > recognizer.view.frame.size.width/2))
+        recognizer.view.center = center;
+    
+    NSLog(@"recognizer.view.frame.origin.x %f", recognizer.view.frame.origin.x);
+    
+    if(recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        NSLog(@"UIGestureRecognizerStateEnded");
+        
+        if (recognizer.view.frame.origin.x < -25) {
+            [recognizer.view setFrame:CGRectMake(-100, 108,
+                                                 recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
+        }else {
+           
+            
+             [self closeMyStatusSwipeView];
+        }
+    }
+}
+-(void)closeMyStatusSwipeView{
+    [self.statusHolderView setFrame:CGRectMake(0, 108,
+                                         self.statusHolderView.frame.size.width, self.statusHolderView.frame.size.height)];
+}
+
 -(void)reloadData{
     NSLog(@"relaodData %lu", (unsigned long)self.myUser.contactDictionary.count);
     
@@ -155,10 +216,6 @@
     [self.tableView reloadData];
 }
 -(void)refreshMyStatusUI{
-
-    [self setMyStatusCircles];
-}
--(void)setMyStatusCircles{
     
     Status status = [Myuser sharedUser].status;
     
@@ -192,7 +249,7 @@
 -(void)changeMyStatusTo:(Status)status{
     [Myuser sharedUser].status = status;
     [[MyConnectionManager sharedManager]requestUpdateStatusWithDelegate:self selector:@selector(responseToUpdateStatus:)];
-    [self setMyStatusCircles];
+    [self refreshMyStatusUI];
 }
 
 //IBAction methods
@@ -204,13 +261,13 @@
     [self presentViewController:navigation animated:YES completion:nil];
     
 }
-- (IBAction)yellowStatusTapped:(UITapGestureRecognizer *)sender {
+- (void)yellowStatusTapped:(UITapGestureRecognizer *)sender {
     [self changeMyStatusTo:Yellow_status];
 }
-- (IBAction)redStatusTapped:(UITapGestureRecognizer *)sender {
+- (void)redStatusTapped:(UITapGestureRecognizer *)sender {
     [self changeMyStatusTo:Red_status];
 }
-- (IBAction)greenStatusTapped:(UITapGestureRecognizer *)sender {
+- (void)greenStatusTapped:(UITapGestureRecognizer *)sender {
     [self changeMyStatusTo:Green_status];
 }
 
@@ -374,6 +431,9 @@
     
     NSLog(@"person.status %d", contact.status);
     
+    cell.onPhoneLabel.hidden = YES;
+    cell.statusHolderView.hidden = NO;
+    
     switch (contact.status) {
         case Red_status:
             [cell.redStatus setSelected:YES];
@@ -391,9 +451,8 @@
             [cell.yellowStatus setSelected:YES];
             break;
         case On_phone:
-            [cell.redStatus setSelected:NO];
-            [cell.greenStatus setSelected:NO];
-            [cell.yellowStatus setSelected:NO];
+            cell.statusHolderView.hidden = YES;
+            cell.onPhoneLabel.hidden = NO;
             break;
             
         default:
@@ -411,6 +470,78 @@
     //NSLog(@"didSelectRowAtIndexPath");
     
 }
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"commitEditingStyle");
+    Contact *contact = nil;
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        contact = self.filteredContactArray[indexPath.row];
+    }else{
+        NSArray *keys = [self.myUser.contactDictionary allKeys];
+        keys = [keys sortedArrayUsingComparator:^(id a, id b) {
+            return [a compare:b options:NSNumericSearch];
+        }];
+        
+        NSString *key = keys[indexPath.section];
+        contact = [self.myUser.contactDictionary objectForKey:key][indexPath.row];
+    }
+    
+    
+    NSArray *mcheckPhoneNumberArray = [Myuser sharedUser].checkPhoneNumberArray;
+    
+    if ([mcheckPhoneNumberArray containsObject:contact.phoneNumber]) {
+        
+    }else {
+        NSString *phoneNumber = contact.phoneNumber;
+        
+        if(phoneNumber && [MFMessageComposeViewController canSendText]) {
+            phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
+            
+            MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+            controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
+            controller.messageComposeDelegate = self;
+            [self presentViewController:controller animated:YES completion:nil];
+        }
+    }
+
+
+    
+}
+-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    Contact *contact = nil;
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        contact = self.filteredContactArray[indexPath.row];
+    }else{
+        NSArray *keys = [self.myUser.contactDictionary allKeys];
+        keys = [keys sortedArrayUsingComparator:^(id a, id b) {
+            return [a compare:b options:NSNumericSearch];
+        }];
+        
+        NSString *key = keys[indexPath.section];
+        contact = [self.myUser.contactDictionary objectForKey:key][indexPath.row];
+    }
+    
+    NSArray *mcheckPhoneNumberArray = [Myuser sharedUser].checkPhoneNumberArray;
+    
+    if ([mcheckPhoneNumberArray containsObject:contact.phoneNumber]) {
+        return @"Set Notification  ";
+    }
+    
+    
+    return @"Invite  ";
+}
+
 
 
 #pragma mark ABNewPersonViewControllerDelegate methods
@@ -463,5 +594,27 @@
      [[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:searchOption]];
     // Return YES to cause the search result table view to be reloaded.
     return YES;
+}
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+                 didFinishWithResult:(MessageComposeResult)result {
+    switch(result) {
+        case MessageComposeResultCancelled:
+            // user canceled sms
+            [self dismissViewControllerAnimated:YES completion:nil];
+            break;
+        case MessageComposeResultSent:
+            // user sent sms
+            [self dismissViewControllerAnimated:YES completion:nil];
+            //perhaps put an alert here and dismiss the view on one of the alerts buttons
+            break;
+        case MessageComposeResultFailed:
+            // sms send failed
+            [self dismissViewControllerAnimated:YES completion:nil];
+            //perhaps put an alert here and dismiss the view when the alert is canceled
+            break;
+        default:
+            break;
+    }
 }
 @end
