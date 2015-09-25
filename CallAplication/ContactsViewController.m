@@ -12,7 +12,7 @@
 #import "Contact.h"
 #import "ContactDetailViewController.h"
 #import "Myuser.h"
-#import "ContactsTableViewCell.h"
+#import "ContactTableViewCell.h"
 #import "TabBarViewController.h"
 #import "SharedPreferences.h"
 #import "MyConnectionManager.h"
@@ -32,7 +32,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
 @property (nonatomic, strong) UIImageView *yellowCircle;
 @property (nonatomic, strong) UIImageView *greenCircle;
 
-@property (nonatomic, strong) UIView *statusHolderView;
+@property (weak, nonatomic) IBOutlet UIView *statusHolderView;
 
 @end
 
@@ -47,7 +47,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     
     self.filteredContactArray = [[NSMutableArray alloc]init];
    // self.searchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithRed:55/255.0f green:60/255.0f blue:65/255.0f alpha:1.0f];
-    [self.searchDisplayController.searchResultsTableView registerClass:[ContactsTableViewCell class] forCellReuseIdentifier:@"ContactCell"];
+    [self.searchDisplayController.searchResultsTableView registerClass:[ContactTableViewCell class] forCellReuseIdentifier:@"ContactCell"];
     [self.searchDisplayController.searchResultsTableView setRowHeight:self.tableView.rowHeight];
 
 
@@ -111,6 +111,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self closeMyStatusSwipeView];
+    self.tableView.editing=NO;
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -132,8 +133,6 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     float width = self.view.frame.size.width/3;
     float height = 40;
     
-    self.statusHolderView= [[UIView alloc]initWithFrame:CGRectMake(0, 108, self.view.frame.size.width, height)];
-    self.statusHolderView.backgroundColor = [UIColor whiteColor];
     UIPanGestureRecognizer * pan1 = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveMyStatusView:)];
     pan1.minimumNumberOfTouches = 1;
     [self.statusHolderView addGestureRecognizer:pan1];
@@ -174,7 +173,6 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
 }
 -(void)moveMyStatusView:(UIPanGestureRecognizer *)recognizer;
 {
-    // NSLog(@"moveMyStatusView");
     
     CGPoint translation = [recognizer translationInView:self.view];
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
@@ -182,19 +180,13 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     CGPoint center = recognizer.view.center;
     center.x += translation.x;
     
-    //  NSLog(@"center x %f", center.x);
-    
     if (!(center.x < 0 || center.x > recognizer.view.frame.size.width/2))
         recognizer.view.center = center;
     
-    NSLog(@"recognizer.view.frame.origin.x %f", recognizer.view.frame.origin.x);
-    
     if(recognizer.state == UIGestureRecognizerStateEnded)
     {
-        NSLog(@"UIGestureRecognizerStateEnded");
-        
-        if (recognizer.view.frame.origin.x < -25) {
-            [recognizer.view setFrame:CGRectMake(-100, 108,
+        if (recognizer.view.frame.origin.x < -50) {
+            [recognizer.view setFrame:CGRectMake(-88, 108,
                                                  recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
         }else {
            
@@ -395,10 +387,10 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    ContactsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ContactCell"];
+    ContactTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ContactCell"];
     
     if (cell == nil) {
-        cell = [[ContactsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"ContactCell"];
+        cell = [[ContactTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"ContactCell"];
     }
     
 
@@ -482,6 +474,8 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"commitEditingStyle");
+  //  [tableView deselectRowAtIndexPath:indexPath animated:YES];
+   
     Contact *contact = nil;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         contact = self.filteredContactArray[indexPath.row];
@@ -513,7 +507,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
         }
     }
 
-
+    self.tableView.editing=NO;
     
 }
 -(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath

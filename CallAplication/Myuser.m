@@ -101,7 +101,7 @@ static Myuser *myUser;
                                                              person.recordId = recordId;
                                                              person.image = image;
                                                              
-                                                        //    NSLog(@"person.firstName %@", person.firstName);
+                                                            NSLog(@"person.firstName %d", person.recordId);
                                                              
                                                              for (int i=0; i<favoritRecordIds.count; i++) {
                                                                  if (person.recordId == [favoritRecordIds[i] integerValue]) {

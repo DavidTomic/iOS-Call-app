@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MyStatus.h"
+#import "MyLanguage.h"
 
 @interface MyConnectionManager : NSObject
 
@@ -21,11 +22,14 @@
 
 
 -(void)requestStatusInfoWithDelegate:(id)delegate selector:(SEL)selector;
--(void)requestDefaultTextsWithDelegate:(id)delegate selector:(SEL)selector;
+-(void)requestGetDefaultTextsWithDelegate:(id)delegate selector:(SEL)selector;
+-(void)requestSetDefaultTextsWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestLogInWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestAddContactsWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestAddMultipleContactsWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestCheckPhoneNumbersWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestUpdateStatusWithDelegate:(id)delegate selector:(SEL)selector;
+-(void)requestUpdateAccountWithNewPhoneNumber:(NSString *)newPhoneNumber password:(NSString *)newPassword name:(NSString *)name email:(NSString *)email language:(Language)language delegate:(id)delegate selector:(SEL)selector;
+
 
 @end

@@ -16,9 +16,6 @@
 @property (nonatomic) int affectedRows;
 @property (nonatomic) long long lastInsertedRowID;
 
-//-(NSArray *)getContactsFromDb;
-//-(void)saveContactsToDb:(NSArray *)contactList;
-
 -(void)addOrRemoveContactInFavoritWithRecordId:(int)recordId;
 -(NSArray *)getAllContactRecordIdsFromFavoritTable;
 

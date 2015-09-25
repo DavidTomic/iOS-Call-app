@@ -24,7 +24,8 @@
 @property (nonatomic, strong) NSMutableArray *recentContacts;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (nonatomic, strong) UIView *statusHolderView;
+//@property (nonatomic, strong) UIView *statusHolderView;
+@property (weak, nonatomic) IBOutlet UIView *statusHolderView;
 
 @end
 
@@ -67,8 +68,6 @@
     float width = self.view.frame.size.width/3;
     float height = 40;
     
-    self.statusHolderView = [[UIView alloc]initWithFrame:CGRectMake(0, self.navigationController.toolbar.frame.size.height+20, self.view.frame.size.width, height)];
-    self.statusHolderView.backgroundColor = [UIColor whiteColor];
     UIPanGestureRecognizer * pan1 = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveMyStatusView:)];
     pan1.minimumNumberOfTouches = 1;
     [self.statusHolderView addGestureRecognizer:pan1];
@@ -109,7 +108,6 @@
 }
 -(void)moveMyStatusView:(UIPanGestureRecognizer *)recognizer;
 {
-    // NSLog(@"moveMyStatusView");
     
     CGPoint translation = [recognizer translationInView:self.view];
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
@@ -117,19 +115,14 @@
     CGPoint center = recognizer.view.center;
     center.x += translation.x;
     
-    //  NSLog(@"center x %f", center.x);
-    
     if (!(center.x < 0 || center.x > recognizer.view.frame.size.width/2))
         recognizer.view.center = center;
     
-    NSLog(@"recognizer.view.frame.origin.x %f", recognizer.view.frame.origin.x);
-    
     if(recognizer.state == UIGestureRecognizerStateEnded)
     {
-        NSLog(@"UIGestureRecognizerStateEnded");
         
-        if (recognizer.view.frame.origin.x < -25) {
-            [recognizer.view setFrame:CGRectMake(-100, self.navigationController.toolbar.frame.size.height+20,
+        if (recognizer.view.frame.origin.x < -50) {
+            [recognizer.view setFrame:CGRectMake(-88, self.navigationController.toolbar.frame.size.height+20,
                                                  recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
         }else {
             [self closeMyStatusSwipeView];
@@ -232,7 +225,9 @@
         }
     }
     
-    [self.recentContacts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES]]];
+    
+    
+    [self.recentContacts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
     
     for (Contact *contact in self.recentContacts){
         NSLog(@"recentContacts %@ time: %lld", contact.firstName, contact.timestamp);
@@ -406,11 +401,12 @@
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if([sender isKindOfClass:[UIButton class]]){
-        CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.tableView];
-        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
-        if(indexPath){
-            if([[segue identifier]isEqualToString:@"Contact Detail Segue From Recent"]){
+    if([[segue identifier]isEqualToString:@"Contact Detail Segue From Recent"]){
+        if([sender isKindOfClass:[UIButton class]]){
+            CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.tableView];
+            NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
+            if(indexPath){
+
                 if([segue.destinationViewController isKindOfClass:[ContactDetailViewController class]]){
                     
                     Contact *contact = self.recentContacts[indexPath.row];

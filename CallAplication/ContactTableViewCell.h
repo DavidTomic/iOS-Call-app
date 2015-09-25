@@ -1,15 +1,17 @@
 //
-//  ContactsTableViewCell.h
+//  ContactTableViewCell.h
 //  CallAplication
 //
-//  Created by David Tomic on 08/08/15.
+//  Created by David Tomic on 25/09/15.
 //  Copyright (c) 2015 David Tomic. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface ContactsTableViewCell : UITableViewCell
+@interface ContactTableViewCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UILabel *name;
+
 @property (weak, nonatomic) IBOutlet UILabel *statusText;
 
 @property (weak, nonatomic) IBOutlet UIButton *redStatus;

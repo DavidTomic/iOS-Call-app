@@ -270,39 +270,32 @@ static sqlite3 *database = nil;
     
 }
 
-//my methods
-//-(NSArray *)getContactsFromDb{
-//    NSString *query = [NSString stringWithFormat:@"select * from ContactTable"];
-//    NSArray *contacts = [self loadDataFromDB:query];
-//
-//    return contacts;
-//}
-//-(void)saveContactsToDb:(NSArray *)contactList{
-//    NSString *deleteQuery = @"delete from ContactTable";
-//    [self executeQuery:deleteQuery];
-//    
-//    for (Contact *contact in contactList){
-//        
-//        NSString *query = [NSString stringWithFormat:@"insert into ContactTable values('%@',%d,'%@','%@')", contact.phoneNumber, contact.status, contact.statusText,contact.endTime];
-//        [self executeQuery:query];
-//    }
-//}
-
 -(void)addDefaultTextToDefaultTextDb:(NSString *)text{
 
-    NSString *query = [NSString stringWithFormat:@"insert into %@ values('%@')", DEFAULT_TEXT_TABLE, text];
+    NSString *query = [NSString stringWithFormat:@"insert into %@ (defaultText) values('%@')", DEFAULT_TEXT_TABLE, text];
     
     [self executeQuery:query];
 }
 -(void)removeDefaultTextFromDefaultTextDb:(int)dtId{
     
-    NSString *query = [NSString stringWithFormat:@"delete from %@ where recordId=%d",DEFAULT_TEXT_TABLE, dtId];
+    NSString *query = [NSString stringWithFormat:@"delete from %@ where Id=%d",DEFAULT_TEXT_TABLE, dtId];
     
     [self executeQuery:query];
 }
 -(NSArray *)getAllDefaultTextsFromDb{
     NSString *query = [NSString stringWithFormat:@"select * from %@", DEFAULT_TEXT_TABLE];
-    NSArray *results = [self loadDataFromDB:query];
+    NSArray *pom = [self loadDataFromDB:query];
+    
+    NSMutableArray *results = [NSMutableArray new];
+    
+    for (NSArray * array in pom){
+        NSMutableDictionary *dict = [NSMutableDictionary new];
+        [dict setObject:array[0] forKey:@"id"];
+        [dict setObject:array[1] forKey:@"text"];
+        [results addObject:dict];
+    }
+    
+  //  NSLog(@"DEFAULT_TEXT_TABLE %@", results);
     
     return results;
 }

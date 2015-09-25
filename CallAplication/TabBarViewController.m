@@ -49,7 +49,7 @@
                                                  name:@"ContactListReloaded"
                                                object:nil];
     
-    [[MyConnectionManager sharedManager]requestDefaultTextsWithDelegate:self selector:@selector(responseToDefaultText:)];
+    [[MyConnectionManager sharedManager]requestGetDefaultTextsWithDelegate:self selector:@selector(responseToDefaultText:)];
     
     if (self.cameFromRegistration) {
         [self refreshCheckPhoneNumbers];
@@ -252,27 +252,49 @@
         
         if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
           
-            NSArray *pom2 = [[pom1 objectForKey:@"UserStatus"] objectForKey:@"csUserStatus"];
-            
+            id pom2 = [[pom1 objectForKey:@"UserStatus"] objectForKey:@"csUserStatus"];
             NSArray *pomArray = [[Myuser sharedUser].contactDictionary allValues];
 
-            for (NSDictionary *contactDict in pom2){
+            if ([pom2 isKindOfClass:[NSArray class]]) {
+                for (NSDictionary *contactDict in pom2){
+                    NSString *phoneNumber = [contactDict objectForKey:@"PhoneNumber"];
+                    
+                    for (NSArray *array in pomArray){
+                        for (Contact *contact in array){
+                            if ([contact.phoneNumber isEqualToString:phoneNumber]) {
+                                //      NSLog(@"phoneNumber nasao %@", phoneNumber);
+                                contact.statusText = [contactDict objectForKey:@"StatusText"];
+                                contact.status = [[contactDict objectForKey:@"Status"]integerValue];
+                                
+                                goto outer;
+                            }
+                        }
+                    }
+                outer:;
+                    
+                }
+            }else {
+                
+                NSDictionary *contactDict = pom2;
                 NSString *phoneNumber = [contactDict objectForKey:@"PhoneNumber"];
                 
                 for (NSArray *array in pomArray){
                     for (Contact *contact in array){
                         if ([contact.phoneNumber isEqualToString:phoneNumber]) {
-                      //      NSLog(@"phoneNumber nasao %@", phoneNumber);
+                            //      NSLog(@"phoneNumber nasao %@", phoneNumber);
                             contact.statusText = [contactDict objectForKey:@"StatusText"];
                             contact.status = [[contactDict objectForKey:@"Status"]integerValue];
                             
-                            goto outer;
+                            goto outer2;
                         }
                     }
                 }
-                outer:;
+                
+                outer2:;
                 
             }
+            
+
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshStatus"
                                                                 object:self];

@@ -24,7 +24,7 @@
 @property (nonatomic, strong) NSMutableArray *favoritContacts;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (nonatomic, strong) UIView *statusHolderView;
+@property (weak, nonatomic) IBOutlet UIView *statusHolderView;
 
 @end
 
@@ -44,6 +44,7 @@
                                              selector:@selector(receiveRefreshStatusNotification:)
                                                  name:@"RefreshStatus"
                                                object:nil];
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -72,10 +73,8 @@
 -(void)createMyStatusView{
     
     float width = self.view.frame.size.width/3;
-    float height = 40;
+    float height = 50;
     
-    self.statusHolderView = [[UIView alloc]initWithFrame:CGRectMake(0, self.navigationController.toolbar.frame.size.height+20, self.view.frame.size.width, height)];
-    self.statusHolderView.backgroundColor = [UIColor whiteColor];
     UIPanGestureRecognizer * pan1 = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveMyStatusView:)];
     pan1.minimumNumberOfTouches = 1;
     [self.statusHolderView addGestureRecognizer:pan1];
@@ -129,18 +128,16 @@
     if (!(center.x < 0 || center.x > recognizer.view.frame.size.width/2))
         recognizer.view.center = center;
     
-    NSLog(@"recognizer.view.frame.origin.x %f", recognizer.view.frame.origin.x);
+  //  NSLog(@"recognizer.view.frame.origin.x %f", recognizer.view.frame.origin.x);
     
     if(recognizer.state == UIGestureRecognizerStateEnded)
     {
-        NSLog(@"UIGestureRecognizerStateEnded");
+    //    NSLog(@"UIGestureRecognizerStateEnded");
         
-        if (recognizer.view.frame.origin.x < -45) {
-            [recognizer.view setFrame:CGRectMake(-100, self.navigationController.toolbar.frame.size.height+20,
+        if (recognizer.view.frame.origin.x < -50) {
+            [recognizer.view setFrame:CGRectMake(-88, self.navigationController.toolbar.frame.size.height+20,
                                                  recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
         }else {
-           // [recognizer.view setFrame:CGRectMake(0, self.navigationController.toolbar.frame.size.height+20,
-                                               //  recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
             [self closeMyStatusSwipeView];
         }
     }
@@ -330,7 +327,8 @@
     //NSLog(@"makeCall");
     if (phoneNumber) {
         phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
-        // NSLog(@"phoneNumberA %@", phoneNumber);
+        
+        NSLog(@"contact.recordId %d", contact.recordId);
         
         [Myuser sharedUser].lastDialedRecordId = contact.recordId;
         
@@ -383,13 +381,12 @@
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if([sender isKindOfClass:[UIButton class]]){
-        CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.tableView];
-        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
-        if(indexPath){
-            if([[segue identifier]isEqualToString:@"Contact Detail Segue From Favorites"]){
+    if([[segue identifier]isEqualToString:@"Contact Detail Segue From Favorites"]){
+        if([sender isKindOfClass:[UIButton class]]){
+            CGPoint buttonPosition = [sender convertPoint:CGPointZero toView:self.tableView];
+            NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
+            if(indexPath){
                 if([segue.destinationViewController isKindOfClass:[ContactDetailViewController class]]){
-                    
                     Contact *contact = self.favoritContacts[indexPath.row];
                     ContactDetailViewController *vc = (ContactDetailViewController *)segue.destinationViewController;
                     vc.contact = contact;

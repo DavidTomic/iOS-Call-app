@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		34A0B4581B7627A000023649 /* ContactsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A0B4571B7627A000023649 /* ContactsTableViewCell.m */; };
 		34A0B45B1B766FEB00023649 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A0B45A1B766FEB00023649 /* RecentTableViewCell.m */; };
 		3C06BA4DD9C526D38C309478 /* libPods-CallAplication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 703D6876163156DA9B989C36 /* libPods-CallAplication.a */; };
 		DB00700E1BB3E4E400088134 /* FavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB00700D1BB3E4E400088134 /* FavoritesViewController.m */; };
@@ -37,6 +36,10 @@
 		DBD695301B6A328E00337DFF /* MyConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD6952F1B6A328E00337DFF /* MyConnectionManager.m */; };
 		DBD695331B6A331000337DFF /* MyConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD695321B6A331000337DFF /* MyConnection.m */; };
 		DBD6953B1B6A69BB00337DFF /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD6953A1B6A69BB00337DFF /* libxml2.dylib */; };
+		DBEAA3C11BB53DF600940A14 /* SettingsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEAA3C01BB53DF600940A14 /* SettingsDetailViewController.m */; };
+		DBEAA3C41BB557D600940A14 /* DefaultTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEAA3C31BB557D600940A14 /* DefaultTextViewController.m */; };
+		DBEAA3C71BB56D4B00940A14 /* SetStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEAA3C61BB56D4B00940A14 /* SetStatusViewController.m */; };
+		DBEAA3CD1BB58CC700940A14 /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEAA3CC1BB58CC700940A14 /* ContactTableViewCell.m */; };
 		DBFD97901B6B7409000958B7 /* NSDictionary+XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD978F1B6B7409000958B7 /* NSDictionary+XMLDictionary.m */; };
 		DBFD97961B6BA8BA000958B7 /* Myuser.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD97951B6BA8BA000958B7 /* Myuser.m */; };
 		DBFD97991B6BA92A000958B7 /* SharedPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFD97981B6BA92A000958B7 /* SharedPreferences.m */; };
@@ -58,8 +61,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		34A0B4561B7627A000023649 /* ContactsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewCell.h; sourceTree = "<group>"; };
-		34A0B4571B7627A000023649 /* ContactsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewCell.m; sourceTree = "<group>"; };
 		34A0B4591B766FEB00023649 /* RecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTableViewCell.h; sourceTree = "<group>"; };
 		34A0B45A1B766FEB00023649 /* RecentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTableViewCell.m; sourceTree = "<group>"; };
 		5FAF003EADE7C2B717A4FE56 /* Pods-CallAplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CallAplication.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CallAplication/Pods-CallAplication.debug.xcconfig"; sourceTree = "<group>"; };
@@ -117,6 +118,14 @@
 		DBD695311B6A331000337DFF /* MyConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyConnection.h; sourceTree = "<group>"; };
 		DBD695321B6A331000337DFF /* MyConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyConnection.m; sourceTree = "<group>"; };
 		DBD6953A1B6A69BB00337DFF /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		DBEAA3BF1BB53DF600940A14 /* SettingsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsDetailViewController.h; sourceTree = "<group>"; };
+		DBEAA3C01BB53DF600940A14 /* SettingsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsDetailViewController.m; sourceTree = "<group>"; };
+		DBEAA3C21BB557D600940A14 /* DefaultTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultTextViewController.h; sourceTree = "<group>"; };
+		DBEAA3C31BB557D600940A14 /* DefaultTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultTextViewController.m; sourceTree = "<group>"; };
+		DBEAA3C51BB56D4B00940A14 /* SetStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetStatusViewController.h; sourceTree = "<group>"; };
+		DBEAA3C61BB56D4B00940A14 /* SetStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetStatusViewController.m; sourceTree = "<group>"; };
+		DBEAA3CB1BB58CC700940A14 /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
+		DBEAA3CC1BB58CC700940A14 /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
 		DBFD978E1B6B7409000958B7 /* NSDictionary+XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+XMLDictionary.h"; sourceTree = "<group>"; };
 		DBFD978F1B6B7409000958B7 /* NSDictionary+XMLDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+XMLDictionary.m"; sourceTree = "<group>"; };
 		DBFD97941B6BA8BA000958B7 /* Myuser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Myuser.h; sourceTree = "<group>"; };
@@ -204,10 +213,16 @@
 				DB4B886A1B735C50005D15F6 /* ContactDetailViewController.m */,
 				DB291BC81B66335F0028C022 /* KeyboardViewController.h */,
 				DB291BC91B66335F0028C022 /* KeyboardViewController.m */,
-				DB291BCB1B665F2C0028C022 /* SettingsViewController.h */,
-				DB291BCC1B665F2C0028C022 /* SettingsViewController.m */,
 				DB4645AB1BB193EA00ABF6A8 /* VoiceMailViewController.h */,
 				DB4645AC1BB193EA00ABF6A8 /* VoiceMailViewController.m */,
+				DB291BCB1B665F2C0028C022 /* SettingsViewController.h */,
+				DB291BCC1B665F2C0028C022 /* SettingsViewController.m */,
+				DBEAA3BF1BB53DF600940A14 /* SettingsDetailViewController.h */,
+				DBEAA3C01BB53DF600940A14 /* SettingsDetailViewController.m */,
+				DBEAA3C21BB557D600940A14 /* DefaultTextViewController.h */,
+				DBEAA3C31BB557D600940A14 /* DefaultTextViewController.m */,
+				DBEAA3C51BB56D4B00940A14 /* SetStatusViewController.h */,
+				DBEAA3C61BB56D4B00940A14 /* SetStatusViewController.m */,
 				DB8518DD1BA9A6610023B156 /* Main.storyboard */,
 				DB291BA61B6625D50028C022 /* Images.xcassets */,
 				DBAB15241B67C37E00EADB9C /* Model */,
@@ -269,10 +284,10 @@
 				DB4B886F1B73A8B4005D15F6 /* DBManager.m */,
 				DB490EC21B74E7B20063CBE9 /* FavoritTableViewCell.h */,
 				DB490EC31B74E7B20063CBE9 /* FavoritTableViewCell.m */,
-				34A0B4561B7627A000023649 /* ContactsTableViewCell.h */,
-				34A0B4571B7627A000023649 /* ContactsTableViewCell.m */,
 				34A0B4591B766FEB00023649 /* RecentTableViewCell.h */,
 				34A0B45A1B766FEB00023649 /* RecentTableViewCell.m */,
+				DBEAA3CB1BB58CC700940A14 /* ContactTableViewCell.h */,
+				DBEAA3CC1BB58CC700940A14 /* ContactTableViewCell.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -369,7 +384,7 @@
 				TargetAttributes = {
 					DB291B951B6625D50028C022 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = P6U4Z3DVN9;
+						DevelopmentTeam = M9NWKGWJ5P;
 					};
 					DB291BAE1B6625D50028C022 = {
 						CreatedOnToolsVersion = 6.4;
@@ -459,10 +474,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34A0B4581B7627A000023649 /* ContactsTableViewCell.m in Sources */,
 				DBFD97961B6BA8BA000958B7 /* Myuser.m in Sources */,
 				DB291BA21B6625D50028C022 /* UserRegistrationViewController.m in Sources */,
 				DBFD97A61B6BB376000958B7 /* TabBarViewController.m in Sources */,
+				DBEAA3C11BB53DF600940A14 /* SettingsDetailViewController.m in Sources */,
 				DB4645AD1BB193EA00ABF6A8 /* VoiceMailViewController.m in Sources */,
 				DB4B88701B73A8B4005D15F6 /* DBManager.m in Sources */,
 				DBFD97991B6BA92A000958B7 /* SharedPreferences.m in Sources */,
@@ -475,15 +490,18 @@
 				DB490EC41B74E7B20063CBE9 /* FavoritTableViewCell.m in Sources */,
 				DBD695301B6A328E00337DFF /* MyConnectionManager.m in Sources */,
 				EE009AA91BA5EFCC009898C0 /* MyLanguage.m in Sources */,
+				DBEAA3CD1BB58CC700940A14 /* ContactTableViewCell.m in Sources */,
 				DBFD97901B6B7409000958B7 /* NSDictionary+XMLDictionary.m in Sources */,
 				DB291BCD1B665F2C0028C022 /* SettingsViewController.m in Sources */,
 				DB291BC41B662BE30028C022 /* ContactsViewController.m in Sources */,
 				DB0070111BB41AD600088134 /* RecentViewController.m in Sources */,
 				DB00700E1BB3E4E400088134 /* FavoritesViewController.m in Sources */,
 				DBC17C6F1B6F5AFF00BF1DE4 /* Contact.m in Sources */,
+				DBEAA3C41BB557D600940A14 /* DefaultTextViewController.m in Sources */,
 				DB4B88681B734B72005D15F6 /* StartViewController.m in Sources */,
 				DB291B9C1B6625D50028C022 /* main.m in Sources */,
 				DB4645AA1BB13B5200ABF6A8 /* MyStatus.m in Sources */,
+				DBEAA3C71BB56D4B00940A14 /* SetStatusViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

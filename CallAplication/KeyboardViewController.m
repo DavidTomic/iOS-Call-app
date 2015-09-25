@@ -28,7 +28,10 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    JCDialPad *pad = [[JCDialPad alloc] initWithFrame:self.view.bounds];
+    CGRect frame = self.view.bounds;
+    frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height - 12);
+    
+    JCDialPad *pad = [[JCDialPad alloc] initWithFrame:frame];
     pad.buttons = [[JCDialPad defaultButtons] arrayByAddingObjectsFromArray:@[self.callButton]];
     pad.delegate = self;
     [pad setTintColor:[UIColor greenColor]];

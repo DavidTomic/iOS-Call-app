@@ -15,10 +15,10 @@
 @interface AppDelegate ()
 
 @property (nonatomic, strong) CTCallCenter *callCenter1;
-@property (nonatomic, strong) CTCallCenter *callCenter2;
+//@property (nonatomic, strong) CTCallCenter *callCenter2;
 
-@property (nonatomic) BOOL processingOtherStatesActive;
-@property (nonatomic, strong) NSMutableArray *states;
+//@property (nonatomic) BOOL processingOtherStatesActive;
+//@property (nonatomic, strong) NSMutableArray *states;
 
 @end
 
@@ -28,15 +28,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-//    NSLog(@"SMSTEXT %@", [Myuser sharedUser].smsInviteText);
-//    NSLog(@"statusText %@", [Myuser sharedUser].statusText);
-    
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:234/255.0f green:234/255.0f blue:234/255.0f alpha:1.0f]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
     [self.window setTintColor:[UIColor colorWithRed:0/255.0f green:93/255.0f blue:193/255.0f alpha:1.0f]];
-    
-    
-   // [self performSelector:@selector(processOtherStates) withObject:self afterDelay:0.5];
+
     
     void (^block)(CTCall*) = ^(CTCall* call) {
         
@@ -55,61 +50,69 @@
         
         NSLog(@"STATE %@", state);
         
-        
-        if (![self.states containsObject:state]) {
-            [self.states addObject:state];
-            
-            if ([state isEqualToString:@"Dialing"]) {
+        if ([state isEqualToString:@"Dialing"]) {
                 [self processDialState];
-            }else{
-                if(self.processingOtherStatesActive)
-                    return;
-                
-                self.processingOtherStatesActive = YES;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self performSelector:@selector(processOtherStates) withObject:self afterDelay:0.5];
-                });
-            }
         }
         
         
+//        if (![self.states containsObject:state]) {
+//            [self.states addObject:state];
+//            
+//            if ([state isEqualToString:@"Dialing"]) {
+//                [self processDialState];
+//            }else{
+//                if(self.processingOtherStatesActive)
+//                    return;
+//                
+//                self.processingOtherStatesActive = YES;
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [self performSelector:@selector(processOtherStates) withObject:self afterDelay:0.5];
+//                });
+//            }
+//        }
         
     };
 
     self.callCenter1 = [[CTCallCenter alloc] init];
     self.callCenter1.callEventHandler = block;
     
-    self.callCenter2 = [[CTCallCenter alloc] init];
-    self.callCenter2.callEventHandler = block;
+//    self.callCenter2 = [[CTCallCenter alloc] init];
+//    self.callCenter2.callEventHandler = block;
     
     return YES;
 }
 
--(NSMutableArray *)states{
-    
-    if(!_states) _states = [[NSMutableArray alloc]init];
-    
-    return _states;
-}
+//-(NSMutableArray *)states{
+//    
+//    if(!_states) _states = [[NSMutableArray alloc]init];
+//    
+//    return _states;
+//}
 
 -(void)processDialState{
-    NSLog(@"processState %@", self.states);
+   // NSLog(@"processState %@", self.states);
+    
+    NSLog(@"[Myuser sharedUser].lastDialedRecordId %d", [Myuser sharedUser].lastDialedRecordId);
+    NSLog(@"[Myuser sharedUser].lastDialedPhoneNumber %@", [Myuser sharedUser].lastDialedPhoneNumber);
     
     if([Myuser sharedUser].lastDialedRecordId && [Myuser sharedUser].lastDialedRecordId !=0){
         [[DBManager sharedInstance]addContactInRecentWithRecordId:[Myuser sharedUser].lastDialedRecordId phoneNumber:nil timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
     }else if([Myuser sharedUser].lastDialedPhoneNumber){
         [[DBManager sharedInstance]addContactInRecentWithRecordId:0 phoneNumber:[Myuser sharedUser].lastDialedPhoneNumber timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
     }
+    
+    [Myuser sharedUser].lastDialedPhoneNumber = nil;
+    [Myuser sharedUser].lastDialedRecordId = 0;
 
 }
 
--(void)processOtherStates{
-    NSLog(@"processOtherStates %@", self.states);
-    
-    self.processingOtherStatesActive = NO;
-    [self.states removeAllObjects];
-    
-}
+//-(void)processOtherStates{
+//    NSLog(@"processOtherStates %@", self.states);
+//    
+//    self.processingOtherStatesActive = NO;
+//    [self.states removeAllObjects];
+//    
+//}
 
 
 -(BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -143,31 +146,21 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-   // NSLog(@"applicationDidEnterBackground");
-     [self.states removeAllObjects];
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    NSLog(@"applicationDidEnterBackground");
+ //    [self.states removeAllObjects];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-  //   NSLog(@"applicationWillEnterForeground");
-    
-//    Myuser *user = [Myuser sharedUser];
-//    if (user!=nil && user.logedIn) {
-//        [user refreshContactList];
-//    }
-    
-    [Myuser sharedUser].lastDialedPhoneNumber = nil;
-    [Myuser sharedUser].lastDialedRecordId = 0;
-   
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+     NSLog(@"applicationWillEnterForeground");
+
+ //   [Myuser sharedUser].lastDialedPhoneNumber = nil;
+ //   [Myuser sharedUser].lastDialedRecordId = 0;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [Myuser sharedUser].lastDialedPhoneNumber = nil;
-    [Myuser sharedUser].lastDialedRecordId = 0;
-  //  NSLog(@"applicationDidBecomeActive");
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    NSLog(@"applicationDidBecomeActive");
+ //   [Myuser sharedUser].lastDialedPhoneNumber = nil;
+ //   [Myuser sharedUser].lastDialedRecordId = 0;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

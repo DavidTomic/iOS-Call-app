@@ -11,6 +11,7 @@
 #import "Myuser.h"
 #import "SharedPreferences.h"
 #import "Contact.h"
+#import "DBManager.h"
 
 @implementation MyConnectionManager
 
@@ -65,7 +66,6 @@ static MyConnectionManager *mySharedManager;
     
     [conn sendMessageWithMethodName:@"CreateAccount" soapMessage:soapMessage];
 }
-
 -(void)getAcountSetupWithDelegate:(id)delegate selector:(SEL)selector phone:(NSString*)phone password:(NSString*)password{
     MyConnection *conn = [[MyConnection alloc]init];
     conn.delegate = delegate;
@@ -83,7 +83,6 @@ static MyConnectionManager *mySharedManager;
     
     [conn sendMessageWithMethodName:@"GetAccountSetup" soapMessage:soapMessage];
 }
-
 -(void)requestStatusInfoWithDelegate:(id)delegate selector:(SEL)selector{
     MyConnection *conn = [[MyConnection alloc]init];
     conn.delegate = delegate;
@@ -127,8 +126,7 @@ static MyConnectionManager *mySharedManager;
     
     [conn sendMessageWithMethodName:@"RequestStatusInfo" soapMessage:soapMessage];
 }
-
--(void)requestDefaultTextsWithDelegate:(id)delegate selector:(SEL)selector{
+-(void)requestGetDefaultTextsWithDelegate:(id)delegate selector:(SEL)selector{
     MyConnection *conn = [[MyConnection alloc]init];
     conn.delegate = delegate;
     conn.selector = selector;
@@ -146,6 +144,37 @@ static MyConnectionManager *mySharedManager;
                              </soap:Envelope>", user.phoneNumber, user.password];
     
     [conn sendMessageWithMethodName:@"GetDefaultText" soapMessage:soapMessage];
+}
+-(void)requestSetDefaultTextsWithDelegate:(id)delegate selector:(SEL)selector{
+    MyConnection *conn = [[MyConnection alloc]init];
+    conn.delegate = delegate;
+    conn.selector = selector;
+    
+    Myuser *user = [Myuser sharedUser];
+    
+    NSArray *pom = [[DBManager sharedInstance]getAllDefaultTextsFromDb];
+    NSMutableString *textString = [[NSMutableString alloc]init];
+    
+    for (NSDictionary *dict in pom){
+        [textString appendString:[NSString stringWithFormat:@"<string>%@</string>", [dict objectForKey:@"text"]]];
+    }
+    
+    NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
+                             <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
+                             <soap:Body> \
+                             <SetDefaultText xmlns=\"http://tempuri.org/\"> \
+                             <Phonenumber>%@</Phonenumber> \
+                             <password>%@</password> \
+                             <DefaultText> \
+                             %@ \
+                             </DefaultText> \
+                             </SetDefaultText> \
+                             </soap:Body> \
+                             </soap:Envelope>", user.phoneNumber, user.password, textString];
+    
+ //   NSLog(@"soapMessage %@", soapMessage);
+    
+    [conn sendMessageWithMethodName:@"SetDefaultText" soapMessage:soapMessage];
 }
 
 -(void)requestLogInWithDelegate:(id)delegate selector:(SEL)selector{
@@ -172,8 +201,6 @@ static MyConnectionManager *mySharedManager;
     
     [conn sendMessageWithMethodName:@"Login" soapMessage:soapMessage];
 }
-
-
 -(void)requestAddContactsWithDelegate:(id)delegate selector:(SEL)selector{
     MyConnection *conn = [[MyConnection alloc]init];
     conn.delegate = delegate;
@@ -316,6 +343,31 @@ static MyConnectionManager *mySharedManager;
                              </soap:Envelope>", user.phoneNumber, user.password, user.status, user.statusText];
     
     [conn sendMessageWithMethodName:@"UpdateStatus" soapMessage:soapMessage];
+}
+-(void)requestUpdateAccountWithNewPhoneNumber:(NSString *)newPhoneNumber password:(NSString *)newPassword name:(NSString *)name email:(NSString *)email language:(Language)language delegate:(id)delegate selector:(SEL)selector
+{
+    MyConnection *conn = [[MyConnection alloc]init];
+    conn.delegate = delegate;
+    conn.selector = selector;
+    
+    Myuser *user = [Myuser sharedUser];
+    
+    NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
+                             <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
+                             <soap:Body> \
+                             <UpdateAccount xmlns=\"http://tempuri.org/\"> \
+                             <OldPhonenumber>%@</OldPhonenumber> \
+                             <Oldpassword>%@</Oldpassword> \
+                             <PhoneNumber>%@</PhoneNumber> \
+                             <password>%@</password> \
+                             <Name>%@</Name> \
+                             <Email>%@</Email> \
+                             <Language>%d</Language> \
+                             </UpdateAccount> \
+                             </soap:Body> \
+                             </soap:Envelope>", user.phoneNumber, user.password, newPhoneNumber, newPassword, name, email, language];
+    
+    [conn sendMessageWithMethodName:@"UpdateAccount" soapMessage:soapMessage];
 }
 
 @end

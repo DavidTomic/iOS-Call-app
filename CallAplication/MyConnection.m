@@ -24,7 +24,7 @@ NSString *const urlString = @"http://call.celox.dk/wsCall.asmx";
 
 - (void)sendMessageWithMethodName:(NSString *)methodName soapMessage:(NSString *)soapMessage
 {
-    NSLog(@"sendMessageWithMethodName %@", methodName);
+  //  NSLog(@"sendMessageWithMethodName %@", methodName);
     
     NSString *msgLength = [NSString stringWithFormat:@"%lu", (unsigned long)[soapMessage length]];
     NSURL *pomUrl = [NSURL URLWithString:urlString];
@@ -49,7 +49,7 @@ NSString *const urlString = @"http://call.celox.dk/wsCall.asmx";
     NSString *myString = [[NSString alloc] initWithData:_receivedData encoding:NSUTF8StringEncoding];
    // NSLog(@"mystring %@", myString);
     NSDictionary *parsedObject = [[NSDictionary dictionaryWithXMLString:myString] objectForKey:@"soap:Body"];
-    NSLog(@"response %@", parsedObject);
+   // NSLog(@"response %@", parsedObject);
 
     
     if (parsedObject) {

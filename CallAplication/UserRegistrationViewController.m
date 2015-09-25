@@ -57,8 +57,6 @@
     if (self.logIn) {
         [self showLogInViews];
     }
-
-    [[DBManager sharedInstance]getAllDefaultTextsFromDb];
     
 }
 - (void)didReceiveMemoryWarning {
@@ -266,15 +264,29 @@
             NSLog(@"language %u", user.language);
             [[SharedPreferences shared]saveUserData:user];
             
+
+            NSDictionary *dfDict = [pom1 objectForKey:@"DefaultText"];
             
+            id texts = [dfDict objectForKey:@"string"];
             
-            NSDictionary *dfDict = [[pom1 objectForKey:@"DefaultText"] objectForKey:@"Text"];
-            if (dfDict) {
-                NSArray *textArray = [dfDict objectForKey:@"string"];
-                if (textArray && [textArray count]>0) {
-                    [[DBManager sharedInstance] saveDefaultTextsToDb:textArray];
+            NSMutableArray *textList = [[NSMutableArray alloc]init];
+            
+            if([texts isKindOfClass:[NSArray class]]){
+                
+                for (NSString *text in texts) {
+                    [textList addObject:text];
                 }
+                
+            }else if(texts != nil){
+                [textList addObject:texts];
             }
+            
+            
+            if (textList.count > 0) {
+                [[DBManager sharedInstance]saveDefaultTextsToDb:textList];
+            }
+            
+            
             
             [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
             
