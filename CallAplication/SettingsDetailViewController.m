@@ -100,7 +100,7 @@
 
 
 - (IBAction)languageClicked:(UIButton *)sender {
-    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)showErrorMessage{
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:NSLocalizedString(@"Please check your informations are correct", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -145,6 +145,12 @@
         
     }
     
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    //limit the size :
+    int limit = 40;
+    return !([textField.text length]>limit && [string length] > range.length);
 }
 
 @end

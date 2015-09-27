@@ -25,6 +25,10 @@
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Settings", nil);
     self.user = [Myuser sharedUser];
+    
+    self.edgesForExtendedLayout=UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars=NO;
+    self.automaticallyAdjustsScrollViewInsets=NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated{

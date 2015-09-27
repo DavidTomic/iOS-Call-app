@@ -276,9 +276,9 @@ static sqlite3 *database = nil;
     
     [self executeQuery:query];
 }
--(void)removeDefaultTextFromDefaultTextDb:(int)dtId{
+-(void)removeDefaultTextFromDefaultTextDb:(NSInteger)dtId{
     
-    NSString *query = [NSString stringWithFormat:@"delete from %@ where Id=%d",DEFAULT_TEXT_TABLE, dtId];
+    NSString *query = [NSString stringWithFormat:@"delete from %@ where Id=%ld",DEFAULT_TEXT_TABLE, (long)dtId];
     
     [self executeQuery:query];
 }

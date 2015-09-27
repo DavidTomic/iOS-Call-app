@@ -42,6 +42,10 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
 -(void)viewDidLoad{
     [super viewDidLoad];
     
+    self.edgesForExtendedLayout=UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars=NO;
+    self.automaticallyAdjustsScrollViewInsets=NO;
+    
     self.myUser = [Myuser sharedUser];
     [self createMyStatusView];
     
@@ -186,12 +190,15 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     if(recognizer.state == UIGestureRecognizerStateEnded)
     {
         if (recognizer.view.frame.origin.x < -50) {
+            [UIView animateWithDuration:0.2 animations:^{
             [recognizer.view setFrame:CGRectMake(-88, 108,
                                                  recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
+                 }];
         }else {
-           
+           [UIView animateWithDuration:0.2 animations:^{
             
              [self closeMyStatusSwipeView];
+                }];
         }
     }
 }
@@ -420,8 +427,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     // [cell.textLabel setTextColor:[UIColor colorWithRed:242/255.0f green:242/255.0f blue:242/255.0f alpha:1.0f]];
     cell.name.text = text;
     cell.statusText.text = contact.statusText;
-    
-    NSLog(@"person.status %d", contact.status);
+
     
     cell.onPhoneLabel.hidden = YES;
     cell.statusHolderView.hidden = NO;
@@ -546,7 +552,6 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     if (person != nil)  //nil = Cancel button clicked
     {
         NSLog(@"person %@", person);
-        [[SharedPreferences shared]setLastCallTime:0];
         [(TabBarViewController *)self.tabBarController checkAndUpdateAllContact];
     }
     [self dismissViewControllerAnimated:YES completion:NULL];
@@ -558,7 +563,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     // Remove all objects from the filtered search array
     [self.filteredContactArray removeAllObjects];
     // Filter the array using NSPredicate
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.firstName BEGINSWITH[c] %@",searchText];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.firstName BEGINSWITH[c] %@", searchText];
     
     NSArray *pomArray = [NSArray array];
     
@@ -569,8 +574,6 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     
     self.filteredContactArray = [NSMutableArray arrayWithArray:[pomArray filteredArrayUsingPredicate:predicate]];
     
-  //  NSLog(@"filteredContactArray %d", self.filteredContactArray.count);
-
 }
 
 #pragma mark - UISearchDisplayController Delegate Methods

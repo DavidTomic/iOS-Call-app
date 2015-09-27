@@ -33,6 +33,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.edgesForExtendedLayout=UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars=NO;
+    self.automaticallyAdjustsScrollViewInsets=NO;
+    
     [self createMyStatusView];
     // Do any additional setup after loading the view.
     
@@ -120,12 +124,17 @@
     
     if(recognizer.state == UIGestureRecognizerStateEnded)
     {
-        
+       
         if (recognizer.view.frame.origin.x < -50) {
+             [UIView animateWithDuration:0.2 animations:^{
             [recognizer.view setFrame:CGRectMake(-88, self.navigationController.toolbar.frame.size.height+20,
                                                  recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
+            }];
         }else {
+            
+            [UIView animateWithDuration:0.2 animations:^{
             [self closeMyStatusSwipeView];
+                }];
         }
     }
 }

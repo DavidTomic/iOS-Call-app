@@ -37,7 +37,6 @@
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonPressed:)];
     self.navigationItem.rightBarButtonItem = anotherButton;
     
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -153,6 +152,7 @@
 }
 
 -(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
     self.profileImage.layer.cornerRadius = self.profileImage.frame.size.width / 2;
     self.profileImage.layer.borderWidth = 0;
     self.profileImage.layer.borderColor = [UIColor whiteColor].CGColor;

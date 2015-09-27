@@ -23,12 +23,17 @@
     // Do any additional setup after loading the view.
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add", nil) style:UIBarButtonItemStylePlain target:self action:@selector(addButtonPressed:)];
     self.navigationItem.rightBarButtonItem = addButton;
+    
+    self.edgesForExtendedLayout=UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars=NO;
+    self.automaticallyAdjustsScrollViewInsets=NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     self.tableArray = nil;
     [self.tableView reloadData];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -33,7 +33,11 @@
 // VC methods
 - (void)viewDidLoad {
     [super viewDidLoad];
+   // self.edgesForExtendedLayout=UIRectEdgeBottom;
+   // self.extendedLayoutIncludesOpaqueBars=NO;
+   // self.automaticallyAdjustsScrollViewInsets=NO;
     // Do any additional setup after loading the view.
+    
     [self createMyStatusView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -135,10 +139,19 @@
     //    NSLog(@"UIGestureRecognizerStateEnded");
         
         if (recognizer.view.frame.origin.x < -50) {
-            [recognizer.view setFrame:CGRectMake(-88, self.navigationController.toolbar.frame.size.height+20,
-                                                 recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                
+                [recognizer.view setFrame:CGRectMake(-88, self.navigationController.toolbar.frame.size.height+20,
+                                                     recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
+            }];
+
         }else {
-            [self closeMyStatusSwipeView];
+            [UIView animateWithDuration:0.2 animations:^{
+                
+                 [self closeMyStatusSwipeView];
+            }];
+           
         }
     }
 }

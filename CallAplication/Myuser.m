@@ -36,7 +36,9 @@ static Myuser *myUser;
 
 -(NSMutableDictionary *)contactDictionary{
     
-    if(!_contactDictionary) _contactDictionary= [[NSMutableDictionary alloc]init];
+    if(!_contactDictionary){
+       _contactDictionary= [[NSMutableDictionary alloc]init];
+    }
     return _contactDictionary;
 }
 
@@ -71,7 +73,6 @@ static Myuser *myUser;
                                                          
                                                          NSMutableSet *lettersSet = [[NSMutableSet alloc]init];
                                                          
-                                                         
                                                          for(int i = 0; i < numberOfPeople; i++){
                                                              ABRecordRef abPerson = CFArrayGetValueAtIndex( allPeople, i );
                                                              NSString *firstName = (__bridge NSString *)(ABRecordCopyValue(abPerson, kABPersonFirstNameProperty));
@@ -100,8 +101,8 @@ static Myuser *myUser;
                                                              person.phoneNumber = phoneNumber;
                                                              person.recordId = recordId;
                                                              person.image = image;
-                                                             
-                                                            NSLog(@"person.firstName %d", person.recordId);
+
+                                                         //   NSLog(@"person.firstName %d", person.recordId);
                                                              
                                                              for (int i=0; i<favoritRecordIds.count; i++) {
                                                                  if (person.recordId == [favoritRecordIds[i] integerValue]) {
@@ -136,7 +137,6 @@ static Myuser *myUser;
                                                                      [pom addObject:personArray[j]];
                                                                  }
                                                              }
-                                                             
                                                              
                                                              [self.contactDictionary setObject:pom forKey:lettersArray[i]];
                                                          }

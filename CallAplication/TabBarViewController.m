@@ -215,13 +215,13 @@
                                                                  
                                                                  [dict setObject:pom forKey:lettersArray[i]];
                                                              }
-                                                             
-                                                             [Myuser sharedUser].contactDictionary = [dict copy];
-                                                             
+
+                                                            
 
                                                              dispatch_async(dispatch_get_main_queue(), ^{
                                                                  //Your main thread code goes in here
                                                                  NSLog(@"Im on the main thread");
+                                                                [Myuser sharedUser].contactDictionary = [dict mutableCopy];
                                                                  
                                                                  [[NSNotificationCenter defaultCenter] postNotificationName:@"ContactListReloaded"
                                                                                                                      object:self];
@@ -263,7 +263,13 @@
                         for (Contact *contact in array){
                             if ([contact.phoneNumber isEqualToString:phoneNumber]) {
                                 //      NSLog(@"phoneNumber nasao %@", phoneNumber);
-                                contact.statusText = [contactDict objectForKey:@"StatusText"];
+                                NSString *sText = [contactDict objectForKey:@"StatusText"];
+                                
+                                if (sText && [sText isEqualToString:@"(null)"]) {
+                                    sText = nil;
+                                }
+                                
+                                contact.statusText = sText;
                                 contact.status = [[contactDict objectForKey:@"Status"]integerValue];
                                 
                                 goto outer;
@@ -282,7 +288,13 @@
                     for (Contact *contact in array){
                         if ([contact.phoneNumber isEqualToString:phoneNumber]) {
                             //      NSLog(@"phoneNumber nasao %@", phoneNumber);
-                            contact.statusText = [contactDict objectForKey:@"StatusText"];
+                            NSString *sText = [contactDict objectForKey:@"StatusText"];
+                            
+                            if (sText && [sText isEqualToString:@"(null)"]) {
+                                sText = nil;
+                            }
+                            
+                            contact.statusText = sText;
                             contact.status = [[contactDict objectForKey:@"Status"]integerValue];
                             
                             goto outer2;
@@ -405,6 +417,7 @@
         NSDictionary *pom1 = [[dict objectForKey:@"AddMultiContactsResponse"] objectForKey:@"AddMultiContactsResult"];
         
         if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
+            [[SharedPreferences shared]setLastCallTime:0];
             [self refreshStatusInfo];
             [self refreshCheckPhoneNumbers];
         }

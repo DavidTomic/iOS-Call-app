@@ -665,7 +665,7 @@
 					"-lxml2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e7a18f06-085e-4aec-9118-4249626c9003";
 			};
 			name = Debug;
 		};
@@ -690,7 +690,7 @@
 					"-lxml2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e7a18f06-085e-4aec-9118-4249626c9003";
 			};
 			name = Release;
 		};

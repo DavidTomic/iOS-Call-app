@@ -169,7 +169,7 @@
 - (IBAction)confirmPressed:(UIButton *)sender {
     
     if (!self.logIn) {
-        if (self.phoneNumberUITextField.text.length >5 && self.passwordUITextField.text.length > 3 && self.nameUITextField.text.length > 3 && self.emailUITextField.text.length > 5) {
+        if (self.phoneNumberUITextField.text.length >5 && self.passwordUITextField.text.length > 3 && self.nameUITextField.text.length > 1 && self.emailUITextField.text.length > 5) {
             [[MyConnectionManager sharedManager]createAcountWithDelegate:self selector:@selector(responseToCreateUser:) phone:self.phoneNumberUITextField.text password:self.passwordUITextField.text name:self.nameUITextField.text email:self.emailUITextField.text language:1];
         }else{
             [self showErrorAlert];

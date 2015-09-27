@@ -24,7 +24,7 @@
 -(NSArray *)getAllContactDataFromRecentTable;
 
 -(void)addDefaultTextToDefaultTextDb:(NSString *)text;
--(void)removeDefaultTextFromDefaultTextDb:(int)dtId;
+-(void)removeDefaultTextFromDefaultTextDb:(NSInteger)dtId;
 -(NSArray *)getAllDefaultTextsFromDb;
 -(void)saveDefaultTextsToDb:(NSArray *)textList;
 
