@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "74C09EABAAE3AB0D9A7339B1"
+               BlueprintIdentifier = "A6A3514F8A1DEC428CD025CE"
                BuildableName = "libPods-CallAplication-JCDialPad.a"
                BlueprintName = "Pods-CallAplication-JCDialPad"
                ReferencedContainer = "container:Pods.xcodeproj">

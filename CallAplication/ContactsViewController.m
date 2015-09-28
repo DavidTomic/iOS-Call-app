@@ -42,9 +42,9 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    self.edgesForExtendedLayout=UIRectEdgeNone;
-    self.extendedLayoutIncludesOpaqueBars=NO;
-    self.automaticallyAdjustsScrollViewInsets=NO;
+//    self.edgesForExtendedLayout=UIRectEdgeNone;
+//    self.extendedLayoutIncludesOpaqueBars=NO;
+//    self.automaticallyAdjustsScrollViewInsets=NO;
     
     self.myUser = [Myuser sharedUser];
     [self createMyStatusView];

@@ -345,6 +345,7 @@
 				DB291B931B6625D50028C022 /* Frameworks */,
 				DB291B941B6625D50028C022 /* Resources */,
 				322A790AC95DC3981B8FA42A /* Copy Pods Resources */,
+				DB7DB9A61BB985F600DF1EBA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -384,7 +385,7 @@
 				TargetAttributes = {
 					DB291B951B6625D50028C022 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = M9NWKGWJ5P;
+						DevelopmentTeam = PKYM2MNF59;
 					};
 					DB291BAE1B6625D50028C022 = {
 						CreatedOnToolsVersion = 6.4;
@@ -466,6 +467,19 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		DB7DB9A61BB985F600DF1EBA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/Fabric.framework/run\" 14cfb8e86205681dd8c06066a0b712abdf7574b6 323c17e14b822e7adf02d4642547283a45a6678544875e7ed11b4f63ed19a74e\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -663,9 +677,10 @@
 					"-l\"Pods-CallAplication-libPhoneNumber-iOS\"",
 					"-l\"xml2\"",
 					"-lxml2",
+					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e7a18f06-085e-4aec-9118-4249626c9003";
+				PROVISIONING_PROFILE = "e9395d4e-6d3a-4563-b1e8-7df69fefe816";
 			};
 			name = Debug;
 		};
@@ -688,9 +703,10 @@
 					"-l\"Pods-CallAplication-libPhoneNumber-iOS\"",
 					"-l\"xml2\"",
 					"-lxml2",
+					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e7a18f06-085e-4aec-9118-4249626c9003";
+				PROVISIONING_PROFILE = "e9395d4e-6d3a-4563-b1e8-7df69fefe816";
 			};
 			name = Release;
 		};

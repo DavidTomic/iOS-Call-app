@@ -33,9 +33,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.edgesForExtendedLayout=UIRectEdgeNone;
-    self.extendedLayoutIncludesOpaqueBars=NO;
-    self.automaticallyAdjustsScrollViewInsets=NO;
+//    self.edgesForExtendedLayout=UIRectEdgeNone;
+//    self.extendedLayoutIncludesOpaqueBars=NO;
+//    self.automaticallyAdjustsScrollViewInsets=NO;
     
     [self createMyStatusView];
     // Do any additional setup after loading the view.

@@ -4,6 +4,16 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-CallAplication-Crashlytics.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-CallAplication-Fabric.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-CallAplication-FontasticIcons.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,22 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>5B7E1AA35278E924D1CCCBDE</key>
+		<key>2F2B6E6A139B4C9CA7B9637F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>74C09EABAAE3AB0D9A7339B1</key>
+		<key>6CDAB6C76145878C51177E33</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E47FDE439E8A165FE5EA347D</key>
+		<key>758B49D3576BAA960AAFBCE2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FB65423522F58FB74E49185E</key>
+		<key>A6A3514F8A1DEC428CD025CE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DB16CFAE9E56766A1143E38D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E998706DEEDAEE17E4E099CB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
