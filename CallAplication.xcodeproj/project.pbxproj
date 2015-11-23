@@ -479,7 +479,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/Fabric.framework/run\" 14cfb8e86205681dd8c06066a0b712abdf7574b6 323c17e14b822e7adf02d4642547283a45a6678544875e7ed11b4f63ed19a74e\n";
+			shellScript = "\"${PODS_ROOT}/Fabric/Fabric.framework/run\" de9d7e536ef176622b15acf872f9f12a3f665ec3 296bb0952bbc0b4c04bc335b4eab1196bc10753949df28173ee721ea534274d1";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -680,7 +680,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e9395d4e-6d3a-4563-b1e8-7df69fefe816";
+				PROVISIONING_PROFILE = "3b7b106f-b027-4df3-aa27-d99854520f24";
 			};
 			name = Debug;
 		};
@@ -706,7 +706,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e9395d4e-6d3a-4563-b1e8-7df69fefe816";
+				PROVISIONING_PROFILE = "3b7b106f-b027-4df3-aa27-d99854520f24";
 			};
 			name = Release;
 		};

@@ -563,13 +563,28 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     // Remove all objects from the filtered search array
     [self.filteredContactArray removeAllObjects];
     // Filter the array using NSPredicate
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.firstName BEGINSWITH[c] %@", searchText];
+  //  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.firstName BEGINSWITH[c] %@", searchText];
     
-    NSArray *pomArray = [NSArray array];
     
-    if (searchText != nil && searchText.length > 0) {
-        NSString *firstLetter = [[searchText substringToIndex:1] uppercaseString];
-        pomArray = [self.data objectForKey:firstLetter];
+    BOOL isDigit;
+    NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+    NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:searchText];
+    isDigit = [alphaNums isSupersetOfSet:inStringSet];
+    
+    NSPredicate *predicate;
+    if (isDigit) {
+        predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"SELF.phoneNumber MATCHES '.*%@.*'", searchText]];
+    }else {
+        predicate = [NSPredicate predicateWithFormat:@"SELF.firstName BEGINSWITH[c] %@", searchText];
+    }
+    
+    NSMutableArray *pomArray = [NSMutableArray array];
+    NSArray *pom = [self.data allValues];
+    
+    for (NSArray *array in pom) {
+        for (Contact *c in array){
+            [pomArray addObject:c];
+        }
     }
     
     self.filteredContactArray = [NSMutableArray arrayWithArray:[pomArray filteredArrayUsingPredicate:predicate]];

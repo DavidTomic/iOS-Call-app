@@ -244,7 +244,7 @@
 
 //response methods
 -(void)responseToRequestStatusInfo:(NSDictionary *)dict{
-   // NSLog(@"responseToRequestStatusInfo %@", dict);
+    NSLog(@"responseToRequestStatusInfo %@", dict);
     
     if (dict) {
         
