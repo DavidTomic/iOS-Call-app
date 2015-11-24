@@ -18,7 +18,7 @@
 @end
 
 
-NSString *const urlString = @"http://call.celox.dk/wsCall.asmx";
+NSString *const urlString = @"https://ws.when2call.dk/wscall.asmx";
 
 @implementation MyConnection
 

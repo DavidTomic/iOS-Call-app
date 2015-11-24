@@ -6,6 +6,7 @@ pod 'JCDialPad', '~> 0.1'
 pod 'FontasticIcons'
 pod 'Fabric'
 pod 'Crashlytics'
+pod 'SVProgressHUD'
 end
 
 target 'CallAplicationTests' do

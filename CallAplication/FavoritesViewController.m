@@ -14,6 +14,7 @@
 #import "Contact.h"
 #import "FavoritTableViewCell.h"
 #import "ContactDetailViewController.h"
+#import "TimerNotification.h"
 
 @interface FavoritesViewController ()
 
@@ -140,11 +141,12 @@
         
         if (recognizer.view.frame.origin.x < -50) {
             
-            [UIView animateWithDuration:0.2 animations:^{
-                
-                [recognizer.view setFrame:CGRectMake(-88, self.navigationController.toolbar.frame.size.height+20,
-                                                     recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
-            }];
+//            [UIView animateWithDuration:0.2 animations:^{
+//                
+//                [recognizer.view setFrame:CGRectMake(-88, self.navigationController.toolbar.frame.size.height+20,
+//                                                     recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
+//            }];
+            [self performSegueWithIdentifier:@"Set Status Segue" sender:self];
 
         }else {
             [UIView animateWithDuration:0.2 animations:^{
@@ -158,11 +160,23 @@
 -(void)changeMyStatusTo:(Status)status{
     [Myuser sharedUser].status = status;
     [[MyConnectionManager sharedManager]requestUpdateStatusWithDelegate:self selector:@selector(responseToUpdateStatus:)];
+    [TimerNotification cancelTimerNotification];
     [self refreshMyStatusUI];
 }
 -(void)refreshMyStatusUI{
     
     Status status = [Myuser sharedUser].status;
+    
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
+    [df setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    NSDate *statusStartTime = [df dateFromString: [Myuser sharedUser].statusStartTime];
+    NSDate *statusEndTime = [df dateFromString: [Myuser sharedUser].statusEndTime];
+    
+    if ([currentDate compare:statusStartTime] == NSOrderedDescending && [currentDate compare:statusEndTime] == NSOrderedAscending) {
+        status = [Myuser sharedUser].timerStatus;
+    }
     
     switch (status) {
         case Red_status:
@@ -217,7 +231,8 @@
     
 }
 -(void)receiveRefreshStatusNotification:(NSNotification *)notification{
-    // NSLog(@"receiveRefreshStatusNotification");
+    NSLog(@"receiveRefreshStatusNotification");
+    [self refreshMyStatusUI];
     [self reloadData];
 }
 

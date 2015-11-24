@@ -24,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-CallAplication-SVProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-CallAplication-libPhoneNumber-iOS.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -37,32 +42,37 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>2F2B6E6A139B4C9CA7B9637F</key>
+		<key>6FBB56C5C9A11A8DA59AAD37</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6CDAB6C76145878C51177E33</key>
+		<key>70CE7D77ECC70CA69FF3A512</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>758B49D3576BAA960AAFBCE2</key>
+		<key>9811BC2D615C597830572145</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A6A3514F8A1DEC428CD025CE</key>
+		<key>A59CF007616263D2115773C1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DB16CFAE9E56766A1143E38D</key>
+		<key>AF648E1AF832A5860885EC4C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E998706DEEDAEE17E4E099CB</key>
+		<key>BA2E18F0C9717A5CA94C48AA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C6F80D364E2B78E142A0FF2E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

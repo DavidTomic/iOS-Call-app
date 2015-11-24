@@ -28,6 +28,9 @@
 @property (nonatomic, strong) NSString *statusStartTime;
 @property (nonatomic, strong) NSString *statusEndTime;
 
+@property (nonatomic) Status timerStatus;
+@property (nonatomic, strong) NSString *timerStatusText;
+
 @property (nonatomic, strong) NSMutableDictionary *contactDictionary;
 @property (nonatomic, strong) NSMutableArray *checkPhoneNumberArray;
 

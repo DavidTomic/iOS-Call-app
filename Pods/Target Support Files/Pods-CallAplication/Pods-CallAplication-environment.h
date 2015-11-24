@@ -10,7 +10,7 @@
 #define COCOAPODS_POD_AVAILABLE_Crashlytics
 #define COCOAPODS_VERSION_MAJOR_Crashlytics 3
 #define COCOAPODS_VERSION_MINOR_Crashlytics 3
-#define COCOAPODS_VERSION_PATCH_Crashlytics 1
+#define COCOAPODS_VERSION_PATCH_Crashlytics 4
 
 // Fabric
 #define COCOAPODS_POD_AVAILABLE_Fabric
@@ -35,6 +35,12 @@
 #define COCOAPODS_VERSION_MAJOR_JCDialPad 0
 #define COCOAPODS_VERSION_MINOR_JCDialPad 1
 #define COCOAPODS_VERSION_PATCH_JCDialPad 1
+
+// SVProgressHUD
+#define COCOAPODS_POD_AVAILABLE_SVProgressHUD
+#define COCOAPODS_VERSION_MAJOR_SVProgressHUD 1
+#define COCOAPODS_VERSION_MINOR_SVProgressHUD 1
+#define COCOAPODS_VERSION_PATCH_SVProgressHUD 3
 
 // libPhoneNumber-iOS
 #define COCOAPODS_POD_AVAILABLE_libPhoneNumber_iOS

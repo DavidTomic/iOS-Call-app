@@ -50,6 +50,8 @@ static SharedPreferences *sharedProperties;
     [myDefaults setObject:user.smsInviteText forKey:@"smsInviteText"];
     [myDefaults setObject:user.statusStartTime forKey:@"statusStartTime"];
     [myDefaults setObject:user.statusEndTime forKey:@"statusEndTime"];
+    [myDefaults setInteger:user.timerStatus forKey:@"timerStatus"];
+    [myDefaults setObject:user.timerStatusText forKey:@"timerStatusText"];
     [myDefaults synchronize];
 }
 
@@ -66,6 +68,8 @@ static SharedPreferences *sharedProperties;
     user.smsInviteText = [myDefaults objectForKey:@"smsInviteText"];
     user.statusStartTime = [myDefaults objectForKey:@"statusStartTime"];
     user.statusEndTime = [myDefaults objectForKey:@"statusEndTime"];
+    user.timerStatus = [myDefaults integerForKey:@"timerStatus"];
+    user.timerStatusText = [myDefaults objectForKey:@"timerStatusText"];
 }
 
 -(void)setLastCallTime:(long long)time {

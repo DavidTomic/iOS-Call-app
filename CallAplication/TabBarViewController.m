@@ -164,10 +164,17 @@
                                                              if (ABMultiValueGetCount(phoneNumbers) > 0) {
                                                                  phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
                                                              }
+                                                             
+                                                             NSString *firstSign = [phoneNumber substringToIndex:1];
+                                                             NSString *phoneNumberOnlyDigit = [[phoneNumber componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+                                                             if ([firstSign isEqualToString:@"+"]) {
+                                                                 phoneNumberOnlyDigit = [NSString stringWithFormat:@"%@%@", firstSign, phoneNumberOnlyDigit];
+                                                             }
+                                                             
                                                              Contact *person = [[Contact alloc]init];
                                                              person.firstName = firstName;
                                                              person.lastName = lastName;
-                                                             person.phoneNumber = phoneNumber;
+                                                             person.phoneNumber = phoneNumberOnlyDigit;
                                                              person.recordId = recordId;
                                                              person.image = image;
                                                              

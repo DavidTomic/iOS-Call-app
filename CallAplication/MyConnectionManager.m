@@ -50,6 +50,12 @@ static MyConnectionManager *mySharedManager;
     conn.delegate = delegate;
     conn.selector = selector;
     
+    NSString *firstSign = [phone substringToIndex:1];
+    NSString *phoneNumberOnlyDigit = [[phone componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+    if ([firstSign isEqualToString:@"+"]) {
+        phoneNumberOnlyDigit = [NSString stringWithFormat:@"%@%@", firstSign, phoneNumberOnlyDigit];
+    }
+    
     NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
     <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
     <soap:Body> \
@@ -62,7 +68,7 @@ static MyConnectionManager *mySharedManager;
     <Allowmode>0</Allowmode> \
     </CreateAccount> \
     </soap:Body> \
-    </soap:Envelope>", phone, password, name, email, language];
+    </soap:Envelope>", phoneNumberOnlyDigit, password, name, email, language];
     
     [conn sendMessageWithMethodName:@"CreateAccount" soapMessage:soapMessage];
 }
@@ -70,6 +76,14 @@ static MyConnectionManager *mySharedManager;
     MyConnection *conn = [[MyConnection alloc]init];
     conn.delegate = delegate;
     conn.selector = selector;
+    
+    NSString *firstSign = [phone substringToIndex:1];
+    NSString *phoneNumberOnlyDigit = [[phone componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+    if ([firstSign isEqualToString:@"+"]) {
+        phoneNumberOnlyDigit = [NSString stringWithFormat:@"%@%@", firstSign, phoneNumberOnlyDigit];
+    }
+    
+    NSLog(@"phoneNumberOnlyDigit %@", phoneNumberOnlyDigit);
     
     NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
                              <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
@@ -79,7 +93,7 @@ static MyConnectionManager *mySharedManager;
                              <Password>%@</Password> \
                              </GetAccountSetup> \
                              </soap:Body> \
-                             </soap:Envelope>", phone, password];
+                             </soap:Envelope>", phoneNumberOnlyDigit, password];
     
     [conn sendMessageWithMethodName:@"GetAccountSetup" soapMessage:soapMessage];
 }
@@ -341,6 +355,8 @@ static MyConnectionManager *mySharedManager;
                              </UpdateStatus> \
                              </soap:Body> \
                              </soap:Envelope>", user.phoneNumber, user.password, user.status, user.statusText];
+    
+  //  NSLog(@"soapMessage %@", soapMessage);
     
     [conn sendMessageWithMethodName:@"UpdateStatus" soapMessage:soapMessage];
 }

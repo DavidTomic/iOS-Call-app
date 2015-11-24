@@ -12,6 +12,7 @@
 #import "SharedPreferences.h"
 #import "DBManager.h"
 #import "TabBarViewController.h"
+#import "SVProgressHUD.h"
 
 #define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
 #define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
@@ -30,7 +31,6 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *yCoordinateOfTFHolder;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *yTitleCoordinate;
-@property (weak, nonatomic) IBOutlet UIButton *titleButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 
 @end
@@ -44,19 +44,15 @@
    // NSLog(@"W %f", self.view.frame.size.width);
    // NSLog(@"H %f", self.view.frame.size.height);
 
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.titleButton.titleLabel.text];
-    [attributedString addAttribute:NSForegroundColorAttributeName
-                             value:[UIColor grayColor]
-                             range:NSMakeRange([self.titleButton.titleLabel.text rangeOfString:@"/"].location, self.titleButton.titleLabel.text.length-[self.titleButton.titleLabel.text rangeOfString:@"/"].location)];
-    
-    [self.titleButton setAttributedTitle:attributedString forState:UIControlStateNormal];
+//    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.titleButton.titleLabel.text];
+//    [attributedString addAttribute:NSForegroundColorAttributeName
+//                             value:[UIColor grayColor]
+//                             range:NSMakeRange([self.titleButton.titleLabel.text rangeOfString:@"/"].location, self.titleButton.titleLabel.text.length-[self.titleButton.titleLabel.text rangeOfString:@"/"].location)];
+//    
+//    [self.titleButton setAttributedTitle:attributedString forState:UIControlStateNormal];
 
     [self observeKeyboard];
     [self addSpaceToTextFields];
-    
-    if (self.logIn) {
-        [self showLogInViews];
-    }
     
 }
 - (void)didReceiveMemoryWarning {
@@ -65,6 +61,7 @@
 }
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"mainControllerSegue"]) {
+        [SVProgressHUD dismiss];
         TabBarViewController *destinationVC = segue.destinationViewController;
         destinationVC.cameFromRegistration = YES;
     }
@@ -111,16 +108,24 @@
 -(void)showErrorAlert{
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", @"") message:NSLocalizedString(@"Please check your informations are correct", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
+    [SVProgressHUD dismiss];
 }
--(void)showLogInViews{
+-(void)showErrorAlertWithMessage:(NSString *)message {
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", @"") message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
+    [SVProgressHUD dismiss];
+}
+
+//IBAction methods
+-(IBAction)LogInPressed:(UIButton *)sender{
+    
+    [self.phoneNumberUITextField resignFirstResponder];
+    [self.passwordUITextField resignFirstResponder];
+    [self.nameUITextField resignFirstResponder];
+    [self.emailUITextField resignFirstResponder];
+    self.logIn = YES;
+    
     [self.confirmButton setTitle:NSLocalizedString(@"LOG IN", nil) forState:UIControlStateNormal];
-    
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.titleButton.titleLabel.text];
-    [attributedString addAttribute:NSForegroundColorAttributeName
-                             value:[UIColor grayColor]
-                             range:NSMakeRange(0, [self.titleButton.titleLabel.text rangeOfString:@"/"].location)];
-    [self.titleButton setAttributedTitle:attributedString forState:UIControlStateNormal];
-    
     [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionTransitionNone animations:^{
         self.nameUITextField.alpha = 0.0f;
         self.emailUITextField.alpha = 0.0f;
@@ -129,15 +134,15 @@
         self.emailUITextField.hidden=YES;
     }];
 }
--(void)showSignUpViews{
+-(IBAction)SignUpPressed:(UIButton *)sender{
+    
+    [self.phoneNumberUITextField resignFirstResponder];
+    [self.passwordUITextField resignFirstResponder];
+    [self.nameUITextField resignFirstResponder];
+    [self.emailUITextField resignFirstResponder];
+    self.logIn = NO;
+    
     [self.confirmButton setTitle:NSLocalizedString(@"SIGN UP", nil) forState:UIControlStateNormal];
-    
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.titleButton.titleLabel.text];
-    [attributedString addAttribute:NSForegroundColorAttributeName
-                             value:[UIColor grayColor]
-                             range:NSMakeRange([self.titleButton.titleLabel.text rangeOfString:@"/"].location, self.titleButton.titleLabel.text.length-[self.titleButton.titleLabel.text rangeOfString:@"/"].location)];
-    [self.titleButton setAttributedTitle:attributedString forState:UIControlStateNormal];
-    
     self.nameUITextField.hidden=NO;
     self.emailUITextField.hidden=NO;
     
@@ -149,37 +154,35 @@
     }];
 }
 
-//IBAction methods
-- (IBAction)titlePressed:(UIButton *)sender {
-    
-    [self.phoneNumberUITextField resignFirstResponder];
-    [self.passwordUITextField resignFirstResponder];
-    [self.nameUITextField resignFirstResponder];
-    [self.emailUITextField resignFirstResponder];
-    
-    if (!self.logIn) {
-        self.logIn = YES;
-        [self showLogInViews];
-        
-    }else{
-        self.logIn = NO;
-        [self showSignUpViews];
-    }
-}
 - (IBAction)confirmPressed:(UIButton *)sender {
     
     if (!self.logIn) {
-        if (self.phoneNumberUITextField.text.length >5 && self.passwordUITextField.text.length > 3 && self.nameUITextField.text.length > 1 && self.emailUITextField.text.length > 5) {
-            [[MyConnectionManager sharedManager]createAcountWithDelegate:self selector:@selector(responseToCreateUser:) phone:self.phoneNumberUITextField.text password:self.passwordUITextField.text name:self.nameUITextField.text email:self.emailUITextField.text language:1];
+        if (self.phoneNumberUITextField.text.length < 5) {
+            [self showErrorAlertWithMessage:NSLocalizedString(@"Please check your phone number", nil)];
+        }else if(self.passwordUITextField.text.length < 3){
+            [self showErrorAlertWithMessage:NSLocalizedString(@"Please check your password", nil)];
+            return;
+        }else if(self.nameUITextField.text.length < 1){
+            [self showErrorAlertWithMessage:NSLocalizedString(@"Please check your name", nil)];
+            return;
+        }else if(self.emailUITextField.text.length < 5){
+            [self showErrorAlertWithMessage:NSLocalizedString(@"Please check your email", nil)];
+            return;
         }else{
-            [self showErrorAlert];
+            [SVProgressHUD show];
+           [[MyConnectionManager sharedManager]createAcountWithDelegate:self selector:@selector(responseToCreateUser:) phone:self.phoneNumberUITextField.text password:self.passwordUITextField.text name:self.nameUITextField.text email:self.emailUITextField.text language:1];
         }
 
     }else{
-        if (self.phoneNumberUITextField.text.length >5 && self.passwordUITextField.text.length > 3) {
-                    [[MyConnectionManager sharedManager] getAcountSetupWithDelegate:self selector:@selector(responseToGetAcountSetupWithDelegate:) phone:self.phoneNumberUITextField.text password:self.passwordUITextField.text];
+        if (self.phoneNumberUITextField.text.length < 5) {
+            [self showErrorAlertWithMessage:NSLocalizedString(@"Please check your phone number", nil)];
+            return;
+        }else if(self.passwordUITextField.text.length < 3){
+            [self showErrorAlertWithMessage:NSLocalizedString(@"Please check your password", nil)];
+            return;
         }else{
-            [self showErrorAlert];
+            [SVProgressHUD show];
+            [[MyConnectionManager sharedManager] getAcountSetupWithDelegate:self selector:@selector(responseToGetAcountSetupWithDelegate:) phone:self.phoneNumberUITextField.text password:self.passwordUITextField.text];
         }
     }
 
@@ -187,15 +190,21 @@
 
 //observe methods
 - (void)keyboardWillHide:(NSNotification *)notification {
-    self.yCoordinateOfTFHolder.constant = 19.5;
-    self.yTitleCoordinate.constant = 9;
+    self.yCoordinateOfTFHolder.constant = 20;
+    self.yTitleCoordinate.constant = 40;
 }
 - (void)keyboardWillShow:(NSNotification *)notification {
-    if (!self.logIn)
-    self.yCoordinateOfTFHolder.constant = 90;
     
-    if(IS_IPHONE_4_OR_LESS && !self.logIn)
-    self.yTitleCoordinate.constant = -20;
+    if (!self.logIn){
+        self.yCoordinateOfTFHolder.constant = 80;
+        
+        if(IS_IPHONE_4_OR_LESS){
+            self.yTitleCoordinate.constant = 8;
+        }else {
+            self.yTitleCoordinate.constant = 30;
+        }
+    }
+    
 }
 
 //delegate methods
@@ -215,7 +224,14 @@
         
         if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
             Myuser *user = [Myuser sharedUser];
-            user.phoneNumber = self.phoneNumberUITextField.text;
+            
+            NSString *firstSign = [self.phoneNumberUITextField.text substringToIndex:1];
+            NSString *phoneNumberOnlyDigit = [[self.phoneNumberUITextField.text componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+            if ([firstSign isEqualToString:@"+"]) {
+                phoneNumberOnlyDigit = [NSString stringWithFormat:@"%@%@", firstSign, phoneNumberOnlyDigit];
+            }
+            
+            user.phoneNumber = phoneNumberOnlyDigit;
             user.password = self.passwordUITextField.text;
             
             [[MyConnectionManager sharedManager]requestAddMultipleContactsWithDelegate:self selector:@selector(responseToAddMultipleContacts:)];
@@ -224,6 +240,7 @@
         }else if ([[pom1 objectForKey:@"Result"] integerValue] == 0){
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Phone number already exists", nil) message:NSLocalizedString(@"Please change number or Log in with existng phone number", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
+            [SVProgressHUD dismiss];
             return;
         }
     }
@@ -241,7 +258,7 @@
             NSDictionary *pom2 = [pom1 objectForKey:@"AccountSetup"];
             
             Myuser *user = [Myuser sharedUser];
-            user.phoneNumber = [pom2 objectForKey:@"Phonenumber"];;
+            user.phoneNumber = [pom2 objectForKey:@"Phonenumber"];
             user.password = self.passwordUITextField.text;
             user.name = [pom2 objectForKey:@"Name"];
             user.email = [pom2 objectForKey:@"Email"];
@@ -305,7 +322,14 @@
         if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
             
             Myuser *user = [Myuser sharedUser];
-            user.phoneNumber = self.phoneNumberUITextField.text;
+            
+            NSString *firstSign = [self.phoneNumberUITextField.text substringToIndex:1];
+            NSString *phoneNumberOnlyDigit = [[self.phoneNumberUITextField.text componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+            if ([firstSign isEqualToString:@"+"]) {
+                phoneNumberOnlyDigit = [NSString stringWithFormat:@"%@%@", firstSign, phoneNumberOnlyDigit];
+            }
+            
+            user.phoneNumber = phoneNumberOnlyDigit;
             user.password = self.passwordUITextField.text;
             user.name = self.nameUITextField.text;
             user.email = self.emailUITextField.text;

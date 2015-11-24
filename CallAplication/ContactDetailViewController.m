@@ -73,6 +73,12 @@
                                                              if (ABMultiValueGetCount(phoneNumbers) > 0) {
                                                                  phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
                                                              }
+                                                             
+                                                             NSString *firstSign = [phoneNumber substringToIndex:1];
+                                                             NSString *phoneNumberOnlyDigit = [[phoneNumber componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+                                                             if ([firstSign isEqualToString:@"+"]) {
+                                                                 phoneNumber = [NSString stringWithFormat:@"%@%@", firstSign, phoneNumberOnlyDigit];
+                                                             }
 
                                                              
                                                              int recordId = ABRecordGetRecordID(abPerson);

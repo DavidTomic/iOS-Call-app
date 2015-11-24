@@ -56,6 +56,7 @@ install_resource()
                     install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Strings/FontAwesomeRegular+Deprecation.strings"
                     install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Strings/FontAwesomeRegular.strings"
                     install_resource "FontasticIcons/FontasticIcons/Sources/Resources/Strings/IconicStroke.strings"
+                    install_resource "SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
                     install_resource "libPhoneNumber-iOS/libPhoneNumber/NBPhoneNumberMetadata.plist"
           
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
