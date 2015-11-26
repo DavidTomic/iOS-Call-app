@@ -9,6 +9,7 @@
 #import "SettingsViewController.h"
 #import "SettingsDetailViewController.h"
 #import "Myuser.h"
+#import "SharedPreferences.h"
 
 @interface SettingsViewController()<UITableViewDataSource, UITableViewDelegate>
 
@@ -39,7 +40,7 @@
 -(NSArray *)tableArray{
     
     if (!_tableArray) {
-        _tableArray = @[NSLocalizedString(@"Set Language", nil), NSLocalizedString(@"Phone number", nil), NSLocalizedString(@"Password", nil), NSLocalizedString(@"Name", nil), NSLocalizedString(@"Email", nil), NSLocalizedString(@"Default text", nil),NSLocalizedString(@"Set status", nil), NSLocalizedString(@"Edit notification", nil)];
+        _tableArray = @[NSLocalizedString(@"Phone number", nil), NSLocalizedString(@"Password", nil), NSLocalizedString(@"Name", nil), NSLocalizedString(@"Email", nil), NSLocalizedString(@"Voicemail", nil), NSLocalizedString(@"Edit status text", nil),NSLocalizedString(@"Set status", nil), NSLocalizedString(@"Remove notifications", nil)];
     }
     
     return _tableArray;
@@ -73,9 +74,10 @@
         NSString *statusText = self.user.statusText != nil ? self.user.statusText : @"";
         NSString *name = self.user.name != nil ? self.user.name : @"";
         NSString *email = self.user.email != nil ? self.user.email : @"";
-        NSString *language = self.user.language == English ? NSLocalizedString(@"English", nil) : NSLocalizedString(@"Danish", nil);
+        NSString *voiceMail = [[SharedPreferences shared]getVoiceMailNumber] != nil ? [[SharedPreferences shared]getVoiceMailNumber] : @"";
+      //  NSString *language = self.user.language == English ? NSLocalizedString(@"English", nil) : NSLocalizedString(@"Danish", nil);
         
-        cell.detailTextLabel.text = @[language, self.user.phoneNumber, @"******", name, email, statusText][indexPath.row];
+        cell.detailTextLabel.text = @[self.user.phoneNumber, @"******", name, email, voiceMail, statusText][indexPath.row];
     }
     
     
@@ -83,13 +85,13 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if ([self.tableArray[indexPath.row] isEqualToString:NSLocalizedString(@"Default text", nil)]) {
+    if ([self.tableArray[indexPath.row] isEqualToString:NSLocalizedString(@"Edit status text", nil)]) {
             [self performSegueWithIdentifier:@"Default Text Segue" sender:tableView];
-    } else if ([self.tableArray[indexPath.row] isEqualToString:NSLocalizedString(@"Edit notification", nil)]){
+    } else if ([self.tableArray[indexPath.row] isEqualToString:NSLocalizedString(@"Remove notifications", nil)]){
         
     } else if ([self.tableArray[indexPath.row] isEqualToString:NSLocalizedString(@"Set status", nil)]){
             [self performSegueWithIdentifier:@"Set Status Segue" sender:tableView];
-    }  else {
+    }else {
             [self performSegueWithIdentifier:@"Settings Detail Segue" sender:tableView];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

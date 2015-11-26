@@ -24,7 +24,7 @@ NSString *const urlString = @"https://ws.when2call.dk/wscall.asmx";
 
 - (void)sendMessageWithMethodName:(NSString *)methodName soapMessage:(NSString *)soapMessage
 {
-  //  NSLog(@"sendMessageWithMethodName %@", methodName);
+    NSLog(@"sendMessageWithMethodName %@", methodName);
     
     NSString *msgLength = [NSString stringWithFormat:@"%lu", (unsigned long)[soapMessage length]];
     NSURL *pomUrl = [NSURL URLWithString:urlString];

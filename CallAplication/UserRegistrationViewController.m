@@ -154,7 +154,7 @@
     }];
 }
 
-- (IBAction)confirmPressed:(UIButton *)sender {
+-(IBAction)confirmPressed:(UIButton *)sender {
     
     if (!self.logIn) {
         if (self.phoneNumberUITextField.text.length < 5) {
@@ -170,7 +170,19 @@
             return;
         }else{
             [SVProgressHUD show];
-           [[MyConnectionManager sharedManager]createAcountWithDelegate:self selector:@selector(responseToCreateUser:) phone:self.phoneNumberUITextField.text password:self.passwordUITextField.text name:self.nameUITextField.text email:self.emailUITextField.text language:1];
+            
+            NSString *lCode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0];
+            enum Language language;
+            
+            if ([lCode isEqualToString:@"en"]) {
+                language = English;
+            }else if ([lCode isEqualToString:@"da"]){
+                language = Danish;
+            }else{
+                language = Default;
+            }
+            
+           [[MyConnectionManager sharedManager]createAcountWithDelegate:self selector:@selector(responseToCreateUser:) phone:self.phoneNumberUITextField.text password:self.passwordUITextField.text name:self.nameUITextField.text email:self.emailUITextField.text language:language];
         }
 
     }else{
@@ -209,7 +221,7 @@
 
 //delegate methods
 #pragma mark - UITextFieldDelegate
--(BOOL) textFieldShouldReturn:(UITextField *)textField{
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     [textField resignFirstResponder];
     return YES;
@@ -314,7 +326,7 @@
     [self showErrorAlert];
 }
 -(void)responseToAddMultipleContacts:(NSDictionary *)dict{
-    NSLog(@"responseToAddMultipleContacts %@", dict);
+   // NSLog(@"responseToAddMultipleContacts %@", dict);
     
     if (dict) {
         NSDictionary *pom1 = [[dict objectForKey:@"AddMultiContactsResponse"] objectForKey:@"AddMultiContactsResult"];
@@ -352,13 +364,17 @@
             
             [[SharedPreferences shared]saveUserData:user];
             
-            int count = 0;
+            NSMutableArray *phoneNumbers = [NSMutableArray array];
             NSArray *pom = [user.contactDictionary allValues];
             for (NSArray *array in pom){
-                count += array.count;
+                for (Contact *contact in array){
+                    [phoneNumbers addObject:contact.phoneNumber];
+                }
             }
             
-            [[SharedPreferences shared]setLastContactsPhoneBookCount:count];
+            NSLog(@"phoneNumbers %@", phoneNumbers);
+            
+            [[DBManager sharedInstance]addContactsPhoneNumbersToDb:phoneNumbers];
             
             [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
         }else {

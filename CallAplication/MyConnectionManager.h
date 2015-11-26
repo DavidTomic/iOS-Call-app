@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MyStatus.h"
 #import "MyLanguage.h"
+#import "Contact.h"
 
 @interface MyConnectionManager : NSObject
 
@@ -17,20 +18,18 @@
 
 -(void)testHelloWorldWithDelegate:(id)delegate selector:(SEL)selector;
 
--(void)createAcountWithDelegate:(id)delegate selector:(SEL)selector phone:(NSString*)phone password:(NSString*)password name:(NSString*)name email:(NSString *)email language:(int)language;
+-(void)createAcountWithDelegate:(id)delegate selector:(SEL)selector phone:(NSString*)phone password:(NSString*)password name:(NSString*)name email:(NSString *)email language:(Language)language;
 -(void)getAcountSetupWithDelegate:(id)delegate selector:(SEL)selector phone:(NSString*)phone password:(NSString*)password;
-
-
 -(void)requestStatusInfoWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestGetDefaultTextsWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestSetDefaultTextsWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestLogInWithDelegate:(id)delegate selector:(SEL)selector;
--(void)requestAddContactsWithDelegate:(id)delegate selector:(SEL)selector;
+-(void)requestAddContactWithContact:(Contact *)contact delegate:(id)delegate selector:(SEL)selector;
 -(void)requestAddMultipleContactsWithDelegate:(id)delegate selector:(SEL)selector;
--(void)requestCheckPhoneNumbersWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestUpdateStatusWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestUpdateStatusWithTimestampWithStatus:(Status)status delegate:(id)delegate selector:(SEL)selector;
 -(void)requestUpdateAccountWithNewPhoneNumber:(NSString *)newPhoneNumber password:(NSString *)newPassword name:(NSString *)name email:(NSString *)email language:(Language)language delegate:(id)delegate selector:(SEL)selector;
-
+-(void)requestDeleteContactWithPhoneNumberToDelete:(NSString *)phoneNumberToDelete delegate:(id)delegate selector:(SEL)selector;
+//-(void)requestCheckPhoneNumbersWithDelegate:(id)delegate selector:(SEL)selector;
 
 @end

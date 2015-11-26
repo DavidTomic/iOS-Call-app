@@ -231,7 +231,7 @@
     
 }
 -(void)receiveRefreshStatusNotification:(NSNotification *)notification{
-    NSLog(@"receiveRefreshStatusNotification");
+   // NSLog(@"receiveRefreshStatusNotification");
     [self refreshMyStatusUI];
     [self reloadData];
 }

@@ -7,6 +7,7 @@ pod 'FontasticIcons'
 pod 'Fabric'
 pod 'Crashlytics'
 pod 'SVProgressHUD'
+pod 'MGSwipeTableCell'
 end
 
 target 'CallAplicationTests' do

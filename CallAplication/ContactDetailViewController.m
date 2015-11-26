@@ -16,6 +16,7 @@
 #import "DBManager.h"
 #import "TabBarViewController.h"
 #import "SharedPreferences.h"
+#import "MyConnectionManager.h"
 
 @interface ContactDetailViewController ()<ABPersonViewControllerDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -62,13 +63,11 @@
                                                  {
                                                      
                                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                                         CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
-                                                         CFIndex numberOfPeople = ABAddressBookGetPersonCount(addressBook);
                                                          
-                                                         for(int i = 0; i < numberOfPeople; i++){
-                                                             ABRecordRef abPerson = CFArrayGetValueAtIndex( allPeople, i );
-
-                                                            ABMultiValueRef phoneNumbers = ABRecordCopyValue(abPerson, kABPersonPhoneProperty);
+                                                         
+                                                         ABRecordRef person = ABAddressBookGetPersonWithRecordID(addressBook, self.contact.recordId);
+                                                         if (person) {
+                                                             ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
                                                              NSString *phoneNumber = nil;
                                                              if (ABMultiValueGetCount(phoneNumbers) > 0) {
                                                                  phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
@@ -79,33 +78,20 @@
                                                              if ([firstSign isEqualToString:@"+"]) {
                                                                  phoneNumber = [NSString stringWithFormat:@"%@%@", firstSign, phoneNumberOnlyDigit];
                                                              }
-
                                                              
-                                                             int recordId = ABRecordGetRecordID(abPerson);
+                                                             self.contact.firstName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
+                                                             self.contact.lastName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonLastNameProperty));
                                                              
-                                                             if (recordId == self.contact.recordId) {
+                                                             NSData *imgData2 = (__bridge NSData*)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+                                                             self.contact.image =[UIImage imageWithData:imgData2];
+                                                             
+                                                             if (![self.contact.phoneNumber isEqualToString:phoneNumber]) {
+                                                                 self.contact.phoneNumber = phoneNumber;
                                                                  
-                                                                 self.contact.firstName = (__bridge NSString *)(ABRecordCopyValue(abPerson, kABPersonFirstNameProperty));
-                                                                 self.contact.lastName = (__bridge NSString *)(ABRecordCopyValue(abPerson, kABPersonLastNameProperty));
-                                                                 
-                                                                 NSData *imgData2 = (__bridge NSData*)ABPersonCopyImageDataWithFormat(abPerson, kABPersonImageFormatThumbnail);
-                                                                 self.contact.image =[UIImage imageWithData:imgData2];
-                                                                 
-                                                                 if (![self.contact.phoneNumber isEqualToString:phoneNumber]) {
-                                                                     self.contact.phoneNumber = phoneNumber;
-                                                                     
-                                                                     NSLog(@"Call checkAndUpdateAllContact");
-                                                                     
-                                                                     [[SharedPreferences shared]setLastContactsPhoneBookCount:0];
-                                                                     [((TabBarViewController *)self.tabBarController) checkAndUpdateAllContact];
-                                                                 }
-                                                                 
-                                                                 break;
+                                                                 [[MyConnectionManager sharedManager]requestAddContactWithContact:self.contact delegate:self selector:nil];
                                                              }
-
                                                          }
-                                                         
-                                                         CFRelease(allPeople);
+
                                                          CFRelease(addressBook);
                                                          
                                                          [self setValues];
@@ -210,6 +196,7 @@
     }
     
     [[DBManager sharedInstance]addOrRemoveContactInFavoritWithRecordId:self.contact.recordId];
+    [[MyConnectionManager sharedManager]requestAddContactWithContact:self.contact delegate:self selector:nil];
 
 }
 

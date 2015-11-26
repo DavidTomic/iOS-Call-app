@@ -28,6 +28,9 @@
 -(NSArray *)getAllDefaultTextsFromDb;
 -(void)saveDefaultTextsToDb:(NSArray *)textList;
 
+-(void)addContactsPhoneNumbersToDb:(NSArray *)list;
+-(NSArray *)getAllPhoneNumbersFromDb;
+
 //temp
 -(NSArray *)getTableList;
 

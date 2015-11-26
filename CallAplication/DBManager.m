@@ -12,6 +12,7 @@
 
 NSString * const VERSION_KEY = @"version";
 
+NSString * const CONTACT_TABLE = @"ContactTable";
 NSString * const DEFAULT_TEXT_TABLE = @"DefaultTextTable";
 NSString * const FAVORIT_TABLE = @"FavoritTable";
 NSString * const RECENT_TABLE = @"RecentTable";
@@ -57,14 +58,13 @@ static sqlite3 *database = nil;
         {
             NSLog(@"OPEN");
             char *errMsg;
-//            const char *sql_stmt_ContactTable =
-//            "create table if not exists ContactTable (phoneNumber text, status integer, statusText text, endTime text)";
-//            if (sqlite3_exec(database, sql_stmt_ContactTable, NULL, NULL, &errMsg)
-//                != SQLITE_OK)
-//            {
-//                isSuccess = NO;
-//                NSLog(@"Failed to create ContactTable");
-//            }
+            const char *sql_stmt_ContactTable = [[NSString stringWithFormat:@"create table if not exists %@ (phoneNumber text)", CONTACT_TABLE]cStringUsingEncoding:NSASCIIStringEncoding];
+            if (sqlite3_exec(database, sql_stmt_ContactTable, NULL, NULL, &errMsg)
+                != SQLITE_OK)
+            {
+                isSuccess = NO;
+                NSLog(@"Failed to create ContactTable");
+            }
             
             const char *sql_stmt_FavoritTable = [[NSString stringWithFormat:@"create table if not exists %@ (recordId integer)", FAVORIT_TABLE]cStringUsingEncoding:NSASCIIStringEncoding];
             if (sqlite3_exec(database, sql_stmt_FavoritTable, NULL, NULL, &errMsg)
@@ -376,8 +376,32 @@ static sqlite3 *database = nil;
     return results;
 }
 
+-(void)addContactsPhoneNumbersToDb:(NSArray *)list{
+    
+   // NSLog(@"addContactsPhoneNumbersToDb %@", list);
+    
+    NSString *query = [NSString stringWithFormat:@"delete from ContactTable"];
+    [self executeQuery:query];
+    
+    for (NSString *phoneNumber in list){
+        NSString *query = [NSString stringWithFormat:@"insert into %@ (phoneNumber) values('%@')", CONTACT_TABLE, phoneNumber];
+        [self executeQuery:query];
+    }
+}
 
-
+-(NSArray *)getAllPhoneNumbersFromDb{
+    NSString *query = [NSString stringWithFormat:@"select * from %@", CONTACT_TABLE];
+    NSArray *pom = [self loadDataFromDB:query];
+    
+    NSMutableArray *results = [NSMutableArray new];
+    
+    for (NSArray *array in pom){
+        [results addObject:array[0]];
+    }
+    
+ //   NSLog(@"getAllPhoneNumbersFromDb results %@", results);
+    return results;
+}
 
 
 

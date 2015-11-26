@@ -110,6 +110,7 @@ static Myuser *myUser;
                                                              person.phoneNumber = phoneNumberOnlyDigit;
                                                              person.recordId = recordId;
                                                              person.image = image;
+                                                             person.status = Undefined;
 
                                                          //   NSLog(@"person.firstName %d", person.recordId);
                                                              

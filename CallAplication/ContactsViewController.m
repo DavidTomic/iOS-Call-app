@@ -20,6 +20,9 @@
 #import <MessageUI/MFMessageComposeViewController.h>
 #import "TimerNotification.h"
 
+#import <malloc/malloc.h>
+#import <objc/runtime.h>
+
 @interface ContactsViewController()<UITableViewDataSource, UITableViewDelegate, ABNewPersonViewControllerDelegate,
 UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -71,7 +74,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     
 }
 -(void)receiveContactListReloadedNotification:(NSNotification *)notification{
-   // NSLog(@"receiveContactListReloadedNotification");
+    NSLog(@"receiveContactListReloadedNotification");
     [self reloadData];
 }
 -(void)receiveRefreshStatusNotification:(NSNotification *)notification{
@@ -211,9 +214,15 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
 }
 
 -(void)reloadData{
-    NSLog(@"relaodData %lu", (unsigned long)self.myUser.contactDictionary.count);
-    
+
+ //   self.data = [[NSMutableDictionary alloc] initWithDictionary:self.myUser.contactDictionary copyItems:YES];
     self.data = [self.myUser.contactDictionary copy];
+    
+//    NSLog(@"1Size of %@: %zd", NSStringFromClass([NSDictionary class]), malloc_size((__bridge const void *) self.data));
+//    NSLog(@"2Size of %@: %zd", NSStringFromClass([NSDictionary class]), malloc_size((__bridge const void *) self.myUser.contactDictionary));
+//    
+//    NSLog(@"self.data: %lu", (uintptr_t)self.data);
+//    NSLog(@"self.myUser.contactDictionary: %lu", (uintptr_t)self.myUser.contactDictionary);
     
     [self.tableView reloadData];
 }
@@ -417,6 +426,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     
 
     Contact *contact = nil;
+    NSString *key = nil;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         
       //  NSLog(@"COUNT %d", self.filteredContactArray.count);
@@ -428,8 +438,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
         keys = [keys sortedArrayUsingComparator:^(id a, id b) {
             return [a compare:b options:NSNumericSearch];
         }];
-        NSString *key = keys[indexPath.section];
-        
+        key = keys[indexPath.section];
         
         contact = [self.data objectForKey:key][indexPath.row];
         
@@ -447,33 +456,79 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     cell.onPhoneLabel.hidden = YES;
     cell.statusHolderView.hidden = NO;
     
-    switch (contact.status) {
-        case Red_status:
-            [cell.redStatus setSelected:YES];
-            [cell.greenStatus setSelected:NO];
-            [cell.yellowStatus setSelected:NO];
-            break;
-        case Green_status:
-            [cell.redStatus setSelected:NO];
-            [cell.greenStatus setSelected:YES];
-            [cell.yellowStatus setSelected:NO];
-            break;
-        case Yellow_status:
-            [cell.redStatus setSelected:NO];
-            [cell.greenStatus setSelected:NO];
-            [cell.yellowStatus setSelected:YES];
-            break;
-        case On_phone:
-            cell.statusHolderView.hidden = YES;
-            cell.onPhoneLabel.hidden = NO;
-            break;
+    NSLog(@"status %d", contact.status);
+    
+    MGSwipeButton *deleteButton = [MGSwipeButton buttonWithTitle:NSLocalizedString(@"Delete", nil) backgroundColor:[UIColor lightGrayColor] callback:^BOOL(MGSwipeTableCell *sender) {
+        NSLog(@"Convenience callback for swipe buttons!");
+        
+        ABRecordRef person = ABAddressBookGetPersonWithRecordID(self.addressBook, contact.recordId);
+        if (person) {
             
-        default:
-            [cell.redStatus setSelected:NO];
-            [cell.greenStatus setSelected:NO];
-            [cell.yellowStatus setSelected:NO];
-            break;
+            CFErrorRef *error = NULL;
+            ABAddressBookRemoveRecord(self.addressBook, person, error);
+            ABAddressBookSave(self.addressBook, error);
+            
+            NSMutableArray *pom = [self.data objectForKey:key];
+            [pom removeObject:contact];
+            [self reloadData];
+            [((TabBarViewController *)self.tabBarController) checkAndUpdateAllContact];
+            
+            [[MyConnectionManager sharedManager]requestDeleteContactWithPhoneNumberToDelete:contact.phoneNumber delegate:self selector:nil];
+        }
+        
+        return YES;
+    }];
+    MGSwipeButton *secondButton;
+    
+    if (contact.status == Undefined) {
+        secondButton = [MGSwipeButton buttonWithTitle:NSLocalizedString(@"Invite", nil) backgroundColor:[UIColor blueColor]callback:^BOOL(MGSwipeTableCell *sender) {
+                    NSString *phoneNumber = contact.phoneNumber;
+            
+                    if(phoneNumber && [MFMessageComposeViewController canSendText]) {
+                        phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
+            
+                        MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+                        controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
+                        controller.messageComposeDelegate = self;
+                        [self presentViewController:controller animated:YES completion:nil];
+                    }
+            return YES;
+        }];
+        [cell.redStatus setSelected:NO];
+        [cell.greenStatus setSelected:NO];
+        [cell.yellowStatus setSelected:NO];
+    }else {
+        secondButton = [MGSwipeButton buttonWithTitle:NSLocalizedString(@"Set notification", nil) backgroundColor:[UIColor blueColor]];
+        switch (contact.status) {
+            case Red_status:
+                [cell.redStatus setSelected:YES];
+                [cell.greenStatus setSelected:NO];
+                [cell.yellowStatus setSelected:NO];
+                break;
+            case Green_status:
+                [cell.redStatus setSelected:NO];
+                [cell.greenStatus setSelected:YES];
+                [cell.yellowStatus setSelected:NO];
+                break;
+            case Yellow_status:
+                [cell.redStatus setSelected:NO];
+                [cell.greenStatus setSelected:NO];
+                [cell.yellowStatus setSelected:YES];
+                break;
+            case On_phone:
+                cell.statusHolderView.hidden = YES;
+                cell.onPhoneLabel.hidden = NO;
+                break;
+            default:
+                [cell.redStatus setSelected:NO];
+                [cell.greenStatus setSelected:NO];
+                [cell.yellowStatus setSelected:NO];
+                break;
+        }
     }
+    
+    cell.rightButtons = @[deleteButton,secondButton];
+    cell.rightSwipeSettings.transition = MGSwipeTransitionDrag;
 
     return cell;
 }
@@ -484,78 +539,47 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-    return YES;
-}
+//
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    NSLog(@"commitEditingStyle");
+//  //  [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//   
+//    Contact *contact = nil;
+//    if (tableView == self.searchDisplayController.searchResultsTableView) {
+//        contact = self.filteredContactArray[indexPath.row];
+//    }else{
+//        NSArray *keys = [self.myUser.contactDictionary allKeys];
+//        keys = [keys sortedArrayUsingComparator:^(id a, id b) {
+//            return [a compare:b options:NSNumericSearch];
+//        }];
+//        
+//        NSString *key = keys[indexPath.section];
+//        contact = [self.myUser.contactDictionary objectForKey:key][indexPath.row];
+//    }
+//    
+//    
+//    NSArray *mcheckPhoneNumberArray = [Myuser sharedUser].checkPhoneNumberArray;
+//    
+//    if ([mcheckPhoneNumberArray containsObject:contact.phoneNumber]) {
+//        
+//    }else {
+//        NSString *phoneNumber = contact.phoneNumber;
+//        
+//        if(phoneNumber && [MFMessageComposeViewController canSendText]) {
+//            phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
+//            
+//            MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+//            controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
+//            controller.messageComposeDelegate = self;
+//            [self presentViewController:controller animated:YES completion:nil];
+//        }
+//    }
+//
+//    self.tableView.editing=NO;
+//    
+//}
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return UITableViewCellEditingStyleDelete;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"commitEditingStyle");
-  //  [tableView deselectRowAtIndexPath:indexPath animated:YES];
-   
-    Contact *contact = nil;
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        contact = self.filteredContactArray[indexPath.row];
-    }else{
-        NSArray *keys = [self.myUser.contactDictionary allKeys];
-        keys = [keys sortedArrayUsingComparator:^(id a, id b) {
-            return [a compare:b options:NSNumericSearch];
-        }];
-        
-        NSString *key = keys[indexPath.section];
-        contact = [self.myUser.contactDictionary objectForKey:key][indexPath.row];
-    }
-    
-    
-    NSArray *mcheckPhoneNumberArray = [Myuser sharedUser].checkPhoneNumberArray;
-    
-    if ([mcheckPhoneNumberArray containsObject:contact.phoneNumber]) {
-        
-    }else {
-        NSString *phoneNumber = contact.phoneNumber;
-        
-        if(phoneNumber && [MFMessageComposeViewController canSendText]) {
-            phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
-            
-            MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
-            controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
-            controller.messageComposeDelegate = self;
-            [self presentViewController:controller animated:YES completion:nil];
-        }
-    }
-
-    self.tableView.editing=NO;
-    
-}
--(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    Contact *contact = nil;
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        contact = self.filteredContactArray[indexPath.row];
-    }else{
-        NSArray *keys = [self.myUser.contactDictionary allKeys];
-        keys = [keys sortedArrayUsingComparator:^(id a, id b) {
-            return [a compare:b options:NSNumericSearch];
-        }];
-        
-        NSString *key = keys[indexPath.section];
-        contact = [self.myUser.contactDictionary objectForKey:key][indexPath.row];
-    }
-    
-    NSArray *mcheckPhoneNumberArray = [Myuser sharedUser].checkPhoneNumberArray;
-    
-    if ([mcheckPhoneNumberArray containsObject:contact.phoneNumber]) {
-        return @"Set Notification  ";
-    }
-    
-    
-    return @"Invite  ";
-}
 
 
 

@@ -8,6 +8,7 @@
 
 #import "VoiceMailViewController.h"
 #import "SharedPreferences.h"
+#import "TabBarViewController.h"
 
 @interface VoiceMailViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *textField;
@@ -24,15 +25,10 @@
     
     self.textField.text = [[SharedPreferences shared]getVoiceMailNumber];
     // Do any additional setup after loading the view.
-
 }
 
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
-    
-
-    
-
 }
 
 

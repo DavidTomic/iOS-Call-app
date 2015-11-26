@@ -12,6 +12,6 @@
 
 @property (nonatomic) BOOL cameFromRegistration;
 
--(void)refreshCheckPhoneNumbers;
+//-(void)refreshCheckPhoneNumbers;
 -(void)checkAndUpdateAllContact;
 @end

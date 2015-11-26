@@ -32,6 +32,7 @@
 		DB4B88701B73A8B4005D15F6 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4B886F1B73A8B4005D15F6 /* DBManager.m */; };
 		DB6A15861BA9742A0073B14E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB6A15881BA9742A0073B14E /* InfoPlist.strings */; };
 		DB8518DB1BA9A6610023B156 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB8518DD1BA9A6610023B156 /* Main.storyboard */; };
+		DBABF6241C05BE60009E72BB /* SetLanguageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBABF6231C05BE60009E72BB /* SetLanguageTableViewController.m */; };
 		DBC17C6F1B6F5AFF00BF1DE4 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC17C6E1B6F5AFF00BF1DE4 /* Contact.m */; };
 		DBCCFF5D1C04B1EF00562A3E /* TimerNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DBCCFF5C1C04B1EF00562A3E /* TimerNotification.m */; };
 		DBD695301B6A328E00337DFF /* MyConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD6952F1B6A328E00337DFF /* MyConnectionManager.m */; };
@@ -112,6 +113,8 @@
 		DB8518DC1BA9A6610023B156 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DB8518DF1BA9A6650023B156 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		DB8518E11BA9A6680023B156 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Main.strings; sourceTree = "<group>"; };
+		DBABF6221C05BE60009E72BB /* SetLanguageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetLanguageTableViewController.h; path = CallAplication/SetLanguageTableViewController.h; sourceTree = "<group>"; };
+		DBABF6231C05BE60009E72BB /* SetLanguageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SetLanguageTableViewController.m; path = CallAplication/SetLanguageTableViewController.m; sourceTree = "<group>"; };
 		DBC17C6D1B6F5AFF00BF1DE4 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		DBC17C6E1B6F5AFF00BF1DE4 /* Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
 		DBCCFF5B1C04B1EF00562A3E /* TimerNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerNotification.h; sourceTree = "<group>"; };
@@ -311,6 +314,8 @@
 		EE009AA51BA5EC73009898C0 /* old */ = {
 			isa = PBXGroup;
 			children = (
+				DBABF6221C05BE60009E72BB /* SetLanguageTableViewController.h */,
+				DBABF6231C05BE60009E72BB /* SetLanguageTableViewController.m */,
 				DB4B88661B734B72005D15F6 /* StartViewController.h */,
 				DB4B88671B734B72005D15F6 /* StartViewController.m */,
 			);
@@ -521,6 +526,7 @@
 				DB4B88681B734B72005D15F6 /* StartViewController.m in Sources */,
 				DB291B9C1B6625D50028C022 /* main.m in Sources */,
 				DB4645AA1BB13B5200ABF6A8 /* MyStatus.m in Sources */,
+				DBABF6241C05BE60009E72BB /* SetLanguageTableViewController.m in Sources */,
 				DBEAA3C71BB56D4B00940A14 /* SetStatusViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -52,6 +52,7 @@ static SharedPreferences *sharedProperties;
     [myDefaults setObject:user.statusEndTime forKey:@"statusEndTime"];
     [myDefaults setInteger:user.timerStatus forKey:@"timerStatus"];
     [myDefaults setObject:user.timerStatusText forKey:@"timerStatusText"];
+    [myDefaults setInteger:user.requestStatusInfoSeconds forKey:@"requestStatusInfoSeconds"];
     [myDefaults synchronize];
 }
 
@@ -70,15 +71,22 @@ static SharedPreferences *sharedProperties;
     user.statusEndTime = [myDefaults objectForKey:@"statusEndTime"];
     user.timerStatus = [myDefaults integerForKey:@"timerStatus"];
     user.timerStatusText = [myDefaults objectForKey:@"timerStatusText"];
+    user.requestStatusInfoSeconds = [myDefaults integerForKey:@"requestStatusInfoSeconds"];
 }
 
--(void)setLastCallTime:(long long)time {
-    [myDefaults  setObject:@(time) forKey:@"lastCallTime"];
+-(void)setLastCallTime:(NSString *)executionTime {
+    [myDefaults setObject:executionTime forKey:@"executionTime"];
     [myDefaults synchronize];
 }
--(long long)getLastCallTime{
-    long long time = [[myDefaults objectForKey:@"lastCallTime"] longLongValue];
-    return time;
+-(NSString *)getLastCallTime{
+    NSString *executionTime = [myDefaults objectForKey:@"executionTime"];
+    
+    if (!executionTime) {
+        NSLog(@"HERE extime");
+        executionTime = @"2000-01-01T00:00:00";
+    }
+    
+    return executionTime;
 }
 
 -(void)setLastContactsPhoneBookCount:(NSInteger)count{

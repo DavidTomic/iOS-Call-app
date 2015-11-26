@@ -34,12 +34,12 @@
     }
     
     
-    if (![self.item isEqualToString:NSLocalizedString(@"Set Language", nil)] || self.editDefaultText) {
-        self.bEnglish.hidden = YES;
-        self.bDanish.hidden = YES;
-        self.textField.hidden = NO;
-        self.bSave.hidden = NO;
-    }
+//    if (![self.item isEqualToString:NSLocalizedString(@"Set Language", nil)] || self.editDefaultText) {
+//        self.bEnglish.hidden = YES;
+//        self.bDanish.hidden = YES;
+//        self.textField.hidden = NO;
+//        self.bSave.hidden = NO;
+//    }
     
     UIView *spacerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
     [self.textField setLeftViewMode:UITextFieldViewModeAlways];
@@ -53,7 +53,7 @@
 
 - (IBAction)saveClicked:(UIButton *)sender {
     
-    if (self.textField.text.length < 2) {
+    if (self.textField.text.length < 1) {
         [self showErrorMessage];
         return;
     }
@@ -70,6 +70,14 @@
         
         [[MyConnectionManager sharedManager]requestSetDefaultTextsWithDelegate:self selector:@selector(responseToSetDefaultText:)];
         
+    }else if ([self.item isEqualToString:NSLocalizedString(@"Voicemail", nil)]){
+        
+        if (self.textField.text.length > 0) {
+            [[SharedPreferences shared]setVoiceMailNumber:self.textField.text];
+        }
+        
+        [self.navigationController popViewControllerAnimated:YES];
+     
     }else {
         
         Myuser *user = [Myuser sharedUser];
@@ -86,7 +94,7 @@
             newPassword = self.textField.text;
         }else if ([self.item isEqualToString:NSLocalizedString(@"Name", )]){
             name = self.textField.text;
-        }else{
+        }else if ([self.item isEqualToString:NSLocalizedString(@"Email", )]){
             email = self.textField.text;
         }
         
@@ -99,9 +107,9 @@
 }
 
 
-- (IBAction)languageClicked:(UIButton *)sender {
-    [self.navigationController popViewControllerAnimated:YES];
-}
+//- (IBAction)languageClicked:(UIButton *)sender {
+//    [self.navigationController popViewControllerAnimated:YES];
+//}
 -(void)showErrorMessage{
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:NSLocalizedString(@"Please check your informations are correct", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];

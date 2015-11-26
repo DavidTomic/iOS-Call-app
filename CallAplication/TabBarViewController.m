@@ -14,12 +14,13 @@
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
 #import "Contact.h"
-
+#import "VoiceMailViewController.h"
 #import "FavoritesViewController.h"
 
-@interface TabBarViewController ()
+@interface TabBarViewController ()<UITabBarControllerDelegate>
 
 @property (strong, nonatomic) NSTimer *timer;
+@property (nonatomic, strong) NSMutableArray *contactList;
 
 @end
 
@@ -28,6 +29,7 @@
 //viewController methods
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.delegate = self;
     //area for testing
     //   NSLog(@"DT %@", [[DBManager sharedInstance]getAllDefaultTextsFromDb]);
     // Do any additional setup after loading the view.
@@ -37,8 +39,6 @@
     
     
     [[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:234/255.0f green:234/255.0f blue:234/255.0f alpha:1.0f]];
-
-    [[SharedPreferences shared]setLastCallTime:0];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(applicationWillResign)
                                                 name:UIApplicationWillResignActiveNotification object:nil];
@@ -51,12 +51,13 @@
     
     [[MyConnectionManager sharedManager]requestGetDefaultTextsWithDelegate:self selector:@selector(responseToDefaultText:)];
     
+    [[SharedPreferences shared]setLastCallTime:@"2000-01-01T00:00:00"];
     if (self.cameFromRegistration) {
-        [self refreshCheckPhoneNumbers];
+        [self checkAndUpdateAllContact];
         [self refreshStatusInfo];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:(10) target:self selector:@selector(onTick:) userInfo:nil repeats:YES];
     }
-    
+
 }
 - (void)applicationWillResign {
     NSLog(@"applicationWillResign...");
@@ -72,7 +73,7 @@
         [[MyConnectionManager sharedManager]requestLogInWithDelegate:self selector:@selector(responseToLogIn:)];
     }
     
-    [self refreshCheckPhoneNumbers];
+  //  [self refreshCheckPhoneNumbers];
     [self checkAndUpdateAllContact];
     
 
@@ -97,14 +98,34 @@
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
+-(BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
+    NSInteger tabIndex = [[tabBarController viewControllers] indexOfObject:viewController];
+    
+    if (tabIndex == 4) {
+        
+        NSString *phoneNumber = [[SharedPreferences shared]getVoiceMailNumber];
+        
+        if (phoneNumber && phoneNumber.length > 0) {
+            phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
+            // NSLog(@"phoneNumberA %@", phoneNumber);
+            
+            NSString *pNumber = [@"telprompt://" stringByAppendingString:phoneNumber];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
+        }else {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", @"") message:NSLocalizedString(@"Please enter your voicemail number in application settings", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
+        return NO;
+    }else {
+        return YES;
+    }
+    
+}
 
 //my methods
 -(void)receiveContactListReloadedNotification:(NSNotification *)notification{
     // NSLog(@"receiveContactListReloadedNotification");
-    
-    [[SharedPreferences shared]setLastCallTime:0];
-    
-    [self refreshCheckPhoneNumbers];
     [self refreshStatusInfo];
 }
 -(void)onTick:(NSTimer*)timer
@@ -114,10 +135,6 @@
 }
 -(void)refreshStatusInfo{
         [[MyConnectionManager sharedManager]requestStatusInfoWithDelegate:self selector:@selector(responseToRequestStatusInfo:)];
-}
--(void)refreshCheckPhoneNumbers{
-    
-    [[MyConnectionManager sharedManager] requestCheckPhoneNumbersWithDelegate:self selector:@selector(responseCheckPhoneNumbers:)];
 }
 -(void)checkAndUpdateAllContact{
    // NSLog(@"checkAndUpdateAllContact");
@@ -137,7 +154,7 @@
                                                          CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
                                                          CFIndex numberOfPeople = ABAddressBookGetPersonCount(addressBook);
                                                          
-                                                         NSMutableArray *personArray = [[NSMutableArray alloc]init];
+                                                         self.contactList = [[NSMutableArray alloc]init];
                                                          NSArray *lettersArray = [[NSArray alloc]init];
                                                          NSMutableSet *lettersSet = [[NSMutableSet alloc]init];
                                                          
@@ -165,6 +182,10 @@
                                                                  phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
                                                              }
                                                              
+                                                             if (!phoneNumber) {
+                                                                 continue;
+                                                             }
+                                                             
                                                              NSString *firstSign = [phoneNumber substringToIndex:1];
                                                              NSString *phoneNumberOnlyDigit = [[phoneNumber componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
                                                              if ([firstSign isEqualToString:@"+"]) {
@@ -177,18 +198,21 @@
                                                              person.phoneNumber = phoneNumberOnlyDigit;
                                                              person.recordId = recordId;
                                                              person.image = image;
+                                                             person.status = Undefined;
+                                                             
+                                                        //     NSLog(@"phoneNumberOnlyDigit %@", phoneNumberOnlyDigit);
                                                              
                                                              //    NSLog(@"person.firstName %@", person.firstName);
                                                              
                                                              for (int i=0; i<favoritRecordIds.count; i++) {
                                                                  if (person.recordId == [favoritRecordIds[i] integerValue]) {
                                                                      person.favorit = YES;
-                                                                     //    NSLog(@"favorit %@", person.phoneNumber);
+                                                                     
                                                                      break;
                                                                  }
                                                              }
                                                              
-                                                             [personArray addObject:person];
+                                                             [self.contactList addObject:person];
                                                              [lettersSet addObject:([(NSString*)[firstName substringToIndex:1] uppercaseString])];
                                                              
                                                          }
@@ -196,34 +220,57 @@
                                                          CFRelease(allPeople);
                                                          CFRelease(addressBook);
                                                          
-                                                         if ([[SharedPreferences shared] getLastContactsPhoneBookCount] == [personArray count]) {
-                                                             NSLog(@"COUNT EQUAL");
-                                                         }else {
-                                                             [[SharedPreferences shared]setLastContactsPhoneBookCount:[personArray count]];
-                                                             
-                                                             
-                                                             
+                                                         NSMutableArray *newContactList = [NSMutableArray array];
+                                                         
+                                                         NSMutableArray *oldContactList = [NSMutableArray array];
+                                                         NSMutableArray *pomList = [NSMutableArray array];
+                                                         
+                                                         NSArray *currentList = [[DBManager sharedInstance]getAllPhoneNumbersFromDb];
+                                                         
+                                                         // add new contacts to server (user add contact out of this app)
+                                                         for (Contact *contact in self.contactList){
+                                                             if (![currentList containsObject:contact.phoneNumber]) {
+                                                                 [newContactList addObject:contact];
+                                                             }
+                                                         }
+                                                         
+                                                         NSLog(@"newContactList %@", newContactList);
+                                                         
+                                                         // delete old contacts from server
+                                                         for (Contact *contact in self.contactList){
+                                                             [pomList addObject:contact.phoneNumber];
+                                                         }
+                                                         
+                                                         for (NSString *phoneNumber in currentList){
+                                                             if (![pomList containsObject:phoneNumber]) {
+                                                                 [oldContactList addObject:phoneNumber];
+                                                             }
+                                                         }
+                                                         
+                                                         NSLog(@"oldContactList %@", oldContactList);
+                                                         
+                                                         if (oldContactList.count > 0) {
+                                                             [self deleteContactsOnServer:oldContactList];
+                                                         }
+                                                         
+                                                         if (newContactList.count > 0 || oldContactList.count > 0) {
+                                          
                                                              NSSortDescriptor *sorter = [[NSSortDescriptor alloc] initWithKey:@"firstName" ascending:YES selector:@selector(caseInsensitiveCompare:)];
-                                                             personArray = [NSMutableArray arrayWithArray:[personArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:sorter]]];
+                                                             self.contactList = [NSMutableArray arrayWithArray:[self.contactList sortedArrayUsingDescriptors:[NSArray arrayWithObject:sorter]]];
                                                              
                                                              lettersArray = [NSArray arrayWithArray:[[lettersSet allObjects] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
-                                                             
-                                                             NSLog(@"personArray %d", personArray.count);
                                                              
                                                              for (int i=0; i<lettersArray.count; i++) {
                                                                  NSMutableArray *pom = [[NSMutableArray alloc]init];
                                                                  
-                                                                 for (int j=0; j<personArray.count; j++) {
-                                                                     if ([lettersArray[i] isEqualToString:([[((Contact*)personArray[j]).firstName substringToIndex:1] uppercaseString])]) {
-                                                                         [pom addObject:personArray[j]];
+                                                                 for (int j=0; j<self.contactList.count; j++) {
+                                                                     if ([lettersArray[i] isEqualToString:([[((Contact*)self.contactList[j]).firstName substringToIndex:1] uppercaseString])]) {
+                                                                         [pom addObject:self.contactList[j]];
                                                                      }
                                                                  }
                                                                  
-                                                                 
                                                                  [dict setObject:pom forKey:lettersArray[i]];
                                                              }
-
-                                                            
 
                                                              dispatch_async(dispatch_get_main_queue(), ^{
                                                                  //Your main thread code goes in here
@@ -235,8 +282,7 @@
                                                                  
                                                                  [[MyConnectionManager sharedManager]requestAddMultipleContactsWithDelegate:self selector:@selector(responseToAddMultipleContacts:)];
                                                              });
-                                                         }
-                                                        
+                                                        }
                                                      });
                                                      
                                                  }
@@ -248,6 +294,12 @@
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", nil) message:NSLocalizedString(@"Please check your informations are correct", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
 }
+-(void)deleteContactsOnServer:(NSArray *)phoneNumberList{
+    for (NSString *phoneNumber in phoneNumberList){
+        [[MyConnectionManager sharedManager]requestDeleteContactWithPhoneNumberToDelete:phoneNumber
+                                                                               delegate:self selector:@selector(responseToDeleteContact:)];
+    }
+}
 
 //response methods
 -(void)responseToRequestStatusInfo:(NSDictionary *)dict{
@@ -258,6 +310,8 @@
         NSDictionary *pom1 = [[dict objectForKey:@"RequestStatusInfoResponse"] objectForKey:@"RequestStatusInfoResult"];
         
         if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
+            
+            [[SharedPreferences shared]setLastCallTime:[pom1 objectForKey:@"ExecutionTime"]];
           
             id pom2 = [[pom1 objectForKey:@"UserStatus"] objectForKey:@"csUserStatus"];
             NSArray *pomArray = [[Myuser sharedUser].contactDictionary allValues];
@@ -364,8 +418,9 @@
             
             user.status = [[pom1 objectForKey:@"Status"] integerValue];
             user.statusText = [pom1 objectForKey:@"Statustext"];
-            user.statusStartTime = [pom1 objectForKey:@"StartTimeStatus"];
-            user.statusEndTime = [pom1 objectForKey:@"EndTimeStatus"];
+//            user.statusStartTime = [pom1 objectForKey:@"StartTimeStatus"];
+//            user.statusEndTime = [pom1 objectForKey:@"EndTimeStatus"];
+            user.requestStatusInfoSeconds = [[pom1 objectForKey:@"UpdateStatusOnList"]integerValue];
             
             NSArray *pom2 = [[pom1 objectForKey:@"InviteSMS"] objectForKey:@"csInviteSMS"];
             
@@ -382,55 +437,77 @@
         }
     }
 }
--(void)responseCheckPhoneNumbers:(NSDictionary *)dict{
-   // NSLog(@"responseCheckPhoneNumbers %@", dict);
-    
-    if (dict) {
-        NSMutableArray *array = [Myuser sharedUser].checkPhoneNumberArray;
-        [array removeAllObjects];
-        
-        NSDictionary *pom1 = [[dict objectForKey:@"CheckPhoneNumbersResponse"] objectForKey:@"CheckPhoneNumbersResult"];
-        
-        if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
-            
-            NSDictionary *pom2 = [pom1 objectForKey:@"PhoneNumbers"];
-            
-            id numbers = [pom2 objectForKey:@"string"];
-            
-            if([numbers isKindOfClass:[NSArray class]]){
-               
-                for (NSString *number in numbers) {
-                    [array addObject:number];
-                }
-                
-            }else if (numbers != nil){
-                [array addObject:numbers];
-            }
-            
-            
-            
-         //   NSLog(@"array %@", array);
-            
-
-        }
-        
-       // NSLog(@"responseCheckPhoneNumbers array %@", array);
-    }
-}
+//-(void)responseCheckPhoneNumbers:(NSDictionary *)dict{
+//   // NSLog(@"responseCheckPhoneNumbers %@", dict);
+//    
+//    if (dict) {
+//        NSMutableArray *array = [Myuser sharedUser].checkPhoneNumberArray;
+//        [array removeAllObjects];
+//        
+//        NSDictionary *pom1 = [[dict objectForKey:@"CheckPhoneNumbersResponse"] objectForKey:@"CheckPhoneNumbersResult"];
+//        
+//        if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
+//            
+//            NSDictionary *pom2 = [pom1 objectForKey:@"PhoneNumbers"];
+//            
+//            id numbers = [pom2 objectForKey:@"string"];
+//            
+//            if([numbers isKindOfClass:[NSArray class]]){
+//               
+//                for (NSString *number in numbers) {
+//                    [array addObject:number];
+//                }
+//                
+//            }else if (numbers != nil){
+//                [array addObject:numbers];
+//            }
+//            
+//            
+//            
+//         //   NSLog(@"array %@", array);
+//            
+//
+//        }
+//        
+//       // NSLog(@"responseCheckPhoneNumbers array %@", array);
+//    }
+//}
 -(void)responseToAddMultipleContacts:(NSDictionary *)dict{
-   // NSLog(@"responseToAddMultipleContacts %@", dict);
+    NSLog(@"responseToAddMultipleContacts %@", dict);
     
     if (dict) {
         NSDictionary *pom1 = [[dict objectForKey:@"AddMultiContactsResponse"] objectForKey:@"AddMultiContactsResult"];
         
         if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
-            [[SharedPreferences shared]setLastCallTime:0];
+            
+            NSMutableArray *pom = [NSMutableArray array];
+            for (Contact *contact in self.contactList){
+                [pom addObject:contact.phoneNumber];
+            }
+            
+            [[DBManager sharedInstance]addContactsPhoneNumbersToDb:pom];
+            [[SharedPreferences shared]setLastCallTime:@"2000-01-01T00:00:00"];
             [self refreshStatusInfo];
-            [self refreshCheckPhoneNumbers];
         }
     }
 }
-
+-(void)responseToDeleteContact:(NSDictionary *)dict{
+     NSLog(@"responseToDeleteContact %@", dict);
+    
+    if (dict) {
+        NSDictionary *pom1 = [[dict objectForKey:@"DeleteContactResponse"] objectForKey:@"DeleteContactResult"];
+        
+        if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
+            NSMutableArray *pom = [NSMutableArray array];
+            for (Contact *contact in self.contactList){
+                [pom addObject:contact.phoneNumber];
+            }
+            
+            [[DBManager sharedInstance]addContactsPhoneNumbersToDb:pom];
+            [self refreshStatusInfo];
+        }
+    }
+}
 
 
 @end

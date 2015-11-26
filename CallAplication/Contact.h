@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "MyStatus.h"
 
 @interface Contact : NSObject<NSCopying>
 
@@ -19,7 +20,7 @@
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic) long long timestamp;
 
-@property (nonatomic) int status;
+@property (nonatomic) Status status;
 @property (nonatomic, strong) NSString *statusText;
 //@property (nonatomic, strong) NSString *endTime;
 

@@ -27,6 +27,15 @@
 
 @implementation AppDelegate
 
+- (void)reloadRootViewController
+{
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    UIViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"tab bar"];
+//    self.window.rootViewController = rootViewController;
+//    [self.window makeKeyAndVisible];
+    
+}
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.

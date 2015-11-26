@@ -16,13 +16,10 @@
 -(void)saveUserData:(Myuser *)user;
 -(void)loadUserData:(Myuser *)user;
 
--(void)setLastCallTime:(long long)time;
--(long long)getLastCallTime;
-
--(void)setLastContactsPhoneBookCount:(NSInteger)count;
--(NSInteger)getLastContactsPhoneBookCount;
-
 -(void)setVoiceMailNumber:(NSString *)number;
 -(NSString *)getVoiceMailNumber;
+
+-(void)setLastCallTime:(NSString *)executionTime;
+-(NSString *)getLastCallTime;
 
 @end

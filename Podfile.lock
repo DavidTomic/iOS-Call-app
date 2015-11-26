@@ -7,6 +7,7 @@ PODS:
   - JCDialPad (0.1.1):
     - libPhoneNumber-iOS
   - libPhoneNumber-iOS (0.8.5)
+  - MGSwipeTableCell (1.5.3)
   - SVProgressHUD (1.1.3)
 
 DEPENDENCIES:
@@ -14,6 +15,7 @@ DEPENDENCIES:
   - Fabric
   - FontasticIcons
   - JCDialPad (~> 0.1)
+  - MGSwipeTableCell
   - SVProgressHUD
 
 SPEC CHECKSUMS:
@@ -22,6 +24,7 @@ SPEC CHECKSUMS:
   FontasticIcons: f20740bf8f1d3565c312f1c3b9806339212b58aa
   JCDialPad: d977d1ff76eaaa1939c5f3b8882937094e093b3d
   libPhoneNumber-iOS: b8ccd23576379caca37c7cbdd554addf384459ed
+  MGSwipeTableCell: 5ae3b9a15efda26b201adc8676b24040febe6ff6
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
 
 COCOAPODS: 0.35.0
