@@ -71,6 +71,33 @@
     if (self.textArray.count == 0) {
         [self.textArray addObject:@"-"];
     }
+    
+    NSString *statusText = [Myuser sharedUser].statusText != nil ? [Myuser sharedUser].statusText : @"";
+    self.textField.text = statusText;
+    
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    [df setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
+    NSDate *statusStartTime = [df dateFromString: [Myuser sharedUser].statusStartTime];
+    NSDate *statusEndTime = [df dateFromString: [Myuser sharedUser].statusEndTime];
+    
+    if (statusStartTime && statusEndTime &&
+        [statusEndTime compare:statusStartTime] == NSOrderedDescending &&
+        [statusEndTime compare:currentDate] == NSOrderedDescending) {
+        
+        [df setDateFormat:@"dd-MM·HH:mm"];
+        
+        self.startDate = statusStartTime;
+        self.endDate = statusEndTime;
+        
+        self.startTimeLabel.text =  [[df stringFromDate:self.startDate] uppercaseString];
+        self.endTimeLabel.text =  [[df stringFromDate:self.endDate] uppercaseString];
+        
+        NSString *statusText = [Myuser sharedUser].timerStatusText != nil ? [Myuser sharedUser].timerStatusText : @"";
+        self.textField.text = statusText;
+    }
+    
 
 }
 - (void)didReceiveMemoryWarning {
@@ -156,14 +183,17 @@
 }
 -(void)setItemsToVisible:(BOOL)visible{
     self.confirmButton.hidden = visible;
-    self.startTimeButton.hidden = visible;
-    self.iAmLabel.hidden = visible;
-    self.startTimeLabel.hidden = visible;
-    self.startTimeButton.hidden = visible;
-    self.iamOnlineLabel.hidden = visible;
-    self.endTimeLabel.hidden = visible;
-    self.endTimeButton.hidden = visible;
-    self.clearTimerButton.hidden = visible;
+    
+    if (![self.greenCircle isHighlighted]) {
+        self.startTimeButton.hidden = visible;
+        self.iAmLabel.hidden = visible;
+        self.startTimeLabel.hidden = visible;
+        self.startTimeButton.hidden = visible;
+        self.iamOnlineLabel.hidden = visible;
+        self.endTimeLabel.hidden = visible;
+        self.endTimeButton.hidden = visible;
+        self.clearTimerButton.hidden = visible;
+    }
 }
 -(void)showErrorAlert{
     [[SharedPreferences shared]loadUserData:[Myuser sharedUser]];
@@ -219,6 +249,15 @@
     self.datePickerActive = YES;
 }
 - (IBAction)clearTimerPressed:(UIButton *)sender {
+    
+    self.startDate = nil;
+    self.endDate = nil;
+    
+    self.startTimeLabel.text = @"-:-";
+    self.endTimeLabel.text = @"-:-";
+    
+    self.textField.text = @"";
+    
 }
 
 - (IBAction)redTapped:(UITapGestureRecognizer *)sender {
@@ -232,6 +271,7 @@
 }
 
 - (IBAction)setPressed:(UIButton *)sender {
+    
     [self setItemsToVisible:NO];
 
     
@@ -254,7 +294,7 @@
             if ([self.startDate compare:[NSDate date]] == NSOrderedDescending) {
                 self.startTimeLabel.text =  [[dateFormater stringFromDate:self.startDate] uppercaseString];
             }else {
-                self.startTimeLabel.text = NSLocalizedString(@"-:-", nil);
+                self.startTimeLabel.text = @"-:-";
                 self.startDate = nil;
             }
             
@@ -270,7 +310,7 @@
                     self.endDate = self.startDate;
                     self.endTimeLabel.text =  [[dateFormater stringFromDate:self.endDate] uppercaseString];
                 }else {
-                    self.endTimeLabel.text = NSLocalizedString(@"-:-", nil);
+                    self.endTimeLabel.text = @"-:-";
                     self.endDate = nil;
                 }
                 
@@ -294,7 +334,9 @@
         [self.view layoutIfNeeded];
     }];
     
+
     [self setItemsToVisible:NO];
+    
 }
 
 - (IBAction)confirmButtonPressed:(UIButton *)sender {

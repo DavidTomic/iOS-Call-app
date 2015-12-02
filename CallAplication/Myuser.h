@@ -32,7 +32,7 @@
 @property (nonatomic, strong) NSString *timerStatusText;
 
 @property (nonatomic, strong) NSMutableDictionary *contactDictionary;
-@property (nonatomic, strong) NSMutableArray *checkPhoneNumberArray;
+//@property (nonatomic, strong) NSMutableArray *checkPhoneNumberArray;
 
 
 

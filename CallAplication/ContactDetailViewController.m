@@ -131,15 +131,16 @@
     }else{
         [self.favoritButton setImage:[UIImage imageNamed:@"star_empty"] forState:UIControlStateNormal];
     }
-    
-    NSArray *mcheckPhoneNumberArray = [Myuser sharedUser].checkPhoneNumberArray;
-    
-    if ([mcheckPhoneNumberArray containsObject:self.contact.phoneNumber]) {
-        [self.confirmButton setTitle:@"Set notification" forState:UIControlStateNormal];
+
+    if (self.contact.status == Undefined) {
+         [self.confirmButton setTitle:NSLocalizedString(@"Invite", nil) forState:UIControlStateNormal];
     }else {
-        [self.confirmButton setTitle:@"Invite" forState:UIControlStateNormal];
+        if ([[DBManager sharedInstance]getNotificationForPhoneNumber:self.contact.phoneNumber]){
+            [self.confirmButton setTitle:NSLocalizedString(@"Remove notification", nil) forState:UIControlStateNormal];
+        }else {
+            [self.confirmButton setTitle:NSLocalizedString(@"Set notification", nil) forState:UIControlStateNormal];
+        }
     }
-    
 
 }
 
@@ -235,7 +236,7 @@
 
 - (IBAction)confirmButtonPressed:(UIButton *)sender {
     
-    if ([sender.currentTitle isEqualToString:@"Invite"]) {
+    if ([sender.currentTitle isEqualToString:NSLocalizedString(@"Invite", nil)]) {
         NSString *phoneNumber = self.contact.phoneNumber;
         
         if(phoneNumber && [MFMessageComposeViewController canSendText]) {
@@ -247,8 +248,12 @@
             [self presentViewController:controller animated:YES completion:nil];
         }
 
+    }else if ([sender.currentTitle isEqualToString:NSLocalizedString(@"Remove notification", nil)]){
+        [self.confirmButton setTitle:NSLocalizedString(@"Set notification", nil) forState:UIControlStateNormal];
+        [[DBManager sharedInstance] removeNotificationFromDbWithPhoneNumber:self.contact.phoneNumber];
     }else {
-        
+        [self.confirmButton setTitle:NSLocalizedString(@"Remove notification", nil) forState:UIControlStateNormal];
+         [[DBManager sharedInstance] addNotificationToDbWithPhoneNumber:self.contact.phoneNumber name:self.contact.firstName status:self.contact.status];
     }
 }
 

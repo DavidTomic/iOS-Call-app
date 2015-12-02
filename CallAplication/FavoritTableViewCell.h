@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MGSwipeTableCell.h"
 
-@interface FavoritTableViewCell : UITableViewCell
+@interface FavoritTableViewCell : MGSwipeTableCell
 
 @property (weak, nonatomic) IBOutlet UIButton *image;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
@@ -20,5 +21,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *statusHolderView;
 @property (nonatomic, weak) IBOutlet UILabel *onPhoneLabel;
+
+@property (nonatomic, weak) IBOutlet UIImageView *notificationImage;
 
 @end

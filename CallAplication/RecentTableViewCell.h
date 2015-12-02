@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MGSwipeTableCell.h"
 
-@interface RecentTableViewCell : UITableViewCell
+@interface RecentTableViewCell : MGSwipeTableCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *image;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
@@ -17,7 +18,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *statusTextLabel;
 @property (weak, nonatomic) IBOutlet UIButton *infoButton;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceDateLabelConstraint;
 
 @property (weak, nonatomic) IBOutlet UIButton *redStatus;
 @property (weak, nonatomic) IBOutlet UIButton *yellowStatus;
@@ -25,5 +25,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *statusHolderView;
 @property (nonatomic, weak) IBOutlet UILabel *onPhoneLabel;
+
+@property (nonatomic, weak) IBOutlet UIImageView *notificationImage;
 
 @end

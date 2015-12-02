@@ -19,6 +19,7 @@
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMessageComposeViewController.h>
 #import "TimerNotification.h"
+#import "DBManager.h"
 
 #import <malloc/malloc.h>
 #import <objc/runtime.h>
@@ -456,9 +457,20 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     cell.onPhoneLabel.hidden = YES;
     cell.statusHolderView.hidden = NO;
     
-    NSLog(@"status %d", contact.status);
+    BOOL hasNotification = NO;
     
-    MGSwipeButton *deleteButton = [MGSwipeButton buttonWithTitle:NSLocalizedString(@"Delete", nil) backgroundColor:[UIColor lightGrayColor] callback:^BOOL(MGSwipeTableCell *sender) {
+    if ([[DBManager sharedInstance]getNotificationForPhoneNumber:contact.phoneNumber])
+        hasNotification = YES;
+    
+    if (hasNotification) {
+        cell.notificationImage.hidden = NO;
+    }else{
+        cell.notificationImage.hidden = YES;
+    }
+    
+  //  NSLog(@"status %d", contact.status);
+    
+    MGSwipeButton *deleteButton = [MGSwipeButton buttonWithTitle:NSLocalizedString(@"Delete", nil) backgroundColor:[UIColor lightGrayColor] padding:-10 callback:^BOOL(MGSwipeTableCell *sender) {
         NSLog(@"Convenience callback for swipe buttons!");
         
         ABRecordRef person = ABAddressBookGetPersonWithRecordID(self.addressBook, contact.recordId);
@@ -478,6 +490,12 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
         
         return YES;
     }];
+    
+    deleteButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+    
+    
+  //  [deleteButton setFrame:CGRectMake(deleteButton.frame.origin.x, deleteButton.frame.origin.y, deleteButton.frame.size.width-30, deleteButton.frame.size.height)];
+    
     MGSwipeButton *secondButton;
     
     if (contact.status == Undefined) {
@@ -498,7 +516,22 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
         [cell.greenStatus setSelected:NO];
         [cell.yellowStatus setSelected:NO];
     }else {
-        secondButton = [MGSwipeButton buttonWithTitle:NSLocalizedString(@"Set notification", nil) backgroundColor:[UIColor blueColor]];
+        if (hasNotification) {
+            secondButton = [MGSwipeButton buttonWithTitle:NSLocalizedString(@"Remove\nnotification", nil) backgroundColor:[UIColor blueColor] callback:^BOOL(MGSwipeTableCell *sender) {
+                [[DBManager sharedInstance] removeNotificationFromDbWithPhoneNumber:contact.phoneNumber];
+                [self reloadData];
+                return YES;
+            }];
+        }else {
+            secondButton = [MGSwipeButton buttonWithTitle:NSLocalizedString(@"Set\nnotification", nil) backgroundColor:[UIColor blueColor] callback:^BOOL(MGSwipeTableCell *sender) {
+                [[DBManager sharedInstance] addNotificationToDbWithPhoneNumber:contact.phoneNumber name:contact.firstName status:contact.status];
+                [self reloadData];
+                return YES;
+            }];
+        }
+        
+        secondButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+        
         switch (contact.status) {
             case Red_status:
                 [cell.redStatus setSelected:YES];
@@ -538,50 +571,6 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     //NSLog(@"didSelectRowAtIndexPath");
     
 }
-
-//
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    NSLog(@"commitEditingStyle");
-//  //  [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//   
-//    Contact *contact = nil;
-//    if (tableView == self.searchDisplayController.searchResultsTableView) {
-//        contact = self.filteredContactArray[indexPath.row];
-//    }else{
-//        NSArray *keys = [self.myUser.contactDictionary allKeys];
-//        keys = [keys sortedArrayUsingComparator:^(id a, id b) {
-//            return [a compare:b options:NSNumericSearch];
-//        }];
-//        
-//        NSString *key = keys[indexPath.section];
-//        contact = [self.myUser.contactDictionary objectForKey:key][indexPath.row];
-//    }
-//    
-//    
-//    NSArray *mcheckPhoneNumberArray = [Myuser sharedUser].checkPhoneNumberArray;
-//    
-//    if ([mcheckPhoneNumberArray containsObject:contact.phoneNumber]) {
-//        
-//    }else {
-//        NSString *phoneNumber = contact.phoneNumber;
-//        
-//        if(phoneNumber && [MFMessageComposeViewController canSendText]) {
-//            phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
-//            
-//            MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
-//            controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
-//            controller.messageComposeDelegate = self;
-//            [self presentViewController:controller animated:YES completion:nil];
-//        }
-//    }
-//
-//    self.tableView.editing=NO;
-//    
-//}
-
-
-
 
 #pragma mark ABNewPersonViewControllerDelegate methods
 // Dismisses the new-person view controller.

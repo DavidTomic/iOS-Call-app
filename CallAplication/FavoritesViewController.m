@@ -15,8 +15,10 @@
 #import "FavoritTableViewCell.h"
 #import "ContactDetailViewController.h"
 #import "TimerNotification.h"
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMessageComposeViewController.h>
 
-@interface FavoritesViewController ()
+@interface FavoritesViewController ()<MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic, strong) UIImageView *redCircle;
 @property (nonatomic, strong) UIImageView *yellowCircle;
@@ -26,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (weak, nonatomic) IBOutlet UIView *statusHolderView;
+
 
 @end
 
@@ -312,35 +315,84 @@
     cell.onPhoneLabel.hidden = YES;
     cell.statusHolderView.hidden = NO;
     
-    switch (contact.status) {
-        case Red_status:
-            [cell.redStatus setSelected:YES];
-            [cell.greenStatus setSelected:NO];
-            [cell.yellowStatus setSelected:NO];
-            break;
-        case Green_status:
-            [cell.redStatus setSelected:NO];
-            [cell.greenStatus setSelected:YES];
-            [cell.yellowStatus setSelected:NO];
-            break;
-        case Yellow_status:
-            [cell.redStatus setSelected:NO];
-            [cell.greenStatus setSelected:NO];
-            [cell.yellowStatus setSelected:YES];
-            break;
-        case On_phone:
-            cell.statusHolderView.hidden = YES;
-            cell.onPhoneLabel.hidden = NO;
-            break;
-            
-        default:
-            [cell.redStatus setSelected:NO];
-            [cell.greenStatus setSelected:NO];
-            [cell.yellowStatus setSelected:NO];
-            break;
+    BOOL hasNotification = NO;
+    
+    if ([[DBManager sharedInstance]getNotificationForPhoneNumber:contact.phoneNumber])
+        hasNotification = YES;
+    
+    if (hasNotification) {
+        cell.notificationImage.hidden = NO;
+    }else{
+        cell.notificationImage.hidden = YES;
     }
     
-    //    [cell.info addTarget:self action:@selector(infoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    MGSwipeButton *mgSwipeButton;
+    
+    if (contact.status == Undefined) {
+        mgSwipeButton = [MGSwipeButton buttonWithTitle:NSLocalizedString(@"Invite", nil) backgroundColor:[UIColor blueColor] callback:^BOOL(MGSwipeTableCell *sender) {
+            NSString *phoneNumber = contact.phoneNumber;
+            
+            if(phoneNumber && [MFMessageComposeViewController canSendText]) {
+                phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
+                
+                MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+                controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
+                controller.messageComposeDelegate = self;
+                [self presentViewController:controller animated:YES completion:nil];
+            }
+            return YES;
+        }];
+        [cell.redStatus setSelected:NO];
+        [cell.greenStatus setSelected:NO];
+        [cell.yellowStatus setSelected:NO];
+    }else {
+        
+        if (hasNotification) {
+            mgSwipeButton = [MGSwipeButton buttonWithTitle:NSLocalizedString(@"Remove\nnotification", nil) backgroundColor:[UIColor blueColor] callback:^BOOL(MGSwipeTableCell *sender) {
+                [[DBManager sharedInstance] removeNotificationFromDbWithPhoneNumber:contact.phoneNumber];
+                [self reloadData];
+                return YES;
+            }];
+        }else {
+            mgSwipeButton = [MGSwipeButton buttonWithTitle:NSLocalizedString(@"Set\nnotification", nil) backgroundColor:[UIColor blueColor] callback:^BOOL(MGSwipeTableCell *sender) {
+                [[DBManager sharedInstance] addNotificationToDbWithPhoneNumber:contact.phoneNumber name:contact.firstName status:contact.status];
+                [self reloadData];
+                return YES;
+            }];
+        }
+
+        switch (contact.status) {
+            case Red_status:
+                [cell.redStatus setSelected:YES];
+                [cell.greenStatus setSelected:NO];
+                [cell.yellowStatus setSelected:NO];
+                break;
+            case Green_status:
+                [cell.redStatus setSelected:NO];
+                [cell.greenStatus setSelected:YES];
+                [cell.yellowStatus setSelected:NO];
+                break;
+            case Yellow_status:
+                [cell.redStatus setSelected:NO];
+                [cell.greenStatus setSelected:NO];
+                [cell.yellowStatus setSelected:YES];
+                break;
+            case On_phone:
+                cell.statusHolderView.hidden = YES;
+                cell.onPhoneLabel.hidden = NO;
+                break;
+            default:
+                [cell.redStatus setSelected:NO];
+                [cell.greenStatus setSelected:NO];
+                [cell.yellowStatus setSelected:NO];
+                break;
+        }
+    }
+    
+    mgSwipeButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+    
+    cell.rightButtons = @[mgSwipeButton];
+    cell.rightSwipeSettings.transition = MGSwipeTransitionDrag;
     
     return cell;
     
@@ -364,15 +416,12 @@
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
     }
 }
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-    return YES;
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return UITableViewCellEditingStyleDelete;
-}
-
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+//    return YES;
+//}
+//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    return UITableViewCellEditingStyleDelete;
+//}
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"commitEditingStyle");
@@ -438,5 +487,27 @@
     }
 }
 
+//delegate methods
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+                 didFinishWithResult:(MessageComposeResult)result {
+    switch(result) {
+        case MessageComposeResultCancelled:
+            // user canceled sms
+            [self dismissViewControllerAnimated:YES completion:nil];
+            break;
+        case MessageComposeResultSent:
+            // user sent sms
+            [self dismissViewControllerAnimated:YES completion:nil];
+            //perhaps put an alert here and dismiss the view on one of the alerts buttons
+            break;
+        case MessageComposeResultFailed:
+            // sms send failed
+            [self dismissViewControllerAnimated:YES completion:nil];
+            //perhaps put an alert here and dismiss the view when the alert is canceled
+            break;
+        default:
+            break;
+    }
+}
 
 @end

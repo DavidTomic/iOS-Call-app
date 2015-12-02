@@ -16,6 +16,8 @@
 #import "Contact.h"
 #import "VoiceMailViewController.h"
 #import "FavoritesViewController.h"
+#import "iToast.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 @interface TabBarViewController ()<UITabBarControllerDelegate>
 
@@ -55,19 +57,18 @@
     if (self.cameFromRegistration) {
         [self checkAndUpdateAllContact];
         [self refreshStatusInfo];
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:(10) target:self selector:@selector(onTick:) userInfo:nil repeats:YES];
+        [self startRequestInfoTimer];
     }
 
 }
 - (void)applicationWillResign {
     NSLog(@"applicationWillResign...");
-    [self.timer invalidate];
-    self.timer = nil;
+    [self stopRequestInfoTimer];
 }
 - (void)applicationDidBecomeActiveNotification {
     NSLog(@"applicationDidBecomeActiveNotification...");
     [self refreshStatusInfo];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:(10) target:self selector:@selector(onTick:) userInfo:nil repeats:YES];
+    [self startRequestInfoTimer];
     
     if ([InternetStatus isNetworkAvailable]) {
         [[MyConnectionManager sharedManager]requestLogInWithDelegate:self selector:@selector(responseToLogIn:)];
@@ -78,8 +79,6 @@
     
 
     [self.selectedViewController viewWillAppear:false];
-    
-    
 }
 - (void)viewWillLayoutSubviews
 {
@@ -127,6 +126,18 @@
 -(void)receiveContactListReloadedNotification:(NSNotification *)notification{
     // NSLog(@"receiveContactListReloadedNotification");
     [self refreshStatusInfo];
+}
+-(void)startRequestInfoTimer{
+    
+    int repeatTime = [Myuser sharedUser].requestStatusInfoSeconds;
+    if (repeatTime < 10) {
+        repeatTime = 10;
+    }
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:(repeatTime) target:self selector:@selector(onTick:) userInfo:nil repeats:YES];
+}
+-(void)stopRequestInfoTimer{
+    [self.timer invalidate];
+    self.timer = nil;
 }
 -(void)onTick:(NSTimer*)timer
 {
@@ -311,6 +322,8 @@
         
         if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
             
+            NSArray *notificationArray = [[DBManager sharedInstance] getAllNotificationsFromDb];
+            
             [[SharedPreferences shared]setLastCallTime:[pom1 objectForKey:@"ExecutionTime"]];
           
             id pom2 = [[pom1 objectForKey:@"UserStatus"] objectForKey:@"csUserStatus"];
@@ -332,6 +345,12 @@
                                 
                                 contact.statusText = sText;
                                 contact.status = [[contactDict objectForKey:@"Status"]integerValue];
+                                
+                                for (Contact *notificationContact in notificationArray){
+                                    if ([contact.phoneNumber isEqualToString:notificationContact.phoneNumber] && contact.status != notificationContact.status) {
+                                        [self setNotificationForContact:contact];
+                                    }
+                                }
                                 
                                 goto outer;
                             }
@@ -357,6 +376,12 @@
                             
                             contact.statusText = sText;
                             contact.status = [[contactDict objectForKey:@"Status"]integerValue];
+                            
+                            for (Contact *notificationContact in notificationArray){
+                                if ([contact.phoneNumber isEqualToString:notificationContact.phoneNumber] && contact.status != notificationContact.status) {
+                                    [self setNotificationForContact:contact];
+                                }
+                            }
                             
                             goto outer2;
                         }
@@ -408,7 +433,7 @@
     }
 }
 -(void)responseToLogIn:(NSDictionary *)dict{
-   // NSLog(@"responseToLogIn %@", dict);
+    NSLog(@"responseToLogIn %@", dict);
     if (dict) {
         NSDictionary *pom1 = [[dict objectForKey:@"LoginResponse"] objectForKey:@"LoginResult"];
         
@@ -507,6 +532,52 @@
             [self refreshStatusInfo];
         }
     }
+}
+
+- (void)setNotificationForContact:(Contact *)contact {
+    NSString *message = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Changed status to: ", nil), [self getStatusTextForStatus:contact.status]];
+//    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+//    localNotification.fireDate = [NSDate date];
+//    localNotification.alertBody = message;
+//    localNotification.soundName = UILocalNotificationDefaultSoundName;
+//    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+    
+//    iToastSettings *theSettings = [iToastSettings getSharedSettings];
+//    theSettings.duration = 4000;
+//    [[[iToast makeText:message]
+//      setGravity:iToastGravityCenter] show];
+    
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:contact.firstName message:message
+                                                  delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    [alert show];
+    
+    NSURL *fileURL = [NSURL URLWithString:@"/System/Library/Audio/UISounds/sms-received1.caf"]; // see list below
+    SystemSoundID soundID;
+    AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)fileURL,&soundID);
+    AudioServicesPlaySystemSound(soundID);
+    
+    [[DBManager sharedInstance] removeNotificationFromDbWithPhoneNumber:contact.phoneNumber];
+}
+
+-(NSString *)getStatusTextForStatus:(Status)status{
+    NSString *statusText = @"";
+    
+    switch (status) {
+        case Red_status:
+            statusText = NSLocalizedString(@"busy", nil);
+            break;
+        case Green_status:
+            statusText = NSLocalizedString(@"online", nil);
+            break;
+        case Yellow_status:
+            statusText = NSLocalizedString(@"not available", nil);
+            break;
+        default:
+            statusText = NSLocalizedString(@"speaking", nil);
+            break;
+    }
+    
+    return statusText;
 }
 
 

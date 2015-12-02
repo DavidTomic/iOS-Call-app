@@ -88,7 +88,7 @@
     if ([self.tableArray[indexPath.row] isEqualToString:NSLocalizedString(@"Edit status text", nil)]) {
             [self performSegueWithIdentifier:@"Default Text Segue" sender:tableView];
     } else if ([self.tableArray[indexPath.row] isEqualToString:NSLocalizedString(@"Remove notifications", nil)]){
-        
+        [self performSegueWithIdentifier:@"Remove Notification Segue" sender:tableView];
     } else if ([self.tableArray[indexPath.row] isEqualToString:NSLocalizedString(@"Set status", nil)]){
             [self performSegueWithIdentifier:@"Set Status Segue" sender:tableView];
     }else {

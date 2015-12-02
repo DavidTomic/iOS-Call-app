@@ -16,6 +16,7 @@ NSString * const CONTACT_TABLE = @"ContactTable";
 NSString * const DEFAULT_TEXT_TABLE = @"DefaultTextTable";
 NSString * const FAVORIT_TABLE = @"FavoritTable";
 NSString * const RECENT_TABLE = @"RecentTable";
+NSString * const NOTIFICATION_TABLE = @"NotificationTable";
 
 static DBManager *sharedInstance = nil;
 static sqlite3 *database = nil;
@@ -88,6 +89,14 @@ static sqlite3 *database = nil;
             {
                 isSuccess = NO;
                 NSLog(@"Failed to create DEFAULT_TEXT_TABLE");
+            }
+            
+            const char *sql_stmt_notificationTable = [[NSString stringWithFormat:@"create table if not exists %@ (phoneNumber text, name text, status integer)", NOTIFICATION_TABLE] cStringUsingEncoding:NSASCIIStringEncoding];
+            if (sqlite3_exec(database, sql_stmt_notificationTable, NULL, NULL, &errMsg)
+                != SQLITE_OK)
+            {
+                isSuccess = NO;
+                NSLog(@"Failed to create NOTIFICATION_TABLE");
             }
             
             sqlite3_close(database);
@@ -388,7 +397,6 @@ static sqlite3 *database = nil;
         [self executeQuery:query];
     }
 }
-
 -(NSArray *)getAllPhoneNumbersFromDb{
     NSString *query = [NSString stringWithFormat:@"select * from %@", CONTACT_TABLE];
     NSArray *pom = [self loadDataFromDB:query];
@@ -403,6 +411,53 @@ static sqlite3 *database = nil;
     return results;
 }
 
+-(void)addNotificationToDbWithPhoneNumber:(NSString *)phoneNumber name:(NSString *)name status:(Status)status{
+    NSString *query = [NSString stringWithFormat:@"insert into %@ values('%@', '%@', %d)", NOTIFICATION_TABLE, phoneNumber, name, (int)status];
+    [self executeQuery:query];
+}
+-(Notification *)getNotificationForPhoneNumber:(NSString *)phoneNumber{
+    NSString *query = [NSString stringWithFormat:@"select * from %@ where phoneNumber = '%@'", NOTIFICATION_TABLE, phoneNumber];
+    NSArray *pom = [self loadDataFromDB:query];
+    
+    NSLog(@"pom results %@", pom);
+    
+    if (pom.count > 0) {
+        pom = pom[0];
+        
+        NSLog(@"pom[0] results %@", pom[0]);
+        
+        Notification *notification = [Notification new];
+        notification.phoneNumber = pom[0];
+        notification.name = pom[1];
+        notification.status = [pom[2] integerValue];
+        
+        return notification;
+    }
+    
+    return nil;
+}
+-(NSMutableArray *)getAllNotificationsFromDb{
+    NSString *query = [NSString stringWithFormat:@"select * from %@", NOTIFICATION_TABLE];
+    NSArray *pom = [self loadDataFromDB:query];
+    
+    NSMutableArray *results = [NSMutableArray new];
+    
+    for (NSArray *array in pom){
+        Notification *notification = [Notification new];
+        notification.phoneNumber = array[0];
+        notification.name = array[1];
+        notification.status = [array[2] integerValue];
+        [results addObject:notification];
+    }
+    
+    NSLog(@"NOTIFICATION_TABLE %@", results);
+    
+    return results;
+}
+-(void)removeNotificationFromDbWithPhoneNumber:(NSString *)phoneNumber{
+    NSString *query = [NSString stringWithFormat:@"delete from NotificationTable where phoneNumber = '%@'", phoneNumber];
+    [self executeQuery:query];
+}
 
 
 -(NSArray *)getTableList{

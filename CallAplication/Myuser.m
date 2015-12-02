@@ -42,11 +42,6 @@ static Myuser *myUser;
     return _contactDictionary;
 }
 
--(NSMutableArray *)checkPhoneNumberArray{
-    
-    if(!_checkPhoneNumberArray) _checkPhoneNumberArray= [[NSMutableArray alloc]init];
-    return _checkPhoneNumberArray;
-}
 
 
 -(void)refreshContactList{

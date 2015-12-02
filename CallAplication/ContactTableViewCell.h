@@ -22,4 +22,6 @@
 @property (weak, nonatomic) IBOutlet UIView *statusHolderView;
 @property (nonatomic, weak) IBOutlet UILabel *onPhoneLabel;
 
+@property (nonatomic, weak) IBOutlet UIImageView *notificationImage;
+
 @end

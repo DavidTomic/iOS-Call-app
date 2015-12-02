@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Notification.h"
 
 @interface DBManager : NSObject
 
@@ -30,6 +31,11 @@
 
 -(void)addContactsPhoneNumbersToDb:(NSArray *)list;
 -(NSArray *)getAllPhoneNumbersFromDb;
+
+-(void)addNotificationToDbWithPhoneNumber:(NSString *)phoneNumber name:(NSString *)name status:(Status)status;
+-(Notification *)getNotificationForPhoneNumber:(NSString *)phoneNumber;
+-(NSMutableArray *)getAllNotificationsFromDb;
+-(void)removeNotificationFromDbWithPhoneNumber:(NSString *)phoneNumber;
 
 //temp
 -(NSArray *)getTableList;

@@ -13,11 +13,11 @@
 @implementation TimerNotification
 
 +(void)setTimerNotification{
-    [self setStartTimerNotification];
-    [self setEndTimerNotification];
+    [self startTimerNotification];
+    [self endTimerNotification];
 }
 
-+(void)setStartTimerNotification{
++(void)startTimerNotification{
     
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
@@ -38,7 +38,7 @@
     });
 }
 
-+(void)setEndTimerNotification{
++(void)endTimerNotification{
     
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
