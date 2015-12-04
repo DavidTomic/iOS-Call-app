@@ -13,6 +13,7 @@
 #import <CoreTelephony/CTCallCenter.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import "MyConnectionManager.h"
 
 
 @interface AppDelegate ()
@@ -27,22 +28,11 @@
 
 @implementation AppDelegate
 
-- (void)reloadRootViewController
-{
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    UIViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"tab bar"];
-//    self.window.rootViewController = rootViewController;
-//    [self.window makeKeyAndVisible];
-    
-}
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
   //  [[Crashlytics sharedInstance] setDebugMode:YES];
     [Fabric with:@[[Crashlytics class]]];
-    
-
 
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:234/255.0f green:234/255.0f blue:234/255.0f alpha:1.0f]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
@@ -68,6 +58,15 @@
         
         if ([state isEqualToString:@"Dialing"]) {
                 [self processDialState];
+            if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+                // here you go with iOS 8 and above
+                [[MyConnectionManager sharedManager]requestUpdateStatusOnPhone:YES delegate:self selector:nil];
+            }
+        }else if([state isEqualToString:@"Disconnected"]){
+            if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+                // here you go with iOS 8 and above
+                [[MyConnectionManager sharedManager]requestUpdateStatusWithDelegate:self selector:nil];
+            }
         }
         
         
@@ -149,14 +148,11 @@
 //    NSLog(@"preferredlanguage code %@", [[[NSBundle mainBundle] preferredLocalizations]objectAtIndex:0]);
     
     
-
-
-    
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    //NSLog(@"applicationWillResignActive");
+    NSLog(@"applicationWillResignActive");
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }

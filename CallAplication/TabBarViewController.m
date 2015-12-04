@@ -108,7 +108,7 @@
             phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
             // NSLog(@"phoneNumberA %@", phoneNumber);
             
-            NSString *pNumber = [@"telprompt://" stringByAppendingString:phoneNumber];
+            NSString *pNumber = [@"tel://" stringByAppendingString:phoneNumber];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
         }else {
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", @"") message:NSLocalizedString(@"Please enter your voicemail number in application settings", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -129,7 +129,7 @@
 }
 -(void)startRequestInfoTimer{
     
-    int repeatTime = [Myuser sharedUser].requestStatusInfoSeconds;
+    NSInteger repeatTime = [Myuser sharedUser].requestStatusInfoSeconds;
     if (repeatTime < 10) {
         repeatTime = 10;
     }
@@ -245,7 +245,7 @@
                                                              }
                                                          }
                                                          
-                                                         NSLog(@"newContactList %@", newContactList);
+                                                    //     NSLog(@"newContactList %@", newContactList);
                                                          
                                                          // delete old contacts from server
                                                          for (Contact *contact in self.contactList){
@@ -258,7 +258,7 @@
                                                              }
                                                          }
                                                          
-                                                         NSLog(@"oldContactList %@", oldContactList);
+                                                     //    NSLog(@"oldContactList %@", oldContactList);
                                                          
                                                          if (oldContactList.count > 0) {
                                                              [self deleteContactsOnServer:oldContactList];

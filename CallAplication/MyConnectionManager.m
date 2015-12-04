@@ -62,11 +62,11 @@ static MyConnectionManager *mySharedManager;
     <password>%@</password> \
     <Name>%@</Name> \
     <Email>%@</Email> \
-    <Language>%d</Language> \
+    <Language>%lu</Language> \
     <Allowmode>0</Allowmode> \
     </CreateAccount> \
     </soap:Body> \
-    </soap:Envelope>", phoneNumberOnlyDigit, password, name, email, language];
+    </soap:Envelope>", phoneNumberOnlyDigit, password, name, email, (unsigned long)language];
     
     [conn sendMessageWithMethodName:@"CreateAccount" soapMessage:soapMessage];
 }
@@ -283,11 +283,22 @@ static MyConnectionManager *mySharedManager;
     
 }
 -(void)requestUpdateStatusWithDelegate:(id)delegate selector:(SEL)selector{
+    [self requestUpdateStatusOnPhone:NO delegate:self selector:selector];
+}
+-(void)requestUpdateStatusOnPhone:(BOOL)onPhone delegate:(id)delegate selector:(SEL)selector{
     MyConnection *conn = [[MyConnection alloc]init];
     conn.delegate = delegate;
     conn.selector = selector;
     
     Myuser *user = [Myuser sharedUser];
+    
+    Status status;
+    
+    if (onPhone) {
+        status = On_phone;
+    }else {
+        status = user.status;
+    }
     
     NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
                              <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
@@ -295,16 +306,17 @@ static MyConnectionManager *mySharedManager;
                              <UpdateStatus xmlns=\"http://tempuri.org/\"> \
                              <Phonenumber>%@</Phonenumber> \
                              <password>%@</password> \
-                             <Status>%d</Status> \
+                             <Status>%lu</Status> \
                              <Text>%@</Text> \
                              </UpdateStatus> \
                              </soap:Body> \
-                             </soap:Envelope>", user.phoneNumber, user.password, user.status, user.statusText];
+                             </soap:Envelope>", user.phoneNumber, user.password, (unsigned long)status, user.statusText];
     
-  //  NSLog(@"soapMessage %@", soapMessage);
+    //  NSLog(@"soapMessage %@", soapMessage);
     
     [conn sendMessageWithMethodName:@"UpdateStatus" soapMessage:soapMessage];
 }
+
 -(void)requestUpdateStatusWithTimestampWithStatus:(Status)status delegate:(id)delegate selector:(SEL)selector{
     MyConnection *conn = [[MyConnection alloc]init];
     conn.delegate = delegate;
@@ -318,13 +330,13 @@ static MyConnectionManager *mySharedManager;
                              <UpdateStatusWidthTimestamp xmlns=\"http://tempuri.org/\"> \
                              <Phonenumber>%@</Phonenumber> \
                              <password>%@</password> \
-                             <Status>%d</Status> \
+                             <Status>%lu</Status> \
                              <EndTime>%@</EndTime> \
                              <StartTime>%@</StartTime> \
                              <Text>%@</Text> \
                              </UpdateStatusWidthTimestamp> \
                              </soap:Body> \
-                             </soap:Envelope>", user.phoneNumber, user.password, status, user.statusEndTime, user.statusStartTime, user.statusText];
+                             </soap:Envelope>", user.phoneNumber, user.password, (unsigned long)status, user.statusEndTime, user.statusStartTime, user.statusText];
     
     [conn sendMessageWithMethodName:@"UpdateStatusWidthTimestamp" soapMessage:soapMessage];
 }
@@ -346,10 +358,10 @@ static MyConnectionManager *mySharedManager;
                              <password>%@</password> \
                              <Name>%@</Name> \
                              <Email>%@</Email> \
-                             <Language>%d</Language> \
+                             <Language>%lu</Language> \
                              </UpdateAccount> \
                              </soap:Body> \
-                             </soap:Envelope>", user.phoneNumber, user.password, newPhoneNumber, newPassword, name, email, language];
+                             </soap:Envelope>", user.phoneNumber, user.password, newPhoneNumber, newPassword, name, email, (unsigned long)language];
     
     [conn sendMessageWithMethodName:@"UpdateAccount" soapMessage:soapMessage];
 }

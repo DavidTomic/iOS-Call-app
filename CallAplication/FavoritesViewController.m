@@ -29,6 +29,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *statusHolderView;
 
+@property (nonatomic, strong) NSArray *notificationArray;
 
 @end
 
@@ -37,10 +38,12 @@
 // VC methods
 - (void)viewDidLoad {
     [super viewDidLoad];
-   // self.edgesForExtendedLayout=UIRectEdgeBottom;
-   // self.extendedLayoutIncludesOpaqueBars=NO;
-   // self.automaticallyAdjustsScrollViewInsets=NO;
+    self.edgesForExtendedLayout=UIRectEdgeBottom;
+    self.extendedLayoutIncludesOpaqueBars=NO;
+    self.automaticallyAdjustsScrollViewInsets=NO;
     // Do any additional setup after loading the view.
+    
+    self.notificationArray = [[DBManager sharedInstance]getAllNotificationsFromDb];
     
     [self createMyStatusView];
     
@@ -63,6 +66,8 @@
     [self refreshMyStatusUI];
     [self reloadData];
     NSLog(@"viewWillAppear");
+    
+    [self.statusHolderView setFrame:CGRectMake(0, 0, self.statusHolderView.frame.size.width, self.statusHolderView.frame.size.height)];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -209,7 +214,7 @@
     }
 }
 -(void)closeMyStatusSwipeView{
-    [self.statusHolderView setFrame:CGRectMake(0, self.navigationController.toolbar.frame.size.height+20,
+    [self.statusHolderView setFrame:CGRectMake(0, 0,
                                               self.statusHolderView.frame.size.width, self.statusHolderView.frame.size.height)];
 }
 
@@ -239,6 +244,20 @@
     [self reloadData];
 }
 
+-(BOOL)hasNotification:(NSString *)phoneNumber{
+    
+    if (!self.notificationArray) {
+        return NO;
+    }else {
+        for (Notification *notification in self.notificationArray){
+            if ([notification.phoneNumber isEqualToString:phoneNumber]) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
 
 
 -(void)reloadData{
@@ -254,6 +273,8 @@
     }
     
     // NSLog(@"favoritContacts %@", self.favoritContacts);
+    self.notificationArray = [[DBManager sharedInstance]getAllNotificationsFromDb];
+
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
@@ -317,7 +338,7 @@
     
     BOOL hasNotification = NO;
     
-    if ([[DBManager sharedInstance]getNotificationForPhoneNumber:contact.phoneNumber])
+    if ([self hasNotification:contact.phoneNumber])
         hasNotification = YES;
     
     if (hasNotification) {
@@ -338,6 +359,7 @@
                 MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
                 controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
                 controller.messageComposeDelegate = self;
+                controller.body = [Myuser sharedUser].smsInviteText;
                 [self presentViewController:controller animated:YES completion:nil];
             }
             return YES;
@@ -412,15 +434,20 @@
         
         [Myuser sharedUser].lastDialedRecordId = contact.recordId;
         
-        NSString *pNumber = [@"telprompt://" stringByAppendingString:phoneNumber];
+        NSString *pNumber = [@"tel://" stringByAppendingString:phoneNumber];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
     }
 }
-//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return YES;
-//}
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(self.editing)
+    {
+        return YES;
+    }else {
+        return NO;
+    }
+}
 //- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return UITableViewCellEditingStyleDelete;
+//    return UITableViewCellEditingStyleNone;
 //}
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {

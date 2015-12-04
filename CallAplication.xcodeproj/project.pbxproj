@@ -410,7 +410,6 @@
 				TargetAttributes = {
 					DB291B951B6625D50028C022 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = PKYM2MNF59;
 					};
 					DB291BAE1B6625D50028C022 = {
 						CreatedOnToolsVersion = 6.4;
@@ -710,7 +709,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3b7b106f-b027-4df3-aa27-d99854520f24";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -736,7 +735,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3b7b106f-b027-4df3-aa27-d99854520f24";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

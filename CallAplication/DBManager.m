@@ -25,7 +25,7 @@ static sqlite3 *database = nil;
 {
     NSString *databasePath;
 }
-@property (nonatomic, strong) NSMutableArray *arrResults;
+//@property (nonatomic, strong) NSMutableArray *arrResults;
 @end
 
 @implementation DBManager
@@ -112,19 +112,22 @@ static sqlite3 *database = nil;
     return isSuccess;
     
 }
--(void)runQuery:(const char *)query isQueryExecutable:(BOOL)queryExecutable{
+-(NSArray *)runQuery:(const char *)query isQueryExecutable:(BOOL)queryExecutable{
     // Create a sqlite object.
+        
     sqlite3 *sqlite3Database;
     
     // Set the database file path.
     //	NSString *databasePath = [self.documentsDirectory stringByAppendingPathComponent:self.databaseFilename];
     
     // Initialize the results array.
-    if (self.arrResults != nil) {
-        [self.arrResults removeAllObjects];
-        self.arrResults = nil;
-    }
-    self.arrResults = [[NSMutableArray alloc] init];
+//    if (self.arrResults != nil) {
+//        [self.arrResults removeAllObjects];
+//        self.arrResults = nil;
+//    }
+//    self.arrResults = [[NSMutableArray alloc] init];
+    
+    NSMutableArray *arrResults = [[NSMutableArray alloc] init];
     
     // Initialize the column names array.
     if (self.arrColumnNames != nil) {
@@ -178,7 +181,7 @@ static sqlite3 *database = nil;
                     
                     // Store each fetched data row in the results array, but first check if there is actually data.
                     if (arrDataRow.count > 0) {
-                        [self.arrResults addObject:arrDataRow];
+                        [arrResults addObject:arrDataRow];
                     }
                 }
             }
@@ -211,14 +214,16 @@ static sqlite3 *database = nil;
     
     // Close the database.
     sqlite3_close(sqlite3Database);
+        
+    return arrResults;
 }
 -(NSArray *)loadDataFromDB:(NSString *)query{
     // Run the query and indicate that is not executable.
     // The query string is converted to a char* object.
-    [self runQuery:[query UTF8String] isQueryExecutable:NO];
+    return [self runQuery:[query UTF8String] isQueryExecutable:NO];
     
     // Returned the loaded results.
-    return (NSArray *)self.arrResults;
+ //   return (NSArray *)self.arrResults;
 }
 -(void)executeQuery:(NSString *)query{
     // Run the query and indicate that is executable.
@@ -343,6 +348,7 @@ static sqlite3 *database = nil;
     return recordIdArray;
 }
 
+
 -(void)addContactInRecentWithRecordId:(int)recordId phoneNumber:(NSString *)phoneNumber timestamp:(long long)timestamp{
     
     NSLog(@"insert %d, phoneNumber %@, timestamp %lld", recordId, phoneNumber, timestamp);
@@ -361,7 +367,6 @@ static sqlite3 *database = nil;
     NSString *query;
     
     if (recordId && recordId != 0) {
-        NSLog(@"HERE");
         query = [NSString stringWithFormat:@"delete from RecentTable where recordId=%d and timestamp=%lld", recordId, timestamp];
     }else {
         query = [NSString stringWithFormat:@"delete from RecentTable where phoneNumber='%@' and timestamp=%lld", phoneNumber, timestamp];
@@ -373,14 +378,7 @@ static sqlite3 *database = nil;
     NSString *query = [NSString stringWithFormat:@"select * from RecentTable"];
     NSArray *results = [self loadDataFromDB:query];
     
-//    NSMutableArray *recordIdArray = [NSMutableArray array];
-    
-//    for(NSMutableArray *array in results){
-//        NSNumber *recordId = @([array[0] integerValue]);
-//        NSNumber *timestamp = @([array[1] longLongValue]);
-//        [recordIdArray addObject:recordId];
-//    }
-//    NSLog(@"result %@", results);
+    NSLog(@"getAllContactDataFromRecentTable result %@", results);
     
     return results;
 }
@@ -401,13 +399,19 @@ static sqlite3 *database = nil;
     NSString *query = [NSString stringWithFormat:@"select * from %@", CONTACT_TABLE];
     NSArray *pom = [self loadDataFromDB:query];
     
+    NSLog(@"getAllPhoneNumbersFromDb pom %@", pom);
+    
     NSMutableArray *results = [NSMutableArray new];
     
-    for (NSArray *array in pom){
-        [results addObject:array[0]];
+    @try {
+        for (NSArray *array in pom){
+            [results addObject:array[0]];
+        }
     }
-    
- //   NSLog(@"getAllPhoneNumbersFromDb results %@", results);
+    @catch (NSException *exception) {
+        NSLog(@"exception exception exception %@", exception);
+    }
+
     return results;
 }
 
@@ -442,6 +446,8 @@ static sqlite3 *database = nil;
     
     NSMutableArray *results = [NSMutableArray new];
     
+    NSLog(@"NOTIFICATION_TABLE %@", pom);
+    
     for (NSArray *array in pom){
         Notification *notification = [Notification new];
         notification.phoneNumber = array[0];
@@ -450,7 +456,7 @@ static sqlite3 *database = nil;
         [results addObject:notification];
     }
     
-    NSLog(@"NOTIFICATION_TABLE %@", results);
+  //  NSLog(@"NOTIFICATION_TABLE %@", results);
     
     return results;
 }

@@ -30,18 +30,22 @@
 //@property (nonatomic, strong) UIView *statusHolderView;
 @property (weak, nonatomic) IBOutlet UIView *statusHolderView;
 
+@property (nonatomic, strong) NSArray *notificationArray;
+
 @end
 
 @implementation RecentViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.edgesForExtendedLayout=UIRectEdgeNone;
-//    self.extendedLayoutIncludesOpaqueBars=NO;
-//    self.automaticallyAdjustsScrollViewInsets=NO;
+    self.edgesForExtendedLayout=UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars=NO;
+    self.automaticallyAdjustsScrollViewInsets=NO;
     
     [self createMyStatusView];
     // Do any additional setup after loading the view.
+    
+    self.notificationArray = [[DBManager sharedInstance]getAllNotificationsFromDb];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receiveContactListReloadedNotification:)
@@ -60,6 +64,8 @@
     [super viewWillAppear:animated];
     [self refreshMyStatusUI];
     [self reloadData];
+    
+    [self.statusHolderView setFrame:CGRectMake(0, 0, self.statusHolderView.frame.size.width, self.statusHolderView.frame.size.height)];
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
@@ -73,7 +79,7 @@
 -(void)createMyStatusView{
     
     float width = self.view.frame.size.width/3;
-    float height = 40;
+    float height = 50;
     
     UIPanGestureRecognizer * pan1 = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveMyStatusView:)];
     pan1.minimumNumberOfTouches = 1;
@@ -191,7 +197,7 @@
     }
 }
 -(void)closeMyStatusSwipeView{
-    [self.statusHolderView setFrame:CGRectMake(0, self.navigationController.toolbar.frame.size.height+20,
+    [self.statusHolderView setFrame:CGRectMake(0, 0,
                                                self.statusHolderView.frame.size.width, self.statusHolderView.frame.size.height)];
 }
 
@@ -222,11 +228,25 @@
     [self reloadData];
 }
 
+-(BOOL)hasNotification:(NSString *)phoneNumber{
+    
+    if (!self.notificationArray) {
+        return NO;
+    }else {
+        for (Notification *notification in self.notificationArray){
+            if ([notification.phoneNumber isEqualToString:phoneNumber]) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
 
 -(void)reloadData{
     NSArray *contactArray = [[Myuser sharedUser].contactDictionary allValues];
     NSArray *recentCallArray = [[DBManager sharedInstance]getAllContactDataFromRecentTable];
-    NSLog(@"recentCallArray %@",recentCallArray);
+  //  NSLog(@"recentCallArray %@",recentCallArray);
     self.recentContacts = nil;
     
     for (NSArray *pomArray1 in contactArray){
@@ -247,11 +267,12 @@
             Contact *c = [Contact new];
             c.phoneNumber = pomArray2[1];
             c.timestamp = [pomArray2[2]longLongValue];
+            c.status = Undefined;
             [self.recentContacts addObject:c];
         }
     }
     
-    
+    self.notificationArray = [[DBManager sharedInstance]getAllNotificationsFromDb];
     
     [self.recentContacts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
     
@@ -276,15 +297,15 @@
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"COUNT %d", [self.recentContacts count]);
+   // NSLog(@"COUNT %lu", (unsigned long)[self.recentContacts count]);
     return [self.recentContacts count];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RecentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RecentCell"];
+    RecentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Recent Cell"];
     
     if (cell == nil) {
-        cell = [[RecentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RecentCell"];
+        cell = [[RecentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Recent Cell"];
     }
     
     Contact *contact = self.recentContacts[indexPath.row];
@@ -315,7 +336,7 @@
         
     BOOL hasNotification = NO;
     
-    if ([[DBManager sharedInstance]getNotificationForPhoneNumber:contact.phoneNumber])
+    if ([self hasNotification:contact.phoneNumber])
         hasNotification = YES;
     
     if (hasNotification) {
@@ -336,6 +357,7 @@
                 MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
                 controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
                 controller.messageComposeDelegate = self;
+                controller.body = [Myuser sharedUser].smsInviteText;
                 [self presentViewController:controller animated:YES completion:nil];
             }
             return YES;
@@ -413,13 +435,18 @@
             [Myuser sharedUser].lastDialedPhoneNumber = contact.phoneNumber;
         }
         
-        NSString *pNumber = [@"telprompt://" stringByAppendingString:phoneNumber];
+        NSString *pNumber = [@"tel://" stringByAppendingString:phoneNumber];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
     }
 }
-//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return YES;
-//}
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(self.editing)
+    {
+        return YES;
+    }else {
+        return NO;
+    }
+}
 //- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
 //    return UITableViewCellEditingStyleDelete;
 //}

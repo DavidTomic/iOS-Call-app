@@ -48,7 +48,7 @@
         phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
         // NSLog(@"phoneNumberA %@", phoneNumber);
         
-        NSString *pNumber = [@"telprompt://" stringByAppendingString:phoneNumber];
+        NSString *pNumber = [@"tel://" stringByAppendingString:phoneNumber];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
     }
 }

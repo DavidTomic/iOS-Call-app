@@ -39,6 +39,6 @@
 @property (nonatomic) int lastDialedRecordId;
 @property (nonatomic, strong) NSString *lastDialedPhoneNumber;
 
-@property (nonatomic) int requestStatusInfoSeconds;
+@property (nonatomic) NSInteger requestStatusInfoSeconds;
 
 @end

@@ -39,6 +39,10 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
 
 @property (weak, nonatomic) IBOutlet UIView *statusHolderView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *statusHolderTopConstraint;
+
+@property (nonatomic, strong) NSArray *notificationArray;
+
 @end
 
 @implementation ContactsViewController
@@ -47,9 +51,11 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-//    self.edgesForExtendedLayout=UIRectEdgeNone;
-//    self.extendedLayoutIncludesOpaqueBars=NO;
-//    self.automaticallyAdjustsScrollViewInsets=NO;
+    self.edgesForExtendedLayout=UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars=NO;
+    self.automaticallyAdjustsScrollViewInsets=NO;
+    
+    self.notificationArray = [[DBManager sharedInstance]getAllNotificationsFromDb];
     
     self.myUser = [Myuser sharedUser];
     [self createMyStatusView];
@@ -134,14 +140,21 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     [self.tableView setTableHeaderView:headerView];
     
     [self refreshMyStatusUI];
+    
+    //fix to support both ios7 and later, using edgesForExtendedLayout
+    [self.statusHolderView setFrame:CGRectMake(0, 44, self.statusHolderView.frame.size.width, self.statusHolderView.frame.size.height)];
+    
+    self.notificationArray = [[DBManager sharedInstance]getAllNotificationsFromDb];
+    [self.tableView reloadData];
 }
+
 
 
 //my methods
 -(void)createMyStatusView{
     
     float width = self.view.frame.size.width/3;
-    float height = 40;
+    float height = 50;
     
     UIPanGestureRecognizer * pan1 = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveMyStatusView:)];
     pan1.minimumNumberOfTouches = 1;
@@ -210,12 +223,13 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     }
 }
 -(void)closeMyStatusSwipeView{
-    [self.statusHolderView setFrame:CGRectMake(0, 108,
+    [self.statusHolderView setFrame:CGRectMake(0, 44,
                                          self.statusHolderView.frame.size.width, self.statusHolderView.frame.size.height)];
 }
 
 -(void)reloadData{
 
+    self.notificationArray = [[DBManager sharedInstance]getAllNotificationsFromDb];
  //   self.data = [[NSMutableDictionary alloc] initWithDictionary:self.myUser.contactDictionary copyItems:YES];
     self.data = [self.myUser.contactDictionary copy];
     
@@ -274,6 +288,21 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     [[MyConnectionManager sharedManager]requestUpdateStatusWithDelegate:self selector:@selector(responseToUpdateStatus:)];
     [TimerNotification cancelTimerNotification];
     [self refreshMyStatusUI];
+}
+
+-(BOOL)hasNotification:(NSString *)phoneNumber{
+    
+    if (!self.notificationArray) {
+        return NO;
+    }else {
+        for (Notification *notification in self.notificationArray){
+            if ([notification.phoneNumber isEqualToString:phoneNumber]) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
 }
 
 //IBAction methods
@@ -459,7 +488,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
     
     BOOL hasNotification = NO;
     
-    if ([[DBManager sharedInstance]getNotificationForPhoneNumber:contact.phoneNumber])
+    if ([self hasNotification:contact.phoneNumber])
         hasNotification = YES;
     
     if (hasNotification) {
@@ -508,6 +537,7 @@ UISearchBarDelegate, UISearchDisplayDelegate, MFMessageComposeViewControllerDele
                         MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
                         controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
                         controller.messageComposeDelegate = self;
+                        controller.body = [Myuser sharedUser].smsInviteText;
                         [self presentViewController:controller animated:YES completion:nil];
                     }
             return YES;

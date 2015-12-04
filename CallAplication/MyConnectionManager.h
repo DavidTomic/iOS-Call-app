@@ -27,6 +27,7 @@
 -(void)requestAddContactWithContact:(Contact *)contact delegate:(id)delegate selector:(SEL)selector;
 -(void)requestAddMultipleContactsWithDelegate:(id)delegate selector:(SEL)selector;
 -(void)requestUpdateStatusWithDelegate:(id)delegate selector:(SEL)selector;
+-(void)requestUpdateStatusOnPhone:(BOOL)onPhone delegate:(id)delegate selector:(SEL)selector;
 -(void)requestUpdateStatusWithTimestampWithStatus:(Status)status delegate:(id)delegate selector:(SEL)selector;
 -(void)requestUpdateAccountWithNewPhoneNumber:(NSString *)newPhoneNumber password:(NSString *)newPassword name:(NSString *)name email:(NSString *)email language:(Language)language delegate:(id)delegate selector:(SEL)selector;
 -(void)requestDeleteContactWithPhoneNumberToDelete:(NSString *)phoneNumberToDelete delegate:(id)delegate selector:(SEL)selector;

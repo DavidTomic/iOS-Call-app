@@ -164,7 +164,7 @@
         
         [Myuser sharedUser].lastDialedRecordId = self.contact.recordId;
         
-        NSString *pNumber = [@"telprompt://" stringByAppendingString:phoneNumber];
+        NSString *pNumber = [@"tel://" stringByAppendingString:phoneNumber];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
     }
     
@@ -245,6 +245,7 @@
             MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
             controller.recipients = [NSArray arrayWithObjects:phoneNumber, nil];
             controller.messageComposeDelegate = self;
+            controller.body = [Myuser sharedUser].smsInviteText;
             [self presentViewController:controller animated:YES completion:nil];
         }
 
