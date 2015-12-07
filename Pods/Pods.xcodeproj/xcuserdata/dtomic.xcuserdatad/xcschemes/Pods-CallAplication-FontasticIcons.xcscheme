@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3D360BCFFB2B89C1AF15F733"
+               BlueprintIdentifier = "3FC88BA62E1ECC616D9EA89E"
                BuildableName = "libPods-CallAplication-FontasticIcons.a"
                BlueprintName = "Pods-CallAplication-FontasticIcons"
                ReferencedContainer = "container:Pods.xcodeproj">

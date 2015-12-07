@@ -283,7 +283,7 @@ static MyConnectionManager *mySharedManager;
     
 }
 -(void)requestUpdateStatusWithDelegate:(id)delegate selector:(SEL)selector{
-    [self requestUpdateStatusOnPhone:NO delegate:self selector:selector];
+    [self requestUpdateStatusOnPhone:NO delegate:delegate selector:selector];
 }
 -(void)requestUpdateStatusOnPhone:(BOOL)onPhone delegate:(id)delegate selector:(SEL)selector{
     MyConnection *conn = [[MyConnection alloc]init];

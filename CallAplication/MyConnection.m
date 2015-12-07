@@ -47,9 +47,9 @@ NSString *const urlString = @"https://ws.when2call.dk/wscall.asmx";
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     
     NSString *myString = [[NSString alloc] initWithData:_receivedData encoding:NSUTF8StringEncoding];
-   // NSLog(@"mystring %@", myString);
+    //NSLog(@"mystring %@", myString);
     NSDictionary *parsedObject = [[NSDictionary dictionaryWithXMLString:myString] objectForKey:@"soap:Body"];
-   // NSLog(@"response %@", parsedObject);
+    NSLog(@"response %@", parsedObject);
 
     
     if (parsedObject) {
@@ -61,6 +61,7 @@ NSString *const urlString = @"https://ws.when2call.dk/wscall.asmx";
     if(self.delegate && [self.delegate respondsToSelector:self.selector])
     {
         
+        NSLog(@"HERE");
             ((void (*)(id, SEL, NSDictionary *))[self.delegate methodForSelector:self.selector])(self.delegate, self.selector, parsedObject);
     }
     

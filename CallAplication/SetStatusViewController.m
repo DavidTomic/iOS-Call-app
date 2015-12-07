@@ -12,6 +12,7 @@
 #import "SharedPreferences.h"
 #import "DBManager.h"
 #import "TimerNotification.h"
+#import "SVProgressHUD.h"
 
 @interface SetStatusViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *redCircle;
@@ -103,6 +104,10 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+     [SVProgressHUD dismiss];
 }
 
 //my methods
@@ -196,6 +201,7 @@
     }
 }
 -(void)showErrorAlert{
+     [SVProgressHUD dismiss];
     [[SharedPreferences shared]loadUserData:[Myuser sharedUser]];
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", @"") message:NSLocalizedString(@"Status not updated", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
@@ -340,6 +346,8 @@
 }
 
 - (IBAction)confirmButtonPressed:(UIButton *)sender {
+    
+    [SVProgressHUD show];
     
     Myuser *user = [Myuser sharedUser];
     

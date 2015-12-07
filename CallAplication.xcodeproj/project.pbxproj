@@ -709,7 +709,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3b7b106f-b027-4df3-aa27-d99854520f24";
 			};
 			name = Debug;
 		};
@@ -735,7 +735,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3b7b106f-b027-4df3-aa27-d99854520f24";
 			};
 			name = Release;
 		};
