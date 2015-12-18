@@ -13,6 +13,7 @@
 NSString * const VERSION_KEY = @"version";
 
 NSString * const CONTACT_TABLE = @"ContactTable";
+NSString * const CONTACT_NAME_TABLE = @"ContactNameTable";
 NSString * const DEFAULT_TEXT_TABLE = @"DefaultTextTable";
 NSString * const FAVORIT_TABLE = @"FavoritTable";
 NSString * const RECENT_TABLE = @"RecentTable";
@@ -38,6 +39,7 @@ static sqlite3 *database = nil;
     }
     return sharedInstance;
 }
+
 
 -(BOOL)createDB{
     NSLog(@"createDB");
@@ -65,6 +67,14 @@ static sqlite3 *database = nil;
             {
                 isSuccess = NO;
                 NSLog(@"Failed to create ContactTable");
+            }
+            
+            const char *sql_stmt_ContactNameTable = [[NSString stringWithFormat:@"create table if not exists %@ (contactName text)", CONTACT_NAME_TABLE]cStringUsingEncoding:NSASCIIStringEncoding];
+            if (sqlite3_exec(database, sql_stmt_ContactNameTable, NULL, NULL, &errMsg)
+                != SQLITE_OK)
+            {
+                isSuccess = NO;
+                NSLog(@"Failed to create ContactNameTable");
             }
             
             const char *sql_stmt_FavoritTable = [[NSString stringWithFormat:@"create table if not exists %@ (recordId integer)", FAVORIT_TABLE]cStringUsingEncoding:NSASCIIStringEncoding];
@@ -114,6 +124,7 @@ static sqlite3 *database = nil;
 }
 -(NSArray *)runQuery:(const char *)query isQueryExecutable:(BOOL)queryExecutable{
     // Create a sqlite object.
+   // NSLog(@"THREAD %@, QUERY %s", [NSThread currentThread], query);
         
     sqlite3 *sqlite3Database;
     
@@ -130,11 +141,11 @@ static sqlite3 *database = nil;
     NSMutableArray *arrResults = [[NSMutableArray alloc] init];
     
     // Initialize the column names array.
-    if (self.arrColumnNames != nil) {
-        [self.arrColumnNames removeAllObjects];
-        self.arrColumnNames = nil;
-    }
-    self.arrColumnNames = [[NSMutableArray alloc] init];
+//    if (self.arrColumnNames != nil) {
+//        [self.arrColumnNames removeAllObjects];
+//        self.arrColumnNames = nil;
+//    }
+//    self.arrColumnNames = [[NSMutableArray alloc] init];
     
     
     // Open the database.
@@ -172,11 +183,11 @@ static sqlite3 *database = nil;
                             [arrDataRow addObject:[NSString  stringWithUTF8String:dbDataAsChars]];
                         }
                         
-                        // Keep the current column name.
-                        if (self.arrColumnNames.count != totalColumns) {
-                            dbDataAsChars = (char *)sqlite3_column_name(compiledStatement, i);
-                            [self.arrColumnNames addObject:[NSString stringWithUTF8String:dbDataAsChars]];
-                        }
+//                        // Keep the current column name.
+//                        if (self.arrColumnNames.count != totalColumns) {
+//                            dbDataAsChars = (char *)sqlite3_column_name(compiledStatement, i);
+//                            [self.arrColumnNames addObject:[NSString stringWithUTF8String:dbDataAsChars]];
+//                        }
                     }
                     
                     // Store each fetched data row in the results array, but first check if there is actually data.
@@ -240,6 +251,85 @@ static sqlite3 *database = nil;
     NSString *currentVersion=[self versionNumberString];
     
     NSLog(@"previousVersion %@, currentVersion %@", previousVersion, currentVersion);
+    
+    
+//    // TODO remove this if statemant
+//    if (previousVersion==nil || [previousVersion compare: currentVersion options: NSNumericSearch] == NSOrderedAscending) {
+//        [self executeQuery:[NSString stringWithFormat:@"drop table if exists %@", CONTACT_TABLE]];
+//        [self executeQuery:[NSString stringWithFormat:@"drop table if exists %@", CONTACT_NAME_TABLE]];
+//        [self executeQuery:[NSString stringWithFormat:@"drop table if exists %@", DEFAULT_TEXT_TABLE]];
+//        [self executeQuery:[NSString stringWithFormat:@"drop table if exists %@", FAVORIT_TABLE]];
+//        [self executeQuery:[NSString stringWithFormat:@"drop table if exists %@", RECENT_TABLE]];
+//        [self executeQuery:[NSString stringWithFormat:@"drop table if exists %@", NOTIFICATION_TABLE]];
+//        
+//        BOOL isSuccess = YES;
+//        const char *dbpath = [databasePath UTF8String];
+//        if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+//        {
+//            NSLog(@"OPEN");
+//            char *errMsg;
+//            const char *sql_stmt_ContactTable = [[NSString stringWithFormat:@"create table if not exists %@ (phoneNumber text)", CONTACT_TABLE]cStringUsingEncoding:NSASCIIStringEncoding];
+//            if (sqlite3_exec(database, sql_stmt_ContactTable, NULL, NULL, &errMsg)
+//                != SQLITE_OK)
+//            {
+//                isSuccess = NO;
+//                NSLog(@"Failed to create ContactTable");
+//            }
+//            
+//            const char *sql_stmt_ContactNameTable = [[NSString stringWithFormat:@"create table if not exists %@ (contactName text)", CONTACT_NAME_TABLE]cStringUsingEncoding:NSASCIIStringEncoding];
+//            if (sqlite3_exec(database, sql_stmt_ContactNameTable, NULL, NULL, &errMsg)
+//                != SQLITE_OK)
+//            {
+//                isSuccess = NO;
+//                NSLog(@"Failed to create ContactNameTable");
+//            }
+//            
+//            const char *sql_stmt_FavoritTable = [[NSString stringWithFormat:@"create table if not exists %@ (recordId integer)", FAVORIT_TABLE]cStringUsingEncoding:NSASCIIStringEncoding];
+//            if (sqlite3_exec(database, sql_stmt_FavoritTable, NULL, NULL, &errMsg)
+//                != SQLITE_OK)
+//            {
+//                isSuccess = NO;
+//                NSLog(@"Failed to create FAVORIT_TABLE");
+//            }
+//            
+//            const char *sql_stmt_RecentTable = [[NSString stringWithFormat:@"create table if not exists %@ (recordId integer, phoneNumber text, timestamp integer)", RECENT_TABLE] cStringUsingEncoding:NSASCIIStringEncoding];
+//            if (sqlite3_exec(database, sql_stmt_RecentTable, NULL, NULL, &errMsg)
+//                != SQLITE_OK)
+//            {
+//                isSuccess = NO;
+//                NSLog(@"Failed to create RECENT_TABLE");
+//            }
+//            
+//            const char *sql_stmt_DefaultTextTable = [[NSString stringWithFormat:@"create table if not exists %@ (Id INTEGER PRIMARY KEY, defaultText text)", DEFAULT_TEXT_TABLE] cStringUsingEncoding:NSASCIIStringEncoding];
+//            if (sqlite3_exec(database, sql_stmt_DefaultTextTable, NULL, NULL, &errMsg)
+//                != SQLITE_OK)
+//            {
+//                isSuccess = NO;
+//                NSLog(@"Failed to create DEFAULT_TEXT_TABLE");
+//            }
+//            
+//            const char *sql_stmt_notificationTable = [[NSString stringWithFormat:@"create table if not exists %@ (phoneNumber text, name text, status integer)", NOTIFICATION_TABLE] cStringUsingEncoding:NSASCIIStringEncoding];
+//            if (sqlite3_exec(database, sql_stmt_notificationTable, NULL, NULL, &errMsg)
+//                != SQLITE_OK)
+//            {
+//                isSuccess = NO;
+//                NSLog(@"Failed to create NOTIFICATION_TABLE");
+//            }
+//            
+//            sqlite3_close(database);
+//           
+//            NSLog(@"isSuccess %d", isSuccess);
+//        }
+//        else {
+//            isSuccess = NO;
+//            NSLog(@"Failed to open/create database");
+//        }
+//        
+//        [defaults setObject:currentVersion forKey:VERSION_KEY];
+//        [defaults synchronize];
+//
+//        return;
+//    }
     
     if (previousVersion==nil || [previousVersion compare: currentVersion options: NSNumericSearch] == NSOrderedAscending) {
         // previous < current
@@ -351,7 +441,7 @@ static sqlite3 *database = nil;
 
 -(void)addContactInRecentWithRecordId:(int)recordId phoneNumber:(NSString *)phoneNumber timestamp:(long long)timestamp{
     
-    NSLog(@"insert %d, phoneNumber %@, timestamp %lld", recordId, phoneNumber, timestamp);
+  //  NSLog(@"insert %d, phoneNumber %@, timestamp %lld", recordId, phoneNumber, timestamp);
     
     if (!recordId) {
         recordId=0;
@@ -378,42 +468,11 @@ static sqlite3 *database = nil;
     NSString *query = [NSString stringWithFormat:@"select * from RecentTable"];
     NSArray *results = [self loadDataFromDB:query];
     
-    NSLog(@"getAllContactDataFromRecentTable result %@", results);
+ //   NSLog(@"getAllContactDataFromRecentTable result %@", results);
     
     return results;
 }
 
--(void)addContactsPhoneNumbersToDb:(NSArray *)list{
-    
-   // NSLog(@"addContactsPhoneNumbersToDb %@", list);
-    
-    NSString *query = [NSString stringWithFormat:@"delete from ContactTable"];
-    [self executeQuery:query];
-    
-    for (NSString *phoneNumber in list){
-        NSString *query = [NSString stringWithFormat:@"insert into %@ (phoneNumber) values('%@')", CONTACT_TABLE, phoneNumber];
-        [self executeQuery:query];
-    }
-}
--(NSArray *)getAllPhoneNumbersFromDb{
-    NSString *query = [NSString stringWithFormat:@"select * from %@", CONTACT_TABLE];
-    NSArray *pom = [self loadDataFromDB:query];
-    
-    NSLog(@"getAllPhoneNumbersFromDb pom %@", pom);
-    
-    NSMutableArray *results = [NSMutableArray new];
-    
-    @try {
-        for (NSArray *array in pom){
-            [results addObject:array[0]];
-        }
-    }
-    @catch (NSException *exception) {
-        NSLog(@"exception exception exception %@", exception);
-    }
-
-    return results;
-}
 
 -(void)addNotificationToDbWithPhoneNumber:(NSString *)phoneNumber name:(NSString *)name status:(Status)status{
     NSString *query = [NSString stringWithFormat:@"insert into %@ values('%@', '%@', %d)", NOTIFICATION_TABLE, phoneNumber, name, (int)status];
@@ -423,12 +482,12 @@ static sqlite3 *database = nil;
     NSString *query = [NSString stringWithFormat:@"select * from %@ where phoneNumber = '%@'", NOTIFICATION_TABLE, phoneNumber];
     NSArray *pom = [self loadDataFromDB:query];
     
-    NSLog(@"pom results %@", pom);
+  //  NSLog(@"pom results %@", pom);
     
     if (pom.count > 0) {
         pom = pom[0];
         
-        NSLog(@"pom[0] results %@", pom[0]);
+      //  NSLog(@"pom[0] results %@", pom[0]);
         
         Notification *notification = [Notification new];
         notification.phoneNumber = pom[0];
@@ -446,7 +505,7 @@ static sqlite3 *database = nil;
     
     NSMutableArray *results = [NSMutableArray new];
     
-    NSLog(@"NOTIFICATION_TABLE %@", pom);
+  //  NSLog(@"NOTIFICATION_TABLE %@", pom);
     
     for (NSArray *array in pom){
         Notification *notification = [Notification new];

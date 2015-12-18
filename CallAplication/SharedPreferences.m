@@ -106,4 +106,22 @@ static SharedPreferences *sharedProperties;
     return number;
 }
 
+-(NSArray *)getContactNumbersArray{
+    NSArray *contactNumbers = [myDefaults objectForKey:@"ContactNumbersArray"];
+    return contactNumbers;
+}
+-(void)setContactNumbersArray:(NSArray *)array{
+    [myDefaults  setObject:array forKey:@"ContactNumbersArray"];
+    [myDefaults synchronize];
+}
+
+-(NSArray *)getContactNamesArray{
+    NSArray *contactNames = [myDefaults objectForKey:@"ContactNamesArray"];
+    return contactNames;
+}
+-(void)setContactNamesArray:(NSArray *)array{
+    [myDefaults  setObject:array forKey:@"ContactNamesArray"];
+    [myDefaults synchronize];
+}
+
 @end

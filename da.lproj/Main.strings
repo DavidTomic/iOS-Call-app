@@ -1,93 +1,210 @@
+/* Class = "UINavigationItem"; title = "Voicemail"; ObjectID = "0bE-wB-Vs7"; */
+"0bE-wB-Vs7.title" = "Voicemail";
 
-/* Class = "UILabel"; text = "This is my status"; ObjectID = "2yj-SR-yFQ"; */
-"2yj-SR-yFQ.text" = "This is my status";
+/* Class = "UILabel"; text = "Title"; ObjectID = "0zE-Pu-IXk"; */
+"0zE-Pu-IXk.text" = "Title";
+
+/* (No Commment) */
+"2yj-SR-yFQ.text" = "";
 
 /* Class = "UIButton"; normalTitle = "LOG IN"; ObjectID = "4ag-NF-nke"; */
-"4ag-NF-nke.normalTitle" = "LOG IN";
+"4ag-NF-nke.normalTitle" = "LOG IND";
+
+/* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "4rN-Vn-f26"; */
+"4rN-Vn-f26.title" = "Rediger";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "7mI-VU-UFG"; */
+"7mI-VU-UFG.text" = "Title";
 
 /* Class = "UIButton"; normalTitle = "SIGN UP"; ObjectID = "9Wn-64-9kk"; */
-"9Wn-64-9kk.normalTitle" = "SIGN UP";
+"9Wn-64-9kk.normalTitle" = "TILMELD DIG";
+
+/* Class = "UINavigationItem"; title = "Recents"; ObjectID = "35O-lA-a4r"; */
+"35O-lA-a4r.title" = "Seneste";
+
+/* Class = "UILabel"; text = "-:-"; ObjectID = "36b-3p-54k"; */
+"36b-3p-54k.text" = "-:-";
+
+/* Class = "UILabel"; text = "Test Mob"; ObjectID = "386-aA-QTz"; */
+"386-aA-QTz.text" = "Test Mob";
 
 /* Class = "UINavigationItem"; title = "All Contacts"; ObjectID = "AWW-qg-FlN"; */
-"AWW-qg-FlN.title" = "All Contacts";
+"AWW-qg-FlN.title" = "Kontakter";
 
-/* Class = "UILabel"; text = "Test Mob"; ObjectID = "B2H-yB-Ii1"; */
-"B2H-yB-Ii1.text" = "Test Mob";
+/* Class = "UIButton"; normalTitle = "Set"; ObjectID = "Aia-Xp-U6t"; */
+"Aia-Xp-U6t.normalTitle" = "Sæt";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "NJS-yj-98q"; */
-"NJS-yj-98q.text" = "Label";
+/* (No Commment) */
+"B2H-yB-Ii1.text" = "";
+
+/* Class = "UIButton"; normalTitle = "SIGN UP"; ObjectID = "EFC-pZ-7Rf"; */
+"EFC-pZ-7Rf.normalTitle" = "TILMELD DIG";
+
+/* Class = "UILabel"; text = "This is my status"; ObjectID = "H5i-wE-0ru"; */
+"H5i-wE-0ru.text" = "This is my status";
+
+/* Class = "UITabBarItem"; title = "Recents"; ObjectID = "JUQ-Jb-1di"; */
+"JUQ-Jb-1di.title" = "Seneste";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "KKT-7A-D1k"; */
+"KKT-7A-D1k.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "Favorites"; ObjectID = "LtP-hj-sja"; */
+"LtP-hj-sja.title" = "Favoritter";
+
+/* (No Commment) */
+"NJS-yj-98q.text" = "";
 
 /* Class = "UITextField"; placeholder = "Email"; ObjectID = "NeF-ql-eOJ"; */
 "NeF-ql-eOJ.placeholder" = "Email";
 
+/* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "PkT-iT-kNg"; */
+"PkT-iT-kNg.title" = "Rediger";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "RAh-9v-tjl"; */
 "RAh-9v-tjl.text" = "Label";
 
-/* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "RJw-ym-ZgT"; */
-"RJw-ym-ZgT.title" = "Edit";
+/* (No Commment) */
+"RJw-ym-ZgT.title" = "Rediger";
 
-/* Class = "UIButton"; normalTitle = "Sign Up/Log In"; ObjectID = "UMf-kB-vfj"; */
-"UMf-kB-vfj.normalTitle" = "Sign Up/Log In";
+/* Class = "UITabBarItem"; title = "Favorites"; ObjectID = "Rbr-fi-Pxp"; */
+"Rbr-fi-Pxp.title" = "Favoritter";
 
-/* Class = "UITabBarItem"; title = "Favorites"; ObjectID = "UMh-BN-5jo"; */
-"UMh-BN-5jo.title" = "Favorites";
+/* Class = "UIButton"; normalTitle = "SIGN UP"; ObjectID = "RrJ-ep-bK3"; */
+"RrJ-ep-bK3.normalTitle" = "TILMELD DIG";
 
-/* Class = "UIButton"; normalTitle = "SIGN UP"; ObjectID = "WYM-T2-6S6"; */
-"WYM-T2-6S6.normalTitle" = "SIGN UP";
+/* Class = "UILabel"; text = "Label"; ObjectID = "Tdf-EG-eND"; */
+"Tdf-EG-eND.text" = "Label";
 
-/* Class = "UINavigationItem"; title = "Favorites"; ObjectID = "WmK-7Y-2F1"; */
-"WmK-7Y-2F1.title" = "Favorites";
+/* (No Commment) */
+"UMf-kB-vfj.normalTitle" = "";
 
-/* Class = "UITabBarItem"; title = "Recents"; ObjectID = "XtN-kj-9PU"; */
-"XtN-kj-9PU.title" = "Recents";
+/* (No Commment) */
+"UMh-BN-5jo.title" = "Favoritter";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "a9d-7V-zZ6"; */
-"a9d-7V-zZ6.text" = "Label";
+/* Class = "UILabel"; text = "Set red status to:"; ObjectID = "Vkx-AO-0pk"; */
+"Vkx-AO-0pk.text" = "Sæt rød status til:";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "agS-Ss-wYm"; */
-"agS-Ss-wYm.text" = "Label";
+/* (No Commment) */
+"WYM-T2-6S6.normalTitle" = "TILMELD DIG";
+
+/* (No Commment) */
+"WmK-7Y-2F1.title" = "Favoritter";
+
+/* Class = "UILabel"; text = "ON PHONE"; ObjectID = "XMh-Ww-kJ8"; */
+"XMh-Ww-kJ8.text" = "OPTAGET";
+
+/* (No Commment) */
+"XtN-kj-9PU.title" = "Seneste";
+
+/* Class = "UIButton"; normalTitle = "Set time"; ObjectID = "Z7W-bb-TMy"; */
+"Z7W-bb-TMy.normalTitle" = "Sæt timer";
+
+/* (No Commment) */
+"a9d-7V-zZ6.text" = "";
+
+/* Class = "UILabel"; text = "This is my status"; ObjectID = "aaO-fl-KWI"; */
+"aaO-fl-KWI.text" = "This is my status";
+
+/* (No Commment) */
+"agS-Ss-wYm.text" = "";
 
 /* Class = "UITabBarItem"; title = "Keypad"; ObjectID = "b18-KD-H8l"; */
-"b18-KD-H8l.title" = "Keypad";
+"b18-KD-H8l.title" = "Tastatur";
 
-/* Class = "UILabel"; text = "Moj status je bla bla"; ObjectID = "e67-sH-jgA"; */
-"e67-sH-jgA.text" = "Moj status je bla bla";
+/* Class = "UILabel"; text = "Title"; ObjectID = "cmX-Zh-78a"; */
+"cmX-Zh-78a.text" = "Title";
+
+/* Class = "UIButton"; normalTitle = "Select"; ObjectID = "cna-Cq-J80"; */
+"cna-Cq-J80.normalTitle" = "Vælg";
+
+/* (No Commment) */
+"e67-sH-jgA.text" = "";
+
+/* Class = "UILabel"; text = "Status text:"; ObjectID = "e94-iH-QBe"; */
+"e94-iH-QBe.text" = "Status text:";
 
 /* Class = "UILabel"; text = "Phone"; ObjectID = "fHA-Jq-TcS"; */
-"fHA-Jq-TcS.text" = "Phone";
+"fHA-Jq-TcS.text" = "Telefon";
 
-/* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "i5w-dw-luh"; */
-"i5w-dw-luh.title" = "Edit";
+/* Class = "UILabel"; text = "ON PHONE"; ObjectID = "fcc-Fl-Y7z"; */
+"fcc-Fl-Y7z.text" = "OPTAGET";
 
-/* Class = "UINavigationItem"; title = "Recents"; ObjectID = "iWq-ga-aZ4"; */
-"iWq-ga-aZ4.title" = "Recents";
+/* Class = "UIButton"; normalTitle = "CONFIRM"; ObjectID = "fwS-Nh-bS9"; */
+"fwS-Nh-bS9.normalTitle" = "BEKRÆFT";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "h1G-f0-1i8"; */
+"h1G-f0-1i8.text" = "Title";
+
+/* Class = "UIButton"; normalTitle = "Clear timer"; ObjectID = "hWb-K3-MWZ"; */
+"hWb-K3-MWZ.normalTitle" = "klar timer";
+
+/* (No Commment) */
+"i5w-dw-luh.title" = "Rediger";
+
+/* (No Commment) */
+"iWq-ga-aZ4.title" = "Seneste";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "ieW-bQ-6Po"; */
+"ieW-bQ-6Po.normalTitle" = "Ophæve";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "lwE-sB-VJ6"; */
+"lwE-sB-VJ6.text" = "Label";
+
+/* Class = "UILabel"; text = "Detail"; ObjectID = "nMY-Qd-exZ"; */
+"nMY-Qd-exZ.text" = "Detail";
 
 /* Class = "UIButton"; normalTitle = "Send message"; ObjectID = "o7w-f5-iXF"; */
-"o7w-f5-iXF.normalTitle" = "Send message";
+"o7w-f5-iXF.normalTitle" = "Send besked";
+
+/* Class = "UILabel"; text = "Set red status from:"; ObjectID = "oMq-Ym-5aL"; */
+"oMq-Ym-5aL.text" = "Sæt rød status fra:";
+
+/* Class = "UILabel"; text = "ON PHONE"; ObjectID = "obr-dB-0Hx"; */
+"obr-dB-0Hx.text" = "OPTAGET";
 
 /* Class = "UITextField"; placeholder = "Phone number"; ObjectID = "pKH-zs-ReI"; */
-"pKH-zs-ReI.placeholder" = "Phone number";
+"pKH-zs-ReI.placeholder" = "Telefon nummer";
 
-/* Class = "UILabel"; text = "My number: 123456789"; ObjectID = "qAL-13-Yni"; */
-"qAL-13-Yni.text" = "My number: 123456789";
+/* (No Commment) */
+"qAL-13-Yni.text" = "Mit nummer";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "qWM-nE-Zyk"; */
 "qWM-nE-Zyk.text" = "Label";
 
-/* Class = "UITabBarItem"; title = "Telefonanswer"; ObjectID = "tbZ-nJ-vnF"; */
-"tbZ-nJ-vnF.title" = "Telefonanswer";
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "rAK-Oz-wWg"; */
+"rAK-Oz-wWg.normalTitle" = "Gem";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "tw4-hw-BCB"; */
-"tw4-hw-BCB.text" = "Label";
+/* Class = "UIButton"; normalTitle = "LOG IN"; ObjectID = "sgX-f0-luD"; */
+"sgX-f0-luD.normalTitle" = "LOG IND";
+
+/* Class = "UILabel"; text = "-:-"; ObjectID = "tIV-XK-8Pi"; */
+"tIV-XK-8Pi.text" = "-:-";
+
+/* Class = "UITabBarItem"; title = "Voicemail"; ObjectID = "tbZ-nJ-vnF"; */
+"tbZ-nJ-vnF.title" = "Voicemail";
+
+/* (No Commment) */
+"tw4-hw-BCB.text" = "";
 
 /* Class = "UITextField"; placeholder = "Name"; ObjectID = "u71-zn-lZT"; */
-"u71-zn-lZT.placeholder" = "Name";
+"u71-zn-lZT.placeholder" = "Navn";
+
+/* Class = "UIButton"; normalTitle = "Set time"; ObjectID = "uf5-33-GIz"; */
+"uf5-33-GIz.normalTitle" = "Sæt timer";
+
+/* Class = "UIButton"; normalTitle = "Invite"; ObjectID = "vy6-yy-2N4"; */
+"vy6-yy-2N4.normalTitle" = "Inviter";
 
 /* Class = "UITabBarItem"; title = "Contacts"; ObjectID = "w7O-Ee-caI"; */
-"w7O-Ee-caI.title" = "Contacts";
+"w7O-Ee-caI.title" = "Kontakter";
 
 /* Class = "UITabBarItem"; title = "Settings"; ObjectID = "wPH-ts-cYa"; */
-"wPH-ts-cYa.title" = "Settings";
+"wPH-ts-cYa.title" = "Indstillinger";
+
+/* Class = "UILabel"; text = "Moj status je bla bla"; ObjectID = "x5p-ZY-bxo"; */
+"x5p-ZY-bxo.text" = "Moj status je bla bla";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "xgj-U4-Idl"; */
-"xgj-U4-Idl.placeholder" = "Password";
+"xgj-U4-Idl.placeholder" = "Adgangskode";
+

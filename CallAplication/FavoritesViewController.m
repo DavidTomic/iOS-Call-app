@@ -274,6 +274,8 @@
     
     // NSLog(@"favoritContacts %@", self.favoritContacts);
     self.notificationArray = [[DBManager sharedInstance]getAllNotificationsFromDb];
+    
+  //  NSLog(@"self.notificationArray %@", self.notificationArray);
 
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -491,6 +493,7 @@
             NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
             if(indexPath){
                 if([segue.destinationViewController isKindOfClass:[ContactDetailViewController class]]){
+                    
                     Contact *contact = self.favoritContacts[indexPath.row];
                     ContactDetailViewController *vc = (ContactDetailViewController *)segue.destinationViewController;
                     vc.contact = contact;

@@ -1,2 +1,152 @@
-"Done" = "Donestom";
+/* No comment provided by engineer. */
+"Add" = "Tilføj";
+
+/* No comment provided by engineer. */
+"Add new default text" = "Tilføj ny tekst";
+
+/* No comment provided by engineer. */
+"Changed status to: " = "Status ændret til:";
+
+/* No comment provided by engineer. */
+"Danish" = "Dansk";
+
+/* No comment provided by engineer. */
+"Delete" = "Slet";
+
+/* No comment provided by engineer. */
+"Done" = "Færdig";
+
+/* No comment provided by engineer. */
+"Edit" = "Rediger";
+
+/* No comment provided by engineer. */
+"Edit default text" = "Rediger tekst";
+
+/* No comment provided by engineer. */
+"Edit status text" = "Rediger tekst";
+
+/* No comment provided by engineer. */
+"Email" = "Email";
+
+/* No comment provided by engineer. */
+"English" = "Engelsk";
+
+/* No comment provided by engineer. */
+"Error" = "Error";
+
+/* No comment provided by engineer. */
+"Invite" = "Inviter";
+
+/* No comment provided by engineer. */
+"LOG IN" = "LOG IND";
+
+/* No comment provided by engineer. */
+"My number" = "Mit nummer";
+
+/* No comment provided by engineer. */
+"Name" = "Navn";
+
+/* No comment provided by engineer. */
+"Password" = "Adgangskode";
+
+/* No comment provided by engineer. */
+"Phone number" = "Telefon nummer";
+
+/* No comment provided by engineer. */
+"Phone number already exists" = "Nummeret eksisterer allerede";
+
+/* (No Commment) */
+"Please change number or Log in with existng phone number" = "Please change number or Log in with existng phone number";
+
+/* No comment provided by engineer. */
+"Please check your email" = "Tjek venligst din email";
+
+/* No comment provided by engineer. */
+"Please check your informations are correct" = "Please check your informations are correct";
+
+/* No comment provided by engineer. */
+"Please check your name" = "Kontroller venligst dit navn";
+
+/* No comment provided by engineer. */
+"Please check your password" = "Kontroller din adgangskode";
+
+/* No comment provided by engineer. */
+"Please check your phone number" = "Kontroller venligst dit telefonnummer";
+
+/* No comment provided by engineer. */
+"Please correct you start and end time" = "Ret start og slut tidspunkt";
+
+/* No comment provided by engineer. */
+"Please enter your voicemail number in application settings" = "Telefon nummeret til telefonsvaren skal sættes op I indstillinger";
+
+/* No comment provided by engineer. */
+"Remove
+notification" = "Fjern notifikation";
+
+/* No comment provided by engineer. */
+"Remove notification" = "Fjern notifikation";
+
+/* No comment provided by engineer. */
+"Remove notifications" = "Fjern alle notifikation";
+
+/* No comment provided by engineer. */
+"SIGN UP" = "TILMELD DIG";
+
+/* No comment provided by engineer. */
+"Set
+notification" = "Sæt notifikation";
+
+/* No comment provided by engineer. */
+"Set Language" = "Vælg sprog";
+
+/* No comment provided by engineer. */
+"Set notification" = "Sæt notifikation";
+
+/* No comment provided by engineer. */
+"Set red status from:" = "Sæt rød status fra:";
+
+/* No comment provided by engineer. */
+"Set red status to:" = "Sæt rød status til:";
+
+/* No comment provided by engineer. */
+"Set status" = "Sæt status";
+
+/* No comment provided by engineer. */
+"Set yellow status from:" = "Sæt gul status fra:";
+
+/* No comment provided by engineer. */
+"Set yellow status to:" = "Sæt gul status til:";
+
+/* No comment provided by engineer. */
+"Settings" = "Indstillinger";
+
+/* No comment provided by engineer. */
+"Status not updated" = "Status ikke opdateret";
+
+/* (No Commment) */
+"TEST_STRING" = "";
+
+/* No comment provided by engineer. */
+"Voicemail" = "Voicemail";
+
+/* No comment provided by engineer. */
+"Warning" = "Advarsel";
+
+/* No comment provided by engineer. */
+"busy" = "Optaget";
+
+/* No comment provided by engineer. */
+"da" = "";
+
+/* No comment provided by engineer. */
+"en" = "";
+
+/* No comment provided by engineer. */
+"not available" = "Ikke tilgængelig";
+
+/* No comment provided by engineer. */
+"online" = "online";
+
+/* No comment provided by engineer. */
+"speaking" = "Optaget";
 

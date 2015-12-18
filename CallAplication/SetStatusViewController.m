@@ -95,6 +95,8 @@
         self.startTimeLabel.text =  [[df stringFromDate:self.startDate] uppercaseString];
         self.endTimeLabel.text =  [[df stringFromDate:self.endDate] uppercaseString];
         
+        [self refreshMyStatusUITo:[Myuser sharedUser].timerStatus];
+        
         NSString *statusText = [Myuser sharedUser].timerStatusText != nil ? [Myuser sharedUser].timerStatusText : @"";
         self.textField.text = statusText;
     }
@@ -209,6 +211,7 @@
 
 //IBAction methods
 - (IBAction)selectTextPressed:(UIButton *)sender {
+    [self.textField resignFirstResponder];
     [self setItemsToVisible:YES];
     self.datePickerBottomConstraint.constant = -162;
 
@@ -357,7 +360,7 @@
     user.statusStartTime = @"2000-01-01T00:00:00";
     user.statusEndTime = @"2000-01-01T00:00:00";
     
-    if (!self.startDate && !self.endDate) {
+    if (self.greenCircle.isHighlighted || (!self.startDate && !self.endDate)) {
         user.status = Green_status;
         if (self.redCircle.isHighlighted) {
             user.status = Red_status;
@@ -372,11 +375,13 @@
         NSDate *currentDate = [NSDate date];
         
         if (!self.startDate || !self.endDate) {
+            [SVProgressHUD dismiss];
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", @"") message:NSLocalizedString(@"Please correct you start and end time", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }else if ([self.startDate compare:currentDate] == NSOrderedAscending ||
                   [self.endDate compare:currentDate] == NSOrderedAscending ||
                   [self.startDate compare:self.endDate] != NSOrderedAscending) {
+            [SVProgressHUD dismiss];
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", @"") message:NSLocalizedString(@"Please correct you start and end time", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         }else {

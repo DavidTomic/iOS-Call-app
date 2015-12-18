@@ -14,6 +14,10 @@
 
 @interface KeyboardViewController()<JCDialPadDelegate>
 
+@property (nonatomic, strong) NSArray *buttons;
+@property (nonatomic, strong) UIView *plusView;
+@property (nonatomic, strong) JCDialPad *pad;
+
 @end
 
 
@@ -31,12 +35,44 @@
     CGRect frame = self.view.bounds;
     frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height - 12);
     
-    JCDialPad *pad = [[JCDialPad alloc] initWithFrame:frame];
-    pad.buttons = [[JCDialPad defaultButtons] arrayByAddingObjectsFromArray:@[self.callButton]];
-    pad.delegate = self;
-    [pad setTintColor:[UIColor greenColor]];
-    [self.view addSubview:pad];
+    self.pad = [[JCDialPad alloc] initWithFrame:frame];
+    self.buttons =[JCDialPad defaultButtons];
+    
+    self.pad.buttons = [self.buttons arrayByAddingObjectsFromArray:@[self.callButton]];
+    self.pad.delegate = self;
+  //  pad.formatTextToPhoneNumber = NO;
+    [self.pad setTintColor:[UIColor greenColor]];
+    [self.view addSubview:self.pad];
+    
 
+
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if (!self.plusView) {
+        for (JCPadButton *button in self.buttons){
+            if ([button.input isEqualToString:@"0"]) {
+                UIView *plusView = [[UIView alloc]initWithFrame:button.frame];
+                UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(enterPlusSign:)];
+                [plusView addGestureRecognizer:longGesture];
+                UITapGestureRecognizer *taprecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(enterZeroSign:)];
+                [plusView addGestureRecognizer:taprecognizer];
+                [self.view addSubview:plusView];
+                break;
+            }
+        }
+    }
+
+}
+
+-(void)enterPlusSign:(UILongPressGestureRecognizer *)longGesture{
+    if ( longGesture.state == UIGestureRecognizerStateEnded ) {
+        [self.pad appendText:@"+"];
+    }
+}
+-(void)enterZeroSign:(UITapGestureRecognizer *)tapGesture{
+        [self.pad appendText:@"0"];
 }
 
 - (JCPadButton *)callButton
@@ -67,10 +103,6 @@
             NSString *pNumber = [@"tel://" stringByAppendingString:phoneNumber];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:pNumber]];
         }
-        
-        
-
-        
         
 //        UIWebView *callWebview = [[UIWebView alloc] init];
 //        callWebview.frame = self.view.frame;

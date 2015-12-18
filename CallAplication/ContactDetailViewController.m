@@ -79,14 +79,18 @@
                                                                  phoneNumber = [NSString stringWithFormat:@"%@%@", firstSign, phoneNumberOnlyDigit];
                                                              }
                                                              
-                                                             self.contact.firstName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
-                                                             self.contact.lastName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonLastNameProperty));
+                                                             NSString *firstName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
+                                                             NSString *lastName = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonLastNameProperty));
                                                              
                                                              NSData *imgData2 = (__bridge NSData*)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
                                                              self.contact.image =[UIImage imageWithData:imgData2];
                                                              
-                                                             if (![self.contact.phoneNumber isEqualToString:phoneNumber]) {
+                                                             if (![self.contact.phoneNumber isEqualToString:phoneNumber] ||
+                                                                 ![self.contact.firstName isEqualToString:firstName] ||
+                                                                 ![self.contact.lastName isEqualToString:lastName]) {
                                                                  self.contact.phoneNumber = phoneNumber;
+                                                                 self.contact.firstName = firstName;
+                                                                 self.contact.lastName = lastName;
                                                                  
                                                                  [[MyConnectionManager sharedManager]requestAddContactWithContact:self.contact delegate:self selector:nil];
                                                              }
@@ -170,6 +174,22 @@
     
 }
 
+- (IBAction)FacetimeCall:(UIButton *)sender {
+    
+    NSString *phoneNumber = self.contact.phoneNumber;
+    
+    if (phoneNumber) {
+        phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:NSCharacterSet.whitespaceCharacterSet] componentsJoinedByString:@""];
+        
+        NSString *urlString = [@"facetime://" stringByAppendingString:phoneNumber];
+        
+        NSURL *url = [NSURL URLWithString:urlString];
+        [[UIApplication sharedApplication] openURL:url];
+        
+        [[DBManager sharedInstance]addContactInRecentWithRecordId:self.contact.recordId phoneNumber:nil timestamp:(long long)([[NSDate date] timeIntervalSince1970] * 1000.0)];
+    }
+}
+
 - (IBAction)sendMessage:(id)sender {
     
     NSString *phoneNumber = self.contact.phoneNumber;
@@ -196,6 +216,8 @@
         [sender setImage:[UIImage imageNamed:@"star_full"] forState:UIControlStateNormal];
     }
     
+    NSLog(@"self.contact.recordId %d",self.contact.recordId);
+    
     [[DBManager sharedInstance]addOrRemoveContactInFavoritWithRecordId:self.contact.recordId];
     [[MyConnectionManager sharedManager]requestAddContactWithContact:self.contact delegate:self selector:nil];
 
@@ -207,6 +229,9 @@
 }
 
 -(void)editButtonPressed:(UIBarButtonItem *)button{
+    
+    
+  //  NSLog(@"self.contact.recordId %d", self.contact.recordId);
     
      CFErrorRef * error = NULL;
      ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, error);

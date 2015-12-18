@@ -184,16 +184,12 @@
                                                              
                                                              int recordId = ABRecordGetRecordID(abPerson);
                                                              
-                                                             if (!firstName) {
-                                                                 continue;
-                                                             }
-                                                             
                                                              NSString *phoneNumber = nil;
                                                              if (ABMultiValueGetCount(phoneNumbers) > 0) {
                                                                  phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
                                                              }
                                                              
-                                                             if (!phoneNumber) {
+                                                             if (!firstName || !phoneNumber) {
                                                                  continue;
                                                              }
                                                              
@@ -236,11 +232,12 @@
                                                          NSMutableArray *oldContactList = [NSMutableArray array];
                                                          NSMutableArray *pomList = [NSMutableArray array];
                                                          
-                                                         NSArray *currentList = [[DBManager sharedInstance]getAllPhoneNumbersFromDb];
+                                                         NSArray *currentNumberList = [[SharedPreferences shared]getContactNumbersArray];
+                                                         NSArray *currentNameList = [[SharedPreferences shared]getContactNamesArray];
                                                          
                                                          // add new contacts to server (user add contact out of this app)
                                                          for (Contact *contact in self.contactList){
-                                                             if (![currentList containsObject:contact.phoneNumber]) {
+                                                             if (![currentNumberList containsObject:contact.phoneNumber] || ![currentNameList containsObject:[NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName]]) {
                                                                  [newContactList addObject:contact];
                                                              }
                                                          }
@@ -252,7 +249,7 @@
                                                              [pomList addObject:contact.phoneNumber];
                                                          }
                                                          
-                                                         for (NSString *phoneNumber in currentList){
+                                                         for (NSString *phoneNumber in currentNumberList){
                                                              if (![pomList containsObject:phoneNumber]) {
                                                                  [oldContactList addObject:phoneNumber];
                                                              }
@@ -314,7 +311,7 @@
 
 //response methods
 -(void)responseToRequestStatusInfo:(NSDictionary *)dict{
-    NSLog(@"responseToRequestStatusInfo %@", dict);
+  //  NSLog(@"responseToRequestStatusInfo %@", dict);
     
     if (dict) {
         
@@ -328,6 +325,8 @@
           
             id pom2 = [[pom1 objectForKey:@"UserStatus"] objectForKey:@"csUserStatus"];
             NSArray *pomArray = [[Myuser sharedUser].contactDictionary allValues];
+            
+         //   NSLog(@"pom2 %@", pom2);
 
             if ([pom2 isKindOfClass:[NSArray class]]) {
                 for (NSDictionary *contactDict in pom2){
@@ -433,7 +432,7 @@
     }
 }
 -(void)responseToLogIn:(NSDictionary *)dict{
-    NSLog(@"responseToLogIn %@", dict);
+  //  NSLog(@"responseToLogIn %@", dict);
     if (dict) {
         NSDictionary *pom1 = [[dict objectForKey:@"LoginResponse"] objectForKey:@"LoginResult"];
         
@@ -505,17 +504,28 @@
         
         if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
             
-            NSMutableArray *pom = [NSMutableArray array];
-            for (Contact *contact in self.contactList){
-                [pom addObject:contact.phoneNumber];
-            }
-            
-            [[DBManager sharedInstance]addContactsPhoneNumbersToDb:pom];
             [[SharedPreferences shared]setLastCallTime:@"2000-01-01T00:00:00"];
             [self refreshStatusInfo];
+            
+            [self performSelectorInBackground:@selector(addInformationToDb) withObject:nil];
         }
+        
+        NSLog(@"HERE");
     }
 }
+-(void)addInformationToDb{
+    NSMutableArray *pomNumbers = [NSMutableArray array];
+    NSMutableArray *pomNames = [NSMutableArray array];
+    for (Contact *contact in self.contactList){
+        [pomNumbers addObject:contact.phoneNumber];
+        [pomNames addObject:[NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName]];
+    }
+    
+    
+    [[SharedPreferences shared]setContactNumbersArray:pomNumbers];
+    [[SharedPreferences shared]setContactNamesArray:pomNames];
+}
+
 -(void)responseToDeleteContact:(NSDictionary *)dict{
      NSLog(@"responseToDeleteContact %@", dict);
     
@@ -523,12 +533,15 @@
         NSDictionary *pom1 = [[dict objectForKey:@"DeleteContactResponse"] objectForKey:@"DeleteContactResult"];
         
         if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
-            NSMutableArray *pom = [NSMutableArray array];
+            NSMutableArray *pomNumbers = [NSMutableArray array];
+            NSMutableArray *pomNames = [NSMutableArray array];
             for (Contact *contact in self.contactList){
-                [pom addObject:contact.phoneNumber];
+                [pomNumbers addObject:contact.phoneNumber];
+                [pomNames addObject:[NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName]];
             }
             
-            [[DBManager sharedInstance]addContactsPhoneNumbersToDb:pom];
+            [[SharedPreferences shared]setContactNumbersArray:pomNumbers];
+            [[SharedPreferences shared]setContactNamesArray:pomNames];
             [self refreshStatusInfo];
         }
     }

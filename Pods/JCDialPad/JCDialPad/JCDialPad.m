@@ -165,7 +165,9 @@
 
 - (void)setRawText:(NSString *)rawText
 {
-    self.numFormatter = [[NBAsYouTypeFormatter alloc] initWithRegionCode:@"US"];
+    NSLocale *currentLocale = [NSLocale currentLocale];  // get the current locale.
+    NSString *countryCode = [currentLocale objectForKey:NSLocaleCountryCode];
+    self.numFormatter = [[NBAsYouTypeFormatter alloc] initWithRegionCode:countryCode];
     _rawText = @"";
     self.digitsTextField.text = @"";
     for (int i = 0; i < rawText.length; ++i) {

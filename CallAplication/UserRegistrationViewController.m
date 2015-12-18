@@ -106,12 +106,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 -(void)showErrorAlert{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", @"") message:NSLocalizedString(@"Please check your informations are correct", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:NSLocalizedString(@"Please check your informations are correct", @"") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
     [SVProgressHUD dismiss];
 }
 -(void)showErrorAlertWithMessage:(NSString *)message {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning", @"") message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
     [SVProgressHUD dismiss];
 }
@@ -172,16 +172,12 @@
             [SVProgressHUD show];
             
             NSString *lCode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0];
-            enum Language language;
+            enum Language language = English;
             
-            if ([lCode isEqualToString:@"en"]) {
-                language = English;
-            }else if ([lCode isEqualToString:@"da"]){
+            if ([lCode rangeOfString:@"da"].location != NSNotFound) {
                 language = Danish;
-            }else{
-                language = Default;
             }
-            
+
            [[MyConnectionManager sharedManager]createAcountWithDelegate:self selector:@selector(responseToCreateUser:) phone:self.phoneNumberUITextField.text password:self.passwordUITextField.text name:self.nameUITextField.text email:self.emailUITextField.text language:language];
         }
 
@@ -203,7 +199,7 @@
 //observe methods
 - (void)keyboardWillHide:(NSNotification *)notification {
     self.yCoordinateOfTFHolder.constant = 20;
-    self.yTitleCoordinate.constant = 40;
+    self.yTitleCoordinate.constant = 10;
 }
 - (void)keyboardWillShow:(NSNotification *)notification {
     
@@ -211,9 +207,7 @@
         self.yCoordinateOfTFHolder.constant = 80;
         
         if(IS_IPHONE_4_OR_LESS){
-            self.yTitleCoordinate.constant = 8;
-        }else {
-            self.yTitleCoordinate.constant = 30;
+            self.yTitleCoordinate.constant = -10;
         }
     }
     
@@ -250,7 +244,7 @@
             
             return;
         }else if ([[pom1 objectForKey:@"Result"] integerValue] == 0){
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Phone number already exists", nil) message:NSLocalizedString(@"Please change number or Log in with existng phone number", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:NSLocalizedString(@"Phone number already exists", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [SVProgressHUD dismiss];
             return;
@@ -278,19 +272,15 @@
             
             
             NSString *lCode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0];
-            enum Language language;
+            enum Language language = English;
             
-            if ([lCode isEqualToString:@"en"]) {
-                language = English;
-            }else if ([lCode isEqualToString:@"da"]){
+            if ([lCode rangeOfString:@"da"].location != NSNotFound) {
                 language = Danish;
-            }else{
-                language = Default;
             }
             
             user.language = language;
             
-            NSLog(@"language %u", user.language);
+            NSLog(@"language %lu", (unsigned long)user.language);
             [[SharedPreferences shared]saveUserData:user];
             
 
@@ -316,8 +306,8 @@
             }
             
             
+            [[MyConnectionManager sharedManager]requestGetContactWithDelegate:self selector:@selector(responseToGetContacts:)];
             
-            [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
             
             return;
         }
@@ -348,33 +338,38 @@
             user.logedIn = YES;
             
             NSString *lCode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0];
-            enum Language language;
+            enum Language language = English;
             
-            if ([lCode isEqualToString:@"en"]) {
-                language = English;
-            }else if ([lCode isEqualToString:@"da"]){
+            if ([lCode rangeOfString:@"da"].location != NSNotFound) {
                 language = Danish;
-            }else{
-                language = English;
             }
             
             user.language = language;
             
-            NSLog(@"language %u", user.language);
+       //     NSLog(@"language %lu", (unsigned long)user.language);
             
             [[SharedPreferences shared]saveUserData:user];
             
             NSMutableArray *phoneNumbers = [NSMutableArray array];
+            NSMutableArray *pomNames = [NSMutableArray array];
             NSArray *pom = [user.contactDictionary allValues];
+        //    NSLog(@"pom %@", pom);
             for (NSArray *array in pom){
+                
+                NSLog(@"array %@", array);
+                
                 for (Contact *contact in array){
+            //        NSLog(@"contact %@", contact);
+             //       NSLog(@"contact %@", contact.phoneNumber);
                     [phoneNumbers addObject:contact.phoneNumber];
+                    [pomNames addObject:[NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName]];
                 }
             }
             
-            NSLog(@"phoneNumbers %@", phoneNumbers);
+        //    NSLog(@"phoneNumbers %@", phoneNumbers);
             
-            [[DBManager sharedInstance]addContactsPhoneNumbersToDb:phoneNumbers];
+            [[SharedPreferences shared]setContactNumbersArray:phoneNumbers];
+            [[SharedPreferences shared]setContactNamesArray:pomNames];
             
             [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
         }else {
@@ -383,6 +378,53 @@
     }else {
         [self showErrorAlert];
     }
+}
+-(void)responseToGetContacts:(NSDictionary *)dict{
+   //  NSLog(@"responseToGetContacts %@", dict);
+    
+    if (dict) {
+        NSDictionary *pom1 = [[dict objectForKey:@"GetContactResponse"] objectForKey:@"GetContactResult"];
+        
+        if ([[pom1 objectForKey:@"Result"] integerValue] == 2) {
+            
+            NSArray *pomArray = [[Myuser sharedUser].contactDictionary allValues];
+            
+            id pom2 = [[pom1 objectForKey:@"Contacts"] objectForKey:@"csContacts"];
+            
+            if ([pom2 isKindOfClass:[NSArray class]]) {
+                for (NSDictionary *contactDict in pom2){
+                    NSString *phoneNumber = [contactDict objectForKey:@"Phonenumber"];
+                    
+                  //  NSLog(@"phoneNumber %@", phoneNumber);
+                    
+                    for (NSArray *array in pomArray){
+                        for (Contact *contact in array){
+                         //   NSLog(@"contact.phoneNumber %@", contact.phoneNumber);
+                            if ([contact.phoneNumber isEqualToString:phoneNumber]) {
+                                
+                                if ([[contactDict objectForKey:@"Favorites"] boolValue]) {
+                                    contact.favorit = YES;
+                                    [[DBManager sharedInstance] addOrRemoveContactInFavoritWithRecordId:contact.recordId];
+                                }
+                                
+                                
+                                goto outer;
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                    outer:;
+                }
+                
+            }
+        }
+        
+    }
+    
+    [self performSegueWithIdentifier:@"mainControllerSegue" sender:self];
+    
 }
 
 @end

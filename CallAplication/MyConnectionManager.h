@@ -31,6 +31,7 @@
 -(void)requestUpdateStatusWithTimestampWithStatus:(Status)status delegate:(id)delegate selector:(SEL)selector;
 -(void)requestUpdateAccountWithNewPhoneNumber:(NSString *)newPhoneNumber password:(NSString *)newPassword name:(NSString *)name email:(NSString *)email language:(Language)language delegate:(id)delegate selector:(SEL)selector;
 -(void)requestDeleteContactWithPhoneNumberToDelete:(NSString *)phoneNumberToDelete delegate:(id)delegate selector:(SEL)selector;
+-(void)requestGetContactWithDelegate:(id)delegate selector:(SEL)selector;
 //-(void)requestCheckPhoneNumbersWithDelegate:(id)delegate selector:(SEL)selector;
 
 @end

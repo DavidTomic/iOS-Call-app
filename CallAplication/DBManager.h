@@ -29,9 +29,6 @@
 -(NSArray *)getAllDefaultTextsFromDb;
 -(void)saveDefaultTextsToDb:(NSArray *)textList;
 
--(void)addContactsPhoneNumbersToDb:(NSArray *)list;
--(NSArray *)getAllPhoneNumbersFromDb;
-
 -(void)addNotificationToDbWithPhoneNumber:(NSString *)phoneNumber name:(NSString *)name status:(Status)status;
 -(Notification *)getNotificationForPhoneNumber:(NSString *)phoneNumber;
 -(NSMutableArray *)getAllNotificationsFromDb;

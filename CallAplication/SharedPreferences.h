@@ -22,4 +22,9 @@
 -(void)setLastCallTime:(NSString *)executionTime;
 -(NSString *)getLastCallTime;
 
+-(void)setContactNumbersArray:(NSArray *)array;
+-(NSArray *)getContactNumbersArray;
+
+-(NSArray *)getContactNamesArray;
+-(void)setContactNamesArray:(NSArray *)array;
 @end

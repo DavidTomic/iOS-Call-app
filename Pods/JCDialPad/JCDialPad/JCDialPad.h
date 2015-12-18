@@ -30,5 +30,6 @@
 + (NSArray *)defaultButtons;
 
 - (id)initWithFrame:(CGRect)frame buttons:(NSArray *)buttons;
+- (void)appendText:(NSString *)text;
 
 @end

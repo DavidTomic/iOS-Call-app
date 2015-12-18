@@ -500,6 +500,21 @@
                 if([segue.destinationViewController isKindOfClass:[ContactDetailViewController class]]){
                     
                     Contact *contact = self.recentContacts[indexPath.row];
+                    
+                    NSArray *contactArray = [[Myuser sharedUser].contactDictionary allValues];
+                    
+                    for (NSArray *array in contactArray){
+                         for (Contact *contact2 in array){
+                                if (contact2.recordId == contact.recordId) {
+                                        contact = contact2;
+                                        goto outer;
+                                }
+                         }
+                    }
+                                        
+                    outer:;
+                    
+                    
                     ContactDetailViewController *vc = (ContactDetailViewController *)segue.destinationViewController;
                     vc.contact = contact;
                 }

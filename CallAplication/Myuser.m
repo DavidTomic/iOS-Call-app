@@ -82,15 +82,14 @@ static Myuser *myUser;
                                                              
                                                              int recordId = ABRecordGetRecordID(abPerson);
                                                              
-                                                             if (!firstName) {
-                                                                 continue;
-                                                             }
-                                                             
                                                              NSString *phoneNumber = nil;
                                                              if (ABMultiValueGetCount(phoneNumbers) > 0) {
                                                                  phoneNumber = (__bridge_transfer NSString *) ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
                                                              }
                                                              
+                                                             if (!firstName || !phoneNumber) {
+                                                                 continue;
+                                                             }
                                                              
                                                              NSString *firstSign = [phoneNumber substringToIndex:1];
                                                              NSString *phoneNumberOnlyDigit = [[phoneNumber componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
