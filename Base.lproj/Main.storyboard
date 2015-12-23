@@ -3479,9 +3479,9 @@
         <image name="yellow_circle_full" width="17" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wft-CU-gRp"/>
-        <segue reference="xNJ-xf-yLb"/>
-        <segue reference="lYv-mo-0MV"/>
+        <segue reference="V4f-dX-cg2"/>
+        <segue reference="VDE-oF-WrZ"/>
+        <segue reference="O2J-Ge-CI0"/>
         <segue reference="pBt-bQ-Isc"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.36470588235294116" blue="0.75686274509803919" alpha="1" colorSpace="calibratedRGB"/>

@@ -656,7 +656,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.eyedea.house.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "7218e640-2d88-4865-a231-702df0ae8289";
 			};
 			name = Release;
 		};

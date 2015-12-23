@@ -216,11 +216,15 @@
         [sender setImage:[UIImage imageNamed:@"star_full"] forState:UIControlStateNormal];
     }
     
-    NSLog(@"self.contact.recordId %d",self.contact.recordId);
+  //  NSLog(@"self.contact.recordId %d",self.contact.recordId);
     
     [[DBManager sharedInstance]addOrRemoveContactInFavoritWithRecordId:self.contact.recordId];
-    [[MyConnectionManager sharedManager]requestAddContactWithContact:self.contact delegate:self selector:nil];
+    [[MyConnectionManager sharedManager]requestAddContactWithContact:self.contact delegate:self selector:@selector(responseToaddFavorit:)];
 
+}
+
+-(void)responseToaddFavorit:(NSDictionary *)dict{
+   // NSLog(@"responseToaddFavorit %@", dict);
 }
 
 - (void)didReceiveMemoryWarning {

@@ -212,6 +212,11 @@ static MyConnectionManager *mySharedManager;
     
     Myuser *user = [Myuser sharedUser];
     
+    NSString *lastname = @"";
+    if (contact.lastName) {
+        lastname = contact.lastName;
+    }
+    
     NSString *soapMessage = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?> \
                              <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"> \
                              <soap:Body> \
@@ -229,9 +234,11 @@ static MyConnectionManager *mySharedManager;
                              <Favorites>%d</Favorites> \
                              </AddContacts> \
                              </soap:Body> \
-                             </soap:Envelope>", user.phoneNumber, user.password, contact.phoneNumber, contact.firstName, contact.lastName, @"", @"", @"", @"", @"", @"2000-01-01T00:00:00", contact.favorit];
+                             </soap:Envelope>", user.phoneNumber, user.password, contact.phoneNumber, contact.firstName, lastname, @"", @"", @"", @"", @"2000-01-01T00:00:00", @"2000-01-01T00:00:00", contact.favorit];
     
     [conn sendMessageWithMethodName:@"AddContacts" soapMessage:soapMessage];
+    
+   // NSLog(@"soapMessage %@", soapMessage);
 }
 -(void)requestAddMultipleContactsWithDelegate:(id)delegate selector:(SEL)selector{
     MyConnection *conn = [[MyConnection alloc]init];
