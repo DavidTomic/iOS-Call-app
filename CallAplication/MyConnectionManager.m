@@ -238,7 +238,7 @@ static MyConnectionManager *mySharedManager;
     
     [conn sendMessageWithMethodName:@"AddContacts" soapMessage:soapMessage];
     
-   // NSLog(@"soapMessage %@", soapMessage);
+ //   NSLog(@"soapMessage %@", soapMessage);
 }
 -(void)requestAddMultipleContactsWithDelegate:(id)delegate selector:(SEL)selector{
     MyConnection *conn = [[MyConnection alloc]init];

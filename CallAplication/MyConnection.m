@@ -47,7 +47,7 @@ NSString *const urlString = @"https://ws.when2call.dk/wscall.asmx";
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     
     NSString *myString = [[NSString alloc] initWithData:_receivedData encoding:NSUTF8StringEncoding];
-    NSLog(@"mystring %@", myString);
+  //  NSLog(@"mystring %@", myString);
     NSDictionary *parsedObject = [[NSDictionary dictionaryWithXMLString:myString] objectForKey:@"soap:Body"];
    // NSLog(@"response %@", parsedObject);
 

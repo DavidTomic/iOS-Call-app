@@ -18,7 +18,7 @@
 #import "SharedPreferences.h"
 #import "MyConnectionManager.h"
 
-@interface ContactDetailViewController ()<ABPersonViewControllerDelegate, MFMessageComposeViewControllerDelegate>
+@interface ContactDetailViewController ()<ABNewPersonViewControllerDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *profileImage;
 @property (weak, nonatomic) IBOutlet UILabel *username;
@@ -26,7 +26,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *favoritButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 
-@property (nonatomic) BOOL editingContact;
 
 @end
 
@@ -42,12 +41,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
-    if (self.editingContact) {
-        self.editingContact = NO;
-        [self updateContactDataFromAddressBook];
-    }
-    
+
     
     [self setValues];
     
@@ -243,12 +237,14 @@
     
     if (people)
     {
-        self.editingContact = YES;
-        ABPersonViewController *personViewController = [[ABPersonViewController alloc] init];
-        personViewController.personViewDelegate = self;
-        personViewController.displayedPerson = people;
-        personViewController.allowsEditing = YES;
-        [self.navigationController pushViewController:personViewController animated:YES];
+
+        ABNewPersonViewController *picker = [[ABNewPersonViewController alloc] init];
+        picker.newPersonViewDelegate = self;
+        picker.displayedPerson = people;
+        picker.navigationItem.title=@"Info";
+        
+        UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:picker];
+        [self presentViewController:navigation animated:YES completion:nil];
 
     }
     else
@@ -287,14 +283,18 @@
     }
 }
 
-#pragma mark ABPersonViewControllerDelegate methods
-// Does not allow users to perform default actions such as dialing a phone number, when they select a contact property.
-- (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person
-                    property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue
+#pragma mark ABNewPersonViewControllerDelegate methods
+- (void)newPersonViewController:(ABNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)person
 {
-    return YES;
+    
+    if (person != nil)  //nil = Cancel button clicked
+    {
+        NSLog(@"person %@", person);
+        [self updateContactDataFromAddressBook];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
-
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller
                  didFinishWithResult:(MessageComposeResult)result {
     switch(result) {
